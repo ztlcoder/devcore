@@ -1,0 +1,32 @@
+{
+    "version": "8.4.19",
+    "description": "PHP 8.4 NTS (Personal Archive)",
+    "homepage": "https://windows.php.net",
+    "license": "PHP-3.01",
+    "architecture": {
+        "64bit": {
+            "url": "https://windows.php.net/downloads/releases/archives/php-8.4.19-nts-Win32-vs17-x64.zip",
+            "hash": "145712ab250a8a1855ade60b7ce8dbe177064f61f31c3edda8cb2af8400e1e8f"
+        }
+    },
+    "bin": ["php.exe", "php-cgi.exe"],
+    "persist": ["conf.d", "php.ini"],
+    "pre_install": [
+        "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }",
+        "if (!(Test-Path \"$dir\\conf.d\")) { New-Item -Type directory \"$dir\\conf.d\" | Out-Null }"
+    ],
+    "checkver": {
+        "url": "https://windows.php.net/downloads/releases/archives/",
+        "re": "php-(8\\.4\\.[\\d.]+)-nts-Win32-vs17-x64\\.zip"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://windows.php.net/downloads/releases/archives/php-$version-nts-Win32-vs17-x64.zip"
+            }
+        },
+        "hash": {
+            "url": "https://windows.php.net/downloads/releases/archives/sha256sum.txt"
+        }
+    }
+}
