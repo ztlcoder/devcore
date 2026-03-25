@@ -11,6 +11,12 @@
     },
     "bin": "tabularis.exe",
     "checkver": "github",
+    "shortcuts": [
+        [
+            "tabularis.exe",
+            "tabularis"
+        ]
+    ],
     "autoupdate": {
         "architecture": {
             "64bit": {
