@@ -1,6 +1,6 @@
 {
     "version": "8.4.19",
-    "description": "PHP 8.4 NTS (Personal Archive)",
+    "description": "PHP 8.4 NTS for personal bucket. Isolated configuration for multi-version coexistence.",
     "homepage": "https://windows.php.net",
     "license": "PHP-3.01",
     "architecture": {
@@ -9,11 +9,25 @@
             "hash": "1E26901FDB155D49A1A0EB8A0167A4F8528C0C700AE62E8AF1C48230B68AF1D9"
         }
     },
-    "bin": ["php.exe", "php-cgi.exe"],
-    "persist": ["conf.d", "php.ini"],
+    "env_set": {
+        "PHPRC": "$dir\\cli",
+        "PHP_INI_SCAN_DIR": "$dir\\cli\\conf.d;$persist_dir\\conf.d"
+    },
+    "bin": [
+        "php.exe",
+        "php-cgi.exe"
+    ],
+    "persist": [
+        "cli"
+    ],
     "pre_install": [
-        "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }",
-        "if (!(Test-Path \"$dir\\conf.d\")) { New-Item -Type directory \"$dir\\conf.d\" | Out-Null }"
+        "if (!(Test-Path \"$dir\\cli\")) { New-Item -Type directory \"$dir\\cli\" | Out-Null }",
+        "if (!(Test-Path \"$dir\\cli\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\cli\\php.ini\" }",
+        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { New-Item -Type directory \"$dir\\cli\\conf.d\" | Out-Null }"
+    ],
+    "post_install": [
+        "$ini = \"$dir\\cli\\php.ini\"",
+        "(Get-Content $ini) -replace ';extension_dir = \"ext\"', 'extension_dir = \"ext\"' | Set-Content $ini"
     ],
     "checkver": {
         "url": "https://windows.php.net/downloads/releases/archives/",
