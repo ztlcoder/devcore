@@ -6,13 +6,13 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com",
-            "hash": "060a0f5a7090875e52332616223126f5951860d5b91b89791494e1957262071d"
+            "hash": "57eb8155036a3d0f60fd89b5ecce18c3981c192f0805b687f8e723713098e98d"
         }
     },
-    "bin": "tabularis_0.9.11_x64-portable.exe",
+    "bin": "tabularis.exe",
     "shortcuts": [
         [
-            "tabularis_0.9.11_x64-portable.exe",
+            "tabularis.exe",
             "Tabularis"
         ]
     ],
@@ -22,15 +22,8 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/releases/download/v$version/tabularis_$version_x64-portable.exe"
+                "url": "https://github.com/releases/download/v$version/tabularis_$version_x64-portable.exe#/tabularis.exe"
             }
-        },
-        "bin": "tabularis_$version_x64-portable.exe",
-        "shortcuts": [
-            [
-                "tabularis_$version_x64-portable.exe",
-                "Tabularis"
-            ]
-        ]
+        }
     }
 }
