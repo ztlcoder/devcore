@@ -6,7 +6,7 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v1.2.6/TinyRDM_Portable_1.2.6_windows_x64.zip#/tinyrdm.exe",
-            "hash": "3154FE91A43FB11EBF262641E40370F8DD5EE9EF48A2E40DF38E43A4321F7351"
+            "hash": "5E71449329F017CD0BE734F146DC83B3A0AD7BF5F4B7BB09536F5D0C1D57697F"
         }
     },
     "bin": "tinyrdm.exe",
