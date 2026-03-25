@@ -5,11 +5,10 @@
     "license": "GPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v1.2.6/TinyRDM_Setup_1.2.6_windows_x64.exe",
-            "hash": "D6E5D783B383084C8C2455986913C4A516ECA6FE257E6399064CE39E25FE"
+            "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v1.2.6/TinyRDM_Portable_1.2.6_windows_x64.zip",
+            "hash": "5E71449329F017CD0BE734F146DC83B3A0AD7BF5F4B7BB09536F5D0C1D57697F"
         }
     },
-    "innosetup": true,
     "bin": "Tiny RDM.exe",
     "shortcuts": [
         [
@@ -26,7 +25,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v$version/TinyRDM_Setup_$version_windows_x64.exe"
+                "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v$version/TinyRDM_Portable_$version_windows_x64.zip"
             }
         }
     }
