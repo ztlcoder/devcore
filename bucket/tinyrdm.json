@@ -1,0 +1,31 @@
+{
+    "version": "1.2.6",
+    "description": "A modern, lightweight Redis desktop client.",
+    "homepage": "https://tinyrdm.app/",
+    "license": "GPL-3.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://gitee.com/tiny-craft-zh/tiny-rdm/releases/download/v1.2.6/TinyRDM_Portable_1.2.6_windows_x64.zip#/tinyrdm.exe",
+            "hash": "3154FE91A43FB11EBF262641E40370F8DD5EE9EF48A2E40DF38E43A4321F7351"
+        }
+    },
+    "bin": "tinyrdm.exe",
+    "shortcuts": [
+        [
+            "tinyrdm.exe",
+            "TinyRDM"
+        ]
+    ],
+    "persist": "data",
+    "checkver": {
+        "url": "https://gitee.com/tiny-craft-zh/tiny-rdm/releases",
+        "regex": "v([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://gitee.com/tiny-craft-zh/tiny-rdm/releases/download/v$version/TinyRDM_Portable_$version_windows_x64.zip#/tinyrdm.exe"
+            }
+        }
+    }
+}
