@@ -1,0 +1,29 @@
+{
+    "version": "0.9.11",
+    "description": "A lightweight, developer-focused database management tool. Supports MySQL, PostgreSQL and SQLite.",
+    "homepage": "https://tabularis.dev",
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com",
+            "hash": "060a0f5a7090875e52332616223126f5951860d5b91b89791494e1957262071d"
+        }
+    },
+    "bin": "tabularis.exe",
+    "shortcuts": [
+        [
+            "tabularis.exe",
+            "Tabularis"
+        ]
+    ],
+    "checkver": {
+        "github": "https://github.com"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/releases/download/v$version/tabularis_$version_x64-portable.exe#/tabularis.exe"
+            }
+        }
+    }
+}
