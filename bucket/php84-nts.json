@@ -6,7 +6,7 @@
     "architecture": {
         "64bit": {
             "url": "https://windows.php.net/downloads/releases/archives/php-8.4.19-nts-Win32-vs17-x64.zip",
-            "hash": "145712ab250a8a1855ade60b7ce8dbe177064f61f31c3edda8cb2af8400e1e8f"
+            "hash": "1E26901FDB155D49A1A0EB8A0167A4F8528C0C700AE62E8AF1C48230B68AF1D9"
         }
     },
     "bin": ["php.exe", "php-cgi.exe"],
