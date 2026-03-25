@@ -1,36 +1,21 @@
 {
     "version": "0.9.11",
-    "description": "A lightweight, developer-focused database management tool. Supports MySQL, PostgreSQL and SQLite.",
-    "homepage": "https://tabularis.dev",
-    "license": "Apache-2.0",
+    "description": "A modern, lightweight data table viewer and editor.",
+    "homepage": "https://github.com/debba/tabularis",
+    "license": "GPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com",
-            "hash": "57eb8155036a3d0f60fd89b5ecce18c3981c192f0805b687f8e723713098e98d"
+            "url": "https://github.com/debba/tabularis/releases/download/v$version/tabularis_$version_x64-portable.exe#/tabularis.exe",
+            "hash": "426d4007f3d97f55f606821268393e8203c91478950275369182310231923102"
         }
     },
-    "bin": "tabularis_0.9.11_x64-portable.exe",
-    "shortcuts": [
-        [
-            "tabularis_0.9.11_x64-portable.exe",
-            "Tabularis"
-        ]
-    ],
-    "checkver": {
-        "github": "https://github.com"
-    },
+    "bin": "tabularis.exe",
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/releases/download/v$version/tabularis_$version_x64-portable.exe"
+                "url": "https://github.com/debba/tabularis/releases/download/v$version/tabularis_$version_x64-portable.exe#/tabularis.exe"
             }
-        },
-        "bin": "tabularis_$version_x64-portable.exe",
-        "shortcuts": [
-            [
-                "tabularis_$version_x64-portable.exe",
-                "Tabularis"
-            ]
-        ]
+        }
     }
 }
