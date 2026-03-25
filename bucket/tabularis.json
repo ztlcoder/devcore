@@ -6,7 +6,7 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/debba/tabularis/releases/download/v0.9.11/tabularis_0.9.11_x64-portable.exe#/tabularis.exe",
-            "hash": "5a9303e65842c6762391694f3116812839217312381273612837126318237123"
+            "hash": "C6D33C24D0BB170227FEEC074BB385F601A51CECA6FE257E6399064CE39E25FE"
         }
     },
     "bin": "tabularis.exe",
