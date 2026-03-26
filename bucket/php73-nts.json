@@ -13,8 +13,13 @@
         "PHPRC": "$dir\\cli",
         "PHP_INI_SCAN_DIR": "$dir\\cli\\conf.d;$persist_dir\\conf.d"
     },
-    "bin": ["php.exe", "php-cgi.exe"],
-    "persist": ["cli"],
+    "bin": [
+        "php.exe",
+        "php-cgi.exe"
+    ],
+    "persist": [
+        "cli"
+    ],
     "pre_install": [
         "if (!(Test-Path \"$dir\\cli\")) { New-Item -Type directory \"$dir\\cli\" | Out-Null }",
         "if (!(Test-Path \"$dir\\cli\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\cli\\php.ini\" }",

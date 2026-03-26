@@ -1,0 +1,32 @@
+{
+    "version": "0.35.0",
+    "description": "The database client every command line enthusiast loves.",
+    "homepage": "https://github.com/danvergara/dblab",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/danvergara/dblab/releases/download/v0.35.0/dblab_0.35.0_windows_amd64.tar.gz",
+            "hash": "CA4C120251F775F4098040FD04CD34AD75811C4E3CD21454CCF8EC0A74FF62DE"
+        }
+    },
+    "bin": "dblab.exe",
+    "persist": "dblab",
+    "pre_install": ". \"$bucketsdir\\devcore\\scripts\\dblab_pre_install.ps1\"",
+    "uninstaller": {
+        "script": ". \"$bucketsdir\\devcore\\scripts\\dblab_uninstaller.ps1\""
+    },
+    "checkver": {
+        "github": "https://github.com/danvergara/dblab",
+        "regex": "v?(\\d+\\.\\d+\\.\\d+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/danvergara/dblab/releases/download/v$version/dblab_$version_windows_amd64.tar.gz"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256"
+        }
+    }
+}
