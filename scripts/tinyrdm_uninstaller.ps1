@@ -1,17 +1,15 @@
-# 1. 变量定义
 $appdata_base = "$env:APPDATA"
-$junction_path = Join-Path $appdata_base "TinyRDM"
-$webview_path = Join-Path $appdata_base "Tiny RDM.exe"
+$local_base = "$env:LOCALAPPDATA"
 
-# 1. 移除目录联结 (只删链接，不删 persist 里的数据)
-if (Test-Path "$junction_path") {
-    $item = Get-Item "$junction_path"
-    if ($item.Attributes -match 'ReparsePoint') {
-        $item.Delete()
-    }
+# 1. 移除 Roaming 下的 Junction
+$junction = Join-Path $appdata_base "TinyRDM"
+if (Test-Path $junction) {
+    $item = Get-Item $junction
+    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }
 }
 
-# 2. 清理 WebView2 缓存文件夹 (这些通常没有保留价值)
-if (Test-Path "$webview_path") {
-    Remove-Item "$webview_path" -Recurse -Force -ErrorAction SilentlyContinue
+# 2. 彻底清理 WebView2 缓存 (Tiny RDM.exe 文件夹)
+$webview = Join-Path $appdata_base "Tiny RDM.exe"
+if (Test-Path $webview) {
+    Remove-Item $webview -Recurse -Force -ErrorAction SilentlyContinue
 }

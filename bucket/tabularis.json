@@ -10,7 +10,7 @@
         }
     },
     "bin": "tabularis.exe",
-    "persist": "persist_data",
+    "persist": "tabularis",
     "pre_install": ". \"$bucketsdir\\devcore\\scripts\\tabularis_pre_install.ps1\"",
     "uninstaller": {
         "script": ". \"$bucketsdir\\devcore\\scripts\\tabularis_uninstaller.ps1\""
