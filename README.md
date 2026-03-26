@@ -1,8 +1,7 @@
 # devcore
-个人维护常用的办公和编程软件的bucket
+个人使用的软件集合
 
 ## update_hashes
-
 
 ```shell
 .\update_hashes.ps1 php85-nts
