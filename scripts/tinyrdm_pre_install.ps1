@@ -1,18 +1,8 @@
-$appdata_base = "$env:APPDATA"
-$junction_path = Join-Path $appdata_base "TinyRDM"
-$webview_path = Join-Path $appdata_base "Tiny RDM.exe"
+# 加载通用工具函数
+. "$bucketsdir\devcore\scripts\utils.ps1"
 
-# 1. 准备 persist 目录
-if (!(Test-Path "$persist_dir")) {
-    New-Item -Path "$persist_dir" -ItemType Directory -Force | Out-Null
-}
-
-# 2. 清理旧的残留（包括普通文件夹和 WebView2 缓存）
-foreach ($path in @($junction_path, $webview_path)) {
-    if (Test-Path $path) {
-        Remove-Item $path -Recurse -Force -ErrorAction SilentlyContinue
-    }
-}
-
-# 3. 重新建立数据联结
-New-Item -ItemType Junction -Path "$junction_path" -Value "$persist_dir" | Out-Null
+# 执行重定向逻辑
+# -AppName: 软件存储配置的文件夹名
+# -PersistDir: Scoop 提供的持久化目录变量
+# -WebViewName: WebView2 运行时产生的缓存文件夹名
+Redirect-AppData -AppName "TinyRDM" -PersistDir "$persist_dir" -WebViewName "Tiny RDM.exe"
