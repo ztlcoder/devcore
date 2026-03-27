@@ -1,0 +1,28 @@
+{
+    "version": "2.3.1",
+    "description": "ZTools - 一个高性能、可扩展的应用启动器和插件平台 uTools 的开源实现 ",
+    "homepage": "https://github.com/ZToolsCenter/ZTools",
+    "license": "Unknown",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ZToolsCenter/ZTools/releases/download/v2.3.1/ZTools-2.3.1-win-x64.zip",
+            "hash": "845265CC0CE40E0FB13C96FA18B104F38C988E884B89BF836AFF626A6019C635"
+        }
+    },
+    "bin": "ZTools.exe",
+    "shortcuts": [
+        [
+            "ZTools.exe",
+            "ztools"
+        ]
+    ],
+    "persist": "ztools",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/ZToolsCenter/ZTools/releases/download/v$version/ZTools-$version-win-x64.zip"
+            }
+        }
+    }
+}
