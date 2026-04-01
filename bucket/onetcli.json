@@ -1,0 +1,26 @@
+{
+    "version": "0.1.10",
+    "description": "One-Hub CLI client for managing distributed data.",
+    "homepage": "https://github.com/feigeCode/onetcli",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/feigeCode/onetcli/releases/download/v0.2.1/onetcli-x86_64-pc-windows-msvc.zip",
+            "hash": "D963CAB18886F2E759DC31E102866C469062C17F8C325E87CA0E1C07B9975DB2"
+        }
+    },
+    "bin": "onetcli.exe",
+    "persist": "storage",
+    "pre_install": ". \"$bucketsdir\\devcore\\scripts\\onetcli_pre_install.ps1\"",
+    "uninstaller": {
+        "script": ". \"$bucketsdir\\devcore\\scripts\\onetcli_uninstaller.ps1\""
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/feigeCode/onetcli/releases/download/v$version/onetcli-x86_64-pc-windows-msvc.zip"
+            }
+        }
+    }
+}
