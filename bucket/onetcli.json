@@ -1,6 +1,6 @@
 {
     "version": "0.2.1",
-    "description": "One-Hub desktop client for managing distributed data.",
+    "description": "A cross-platform desktop client for databases, SSH/SFTP, terminals & AI, all in one place.",
     "homepage": "https://github.com/feigeCode/onetcli",
     "license": "MIT",
     "architecture": {

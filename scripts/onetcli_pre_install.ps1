@@ -1,5 +1,5 @@
 # 1. 定义路径：$persist_dir 是 Scoop 提供的变量，指向你的 persist\onetcli
-$targetPersist = "$persist_dir\storage"
+$targetPersist = "$persist_dir\one-hub"
 $appDataHub = "$env:APPDATA\one-hub"
 
 # 2. 确保 persist 物理目录存在
@@ -17,8 +17,7 @@ if (Test-Path $appDataHub) {
     }
 }
 
-# 4. 创建软连接：将 AppData\one-hub 映射到 persist\storage
+# 4. 创建软连接：将 AppData\one-hub 映射到 persist\one-hub
 if (!(Test-Path $appDataHub)) {
     New-Item -ItemType Junction -Path $appDataHub -Value $targetPersist | Out-Null
-    Write-Host "已建立软连接：AppData\one-hub -> persist\storage" -ForegroundColor Cyan
 }
