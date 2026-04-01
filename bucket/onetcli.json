@@ -1,5 +1,5 @@
 {
-    "version": "0.1.10",
+    "version": "0.2.1",
     "description": "One-Hub CLI client for managing distributed data.",
     "homepage": "https://github.com/feigeCode/onetcli",
     "license": "MIT",
@@ -15,6 +15,12 @@
     "uninstaller": {
         "script": ". \"$bucketsdir\\devcore\\scripts\\onetcli_uninstaller.ps1\""
     },
+    "shortcuts": [
+        [
+            "onetcli.exe",
+            "onetcli"
+        ]
+    ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
