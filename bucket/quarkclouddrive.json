@@ -1,9 +1,9 @@
 {
     "version": "6.5.0.709",
-    "description": "夸克网盘",
+    "description": "夸克网盘 电脑高效拍档 一键存爽快看",
     "homepage": "https://pan.quark.cn/",
     "license": "Proprietary",
-    "url": "https://umcdn.quark.cn/download/37211/quarkclouddrivepc/pckk@product_guanwang/QuarkCloudDrivePC_V6.5.0.709_pc_pf30001_(zh-cn)_release_(Build2889009-1000-x64).exe",
+    "url": "https://sw.pcmgr.qq.com/0f5a3a30eb46251cdbdf9393921def2c/69ce75e9/spcmgr/download/QuarkCloudDrivePC_V6.5.0.709_pc_pf30001_(zh-cn)_release_(Build2875307-1000-x64).exe",
     "hash": "99B6825C6268F8CCD9C06735A6C0AB639D23EF3A7EBB6A74634FBA6FB36979ED",
     "innosetup": true,
     "extract_dir": "{code_GetDestDir}",
@@ -13,40 +13,14 @@
             "夸克网盘"
         ]
     ],
-    "installer": {
-        "script": [
-            "Ensure \"$persist_dir\" | Out-Null",
-            "$quarkData1 = \"$env:APPDATA\\quark-cloud-drive\"",
-            "$quarkData2 = \"$env:APPDATA\\Quark\"",
-            "foreach ($path in @($quarkData1, $quarkData2)) {",
-            "    if (Test-Path $path) {",
-            "        $linkType = (Get-Item -Path $path -ErrorAction SilentlyContinue).LinkType",
-            "        if ($linkType -eq 'Junction') { Remove-Item -Path $path -Force }",
-            "        else {",
-            "            $targetSub = \"$persist_dir\\$(Split-Path $path -Leaf)\"",
-            "            Ensure $targetSub | Out-Null",
-            "            Get-ChildItem -Path $path -Force | Move-Item -Destination $targetSub -Force -ErrorAction SilentlyContinue",
-            "            Remove-Item -Path $path -Force -Recurse",
-            "        }",
-            "    }",
-            "    $targetPersist = \"$persist_dir\\$(Split-Path $path -Leaf)\"",
-            "    if (!(Test-Path $targetPersist)) { New-Item -ItemType Directory -Path $targetPersist -Force | Out-Null }",
-            "    New-Item -Path $path -ItemType Junction -Target $targetPersist | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "Remove-Item \"$env:APPDATA\\quark-cloud-drive\" -Recurse -Force -ErrorAction SilentlyContinue",
-            "Remove-Item \"$env:APPDATA\\Quark\" -Recurse -Force -ErrorAction SilentlyContinue"
-        ]
-    },
     "checkver": {
-        "url": "https://pan.quark.cn/api/client_version",
-        "jsonpath": "$.data.clouddrive_backup_packages[1].winInstallerUrl",
-        "re": "download/(?<id>\\d+)/quarkclouddrivepc/pckk@product_guanwang/QuarkCloudDrivePC_V(?<version>[\\d.]+)_pc_(?<pf>\\w+)_\\(zh-cn\\)_release_\\(Build(?<build>\\d+)-(?<subbuild>\\d+)-(?<arch>\\w+)\\).exe"
+        "script": [
+            "$resp = Invoke-WebRequest -UseBasicParsing -Uri 'https://luban.m.qq.com/api/public/software-manager/softwareProxy' -Body 'cmdid=3318&jprxReq%5Breq%5D%5Bsoft_id_list%5D%5B%5D=30714' -Method 'POST'",
+            "Write-Output $resp.Content"
+        ],
+        "regex": "\"ver_name\":\"([\\d\\.]+)\".+\"download_https_url\":\"https://(?<url>.+exe)\""
     },
     "autoupdate": {
-        "url": "https://umcdn.quark.cn/download/$matchId/quarkclouddrivepc/pckk@product_guanwang/QuarkCloudDrivePC_V$version_pc_$matchPf_(zh-cn)_release_(Build$matchBuild-$matchSubbuild-$matchArch).exe"
+        "url": "https://$matchUrl"
     }
 }
