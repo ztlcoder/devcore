@@ -5,7 +5,8 @@
     "license": "Proprietary",
     "url": "https://umcdn.quark.cn/download/37211/quarkclouddrivepc/pckk@product_guanwang/QuarkCloudDrivePC_V6.5.0.709_pc_pf30001_(zh-cn)_release_(Build2889009-1000-x64).exe",
     "hash": "99B6825C6268F8CCD9C06735A6C0AB639D23EF3A7EBB6A74634FBA6FB36979ED",
-    "extract_dir": "$_OUTDIR",
+    "innosetup": true,
+    "extract_dir": "{code_GetDestDir}",
     "shortcuts": [
         [
             "QuarkCloudDrive.exe",
