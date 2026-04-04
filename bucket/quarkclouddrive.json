@@ -48,7 +48,7 @@
             "    New-Item -Path $path -ItemType Junction -Target $targetPersist | Out-Null",
             "}"
         ]
-    }
+    },
     "uninstaller": {
         "script": [
             "Remove-Item \"$env:APPDATA\\quark-cloud-drive\" -Recurse -Force -ErrorAction SilentlyContinue",
