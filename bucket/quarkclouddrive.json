@@ -5,37 +5,12 @@
     "license": "Proprietary",
     "url": "https://umcdn.quark.cn/download/37211/quarkclouddrivepc/pckk@product_guanwang/QuarkCloudDrivePC_V6.5.0.709_pc_pf30001_(zh-cn)_release_(Build2889009-1000-x64).exe",
     "hash": "99B6825C6268F8CCD9C06735A6C0AB639D23EF3A7EBB6A74634FBA6FB36979ED",
+    "extract_dir": "$_OUTDIR",
     "shortcuts": [
         [
             "QuarkCloudDrive.exe",
             "夸克网盘"
         ]
-    ],
-    "pre_install": [
-        "$exeName = 'QuarkCloudDrive.exe'",
-        "# 1. 尝试暴力拆解原始下载文件 (如果解压失败)",
-        "if (!(Test-Path \"$dir\\$exeName\")) {",
-        "    $rawExe = Get-ChildItem \"$dir\\*.exe\" | Where-Object { $_.Name -like \"*QuarkCloudDrive*\" } | Select-Object -First 1",
-        "    if ($rawExe) {",
-        "        Write-Host \"正在尝试深度提取: $($rawExe.Name)...\" -ForegroundColor Cyan",
-        "        & \"7z.exe\" x \"$($rawExe.FullName)\" \"-o$dir\" -y | Out-Null",
-        "    }",
-        "}",
-        "# 2. 处理 NSIS 特有的 $_OUTDIR 路径",
-        "if (Test-Path \"$dir\\`$_OUTDIR\") {",
-        "    Get-ChildItem \"$dir\\`$_OUTDIR\\*\" | Move-Item -Destination \"$dir\" -Force",
-        "    Remove-Item \"$dir\\`$_OUTDIR\" -Recurse -Force",
-        "}",
-        "# 3. 递归寻找并上移本体",
-        "$found = Get-ChildItem -Path \"$dir\" -Filter $exeName -Recurse | Where-Object { $_.FullName -notmatch 'one-hub' } | Select-Object -First 1",
-        "if ($found) {",
-        "    $srcDir = $found.DirectoryName",
-        "    if ($srcDir -ne $dir.TrimEnd('\\')) {",
-        "        Get-ChildItem \"$srcDir\\*\" | Move-Item -Destination \"$dir\" -Force -ErrorAction SilentlyContinue",
-        "    }",
-        "} else {",
-        "    Write-Error \"致命错误：在所有路径下均未找到 $exeName。请运行 'ls -Recurse $dir' 查看解压结果。\"",
-        "}"
     ],
     "installer": {
         "script": [
