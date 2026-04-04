@@ -5,7 +5,6 @@
     "license": "Proprietary",
     "url": "https://umcdn.quark.cn/download/37211/quarkclouddrivepc/pckk@product_guanwang/QuarkCloudDrivePC_V6.5.0.709_pc_pf30001_(zh-cn)_release_(Build2889009-1000-x64).exe",
     "hash": "99B6825C6268F8CCD9C06735A6C0AB639D23EF3A7EBB6A74634FBA6FB36979ED",
-    "innosetup": true,
     "shortcuts": [
         [
             "QuarkCloudDrive.exe",
@@ -13,9 +12,16 @@
         ]
     ],
     "pre_install": [
-        "if (Test-Path \"$dir\\app-$version\") {",
-        "    Move-Item -Force -Path \"$dir\\app-$version\\*\" -Destination \"$dir\"",
-        "    Remove-Item -Force -Recurse -Path \"$dir\\app-$version\"",
+        "# 1. 递归搜索主程序所在的真实目录",
+        "$exeFile = Get-ChildItem -Path \"$dir\" -Filter \"QuarkCloudDrive.exe\" -Recurse | Select-Object -First 1",
+        "if ($exeFile) {",
+        "    $realAppDir = $exeFile.DirectoryName",
+        "    # 2. 将主程序及其依赖移动到根目录",
+        "    Get-ChildItem -Path \"$realAppDir\\*\" | Move-Item -Destination \"$dir\" -Force -ErrorAction SilentlyContinue",
+        "    # 3. 清理掉多余的空文件夹和解压垃圾",
+        "    Get-ChildItem -Path \"$dir\" -Directory | Where-Object { $_.Name -ne \"one-hub\" } | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue",
+        "} else {",
+        "    Write-Error \"未能在安装包中找到 QuarkCloudDrive.exe，请检查解压是否成功。\"",
         "}"
     ],
     "installer": {
@@ -26,9 +32,8 @@
             "foreach ($path in @($quarkData1, $quarkData2)) {",
             "    if (Test-Path $path) {",
             "        $linkType = (Get-Item -Path $path -ErrorAction SilentlyContinue).LinkType",
-            "        if ($linkType -eq 'Junction') {",
-            "            Remove-Item -Path $path -Force",
-            "        } else {",
+            "        if ($linkType -eq 'Junction') { Remove-Item -Path $path -Force }",
+            "        else {",
             "            $targetSub = \"$persist_dir\\$(Split-Path $path -Leaf)\"",
             "            Ensure $targetSub | Out-Null",
             "            Get-ChildItem -Path $path -Force | Move-Item -Destination $targetSub -Force -ErrorAction SilentlyContinue",
