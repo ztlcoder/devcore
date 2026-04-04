@@ -12,22 +12,19 @@
         ]
     ],
     "pre_install": [
-        "# 1. 暴力定位核心文件夹 $_OUTDIR",
-        "$outDir = Join-Path $dir '$_OUTDIR'",
-        "if (Test-Path $outDir) {",
-        "    Get-ChildItem -Path \"$outDir\\*\" | Move-Item -Destination $dir -Force",
-        "    Remove-Item -Path $outDir -Recurse -Force",
-        "}",
-        "# 2. 检查提取结果",
-        "if (!(Test-Path \"$dir\\QuarkCloudDrive.exe\")) {",
-        "    # 如果还是没找到，尝试全局递归搜索一次并强制上移",
-        "    $exeFile = Get-ChildItem -Path $dir -Filter 'QuarkCloudDrive.exe' -Recurse | Select-Object -First 1",
-        "    if ($exeFile) {",
-        "        $realParent = $exeFile.DirectoryName",
-        "        Get-ChildItem -Path \"$realParent\\*\" | Move-Item -Destination $dir -Force",
-        "    } else {",
-        "        Write-Error '未能在安装包中发现 QuarkCloudDrive.exe，请确认安装包完整性。'",
+        "# 1. 深度遍历寻找主程序 (忽略 $persist_dir 所在的 one-hub)",
+        "$exeFile = Get-ChildItem -Path $dir -Filter 'QuarkCloudDrive.exe' -Recurse | Where-Object { $_.FullName -notmatch 'one-hub' } | Select-Object -First 1",
+        "if ($exeFile) {",
+        "    $srcDir = $exeFile.DirectoryName",
+        "    Write-Host \"检测到程序本体位于: $srcDir\" -ForegroundColor Cyan",
+        "    # 2. 如果主程序不在根目录，则将其内容全部上移",
+        "    if ($srcDir -ne $dir.TrimEnd('\\')) {",
+        "        Get-ChildItem -Path \"$srcDir\\*\" | Move-Item -Destination $dir -Force -ErrorAction SilentlyContinue",
+        "        # 3. 递归清理所有空文件夹",
+        "        Get-ChildItem -Path $dir -Directory | Where-Object { $_.Name -ne 'one-hub' } | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue",
         "    }",
+        "} else {",
+        "    Write-Error '未能在安装包任何子目录下发现 QuarkCloudDrive.exe，请手动检查解压内容。'",
         "}"
     ],
     "installer": {
@@ -51,7 +48,7 @@
             "    New-Item -Path $path -ItemType Junction -Target $targetPersist | Out-Null",
             "}"
         ]
-    },
+    }
     "uninstaller": {
         "script": [
             "Remove-Item \"$env:APPDATA\\quark-cloud-drive\" -Recurse -Force -ErrorAction SilentlyContinue",
