@@ -1,0 +1,46 @@
+{
+    "version": "8.0.30",
+    "description": "PHP 8.0 NTS for personal bucket. Isolated configuration for multi-version coexistence.",
+    "homepage": "https://windows.php.net",
+    "license": "PHP-3.01",
+    "architecture": {
+        "64bit": {
+            "url": "https://downloads.php.net/~windows/releases/archives/php-8.0.30-nts-Win32-vs16-x64.zip",
+            "hash": "DFB70498FFA2C617F2F655A155564697E3C9CCA41709938FD1A5997D1D5B0785"
+        }
+    },
+    "env_set": {
+        "PHPRC": "$dir\\cli",
+        "PHP_INI_SCAN_DIR": "$dir\\cli\\conf.d;$persist_dir\\conf.d"
+    },
+    "bin": [
+        "php.exe",
+        "php-cgi.exe"
+    ],
+    "persist": [
+        "cli"
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$dir\\cli\")) { New-Item -Type directory \"$dir\\cli\" | Out-Null }",
+        "if (!(Test-Path \"$dir\\cli\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\cli\\php.ini\" }",
+        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { New-Item -Type directory \"$dir\\cli\\conf.d\" | Out-Null }"
+    ],
+    "post_install": [
+        "$ini = \"$dir\\cli\\php.ini\"",
+        "(Get-Content $ini) -replace ';extension_dir = \"ext\"', 'extension_dir = \"ext\"' | Set-Content $ini"
+    ],
+    "checkver": {
+        "url": "https://windows.php.net/downloads/releases/archives/",
+        "re": "php-(8\\.0\\.[\\d.]+)-nts-Win32-vs16-x64\\.zip"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://windows.php.net/downloads/releases/archives/php-$version-nts-Win32-vs16-x64.zip"
+            }
+        },
+        "hash": {
+            "url": "https://windows.php.net/downloads/releases/archives/sha256sum.txt"
+        }
+    }
+}
