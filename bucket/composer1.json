@@ -10,13 +10,11 @@
         "$script = @(",
         "    'param($command, $sub)',",
         "    'if ($command -eq \"self-update\" -or $command -eq \"selfupdate\") { scoop update composer1 }'",
-        "    'else { & php \"$dir\\composer.phar\" @args }'",
+        "    'else { & php (Join-Path $PSScriptRoot \"composer.phar\") @args }'",
         ")",
         "$script | Set-Content \"$dir\\composer1.ps1\" -Encoding UTF8"
     ],
-    "bin": [
-        ["composer.phar", "composer1", "php"]
-    ],
+    "bin": ["composer1.ps1"],
     "env_set": {
         "COMPOSER_HOME": "$persist_dir\\home"
     },
