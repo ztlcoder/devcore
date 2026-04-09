@@ -14,7 +14,9 @@
         ")",
         "$script | Set-Content \"$dir\\composer1.ps1\" -Encoding UTF8"
     ],
-    "bin": [["composer1.ps1", "composer1"]],
+    "bin": [
+        ["composer.phar", "composer1", "php"]
+    ],
     "env_set": {
         "COMPOSER_HOME": "$persist_dir\\home"
     },
