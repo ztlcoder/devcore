@@ -6,13 +6,13 @@
     "notes": "'composer selfupdate --1' is aliased to 'scoop update composer'",
     "url": "https://getcomposer.org/download/1.10.27/composer.phar",
     "hash": "230d28fb29f3c6c07ab2382390bef313e36de17868b2bd23b2e070554cae23d2",
-    "install": [
-        "$script = @(",
+    "pre_install": [
+        "$ps_content = @(",
         "    'param($command, $sub)',",
-        "    'if ($command -eq \"self-update\" -or $command -eq \"selfupdate\") { scoop update composer1 }'",
+        "    'if ($command -eq \"self-update\" -or $command -eq \"selfupdate\") { scoop update composer1 }',",
         "    'else { & php (Join-Path $PSScriptRoot \"composer.phar\") @args }'",
         ")",
-        "$script | Set-Content \"$dir\\composer1.ps1\" -Encoding UTF8"
+        "$ps_content | Set-Content \"$dir\\composer1.ps1\" -Encoding UTF8"
     ],
     "bin": ["composer1.ps1"],
     "env_set": {
