@@ -1,0 +1,60 @@
+{
+    "version": "5.4.7",
+    "description": "Powerful software uninstaller with advanced leftover scanning (Trial version).",
+    "homepage": "https://www.revouninstaller.com/",
+    "license": "Shareware",
+    "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe",
+    "hash": "6552AE17F3A024D74DB56B083B91895D780EDE60423EACDB578A03103EDFFC21",
+    "innosetup": true,
+    "pre_install": [
+        "# InnoSetup 提取后通常在 {app} 目录下，移动到 $dir 根目录",
+        "if (Test-Path \"$dir\\{app}\") {",
+        "    Get-ChildItem \"$dir\\{app}\\*\" | Move-Item -Destination \"$dir\" -Force",
+        "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
+        "}",
+        "# 清理冗余的 InnoSetup 标记目录",
+        "Get-ChildItem \"$dir\" -Include '{*}' -Recurse | Remove-Item -Force -Recurse"
+    ],
+    "installer": {
+        "script": [
+            "# 参考夸克逻辑：映射 APPDATA 路径以实现配置持久化",
+            "$revoDataPath = \"$env:APPDATA\\VS Revo Group\"",
+            "if (!(Test-Path \"$persist_dir\")) { New-Item \"$persist_dir\" -ItemType Directory | Out-Null }",
+            "",
+            "if (Test-Path $revoDataPath) {",
+            "    $item = Get-Item $revoDataPath",
+            "    if ($item.LinkType -ne 'Junction') {",
+            "        Move-Item -Path \"$revoDataPath\\*\" -Destination \"$persist_dir\" -Force -ErrorAction SilentlyContinue",
+            "        Remove-Item -Path $revoDataPath -Force -Recurse",
+            "    }",
+            "}",
+            "if (!(Test-Path $revoDataPath)) {",
+            "    New-Item -Path $revoDataPath -ItemType Junction -Target \"$persist_dir\" -Force | Out-Null",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "# 仅移除软链接，保留 persist 目录下的实际数据",
+            "$revoDataPath = \"$env:APPDATA\\VS Revo Group\"",
+            "if ((Get-Item $revoDataPath -ErrorAction SilentlyContinue).LinkType -eq 'Junction') {",
+            "    Remove-Item $revoDataPath -Force -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
+    "bin": "RevoUninPro.exe",
+    "shortcuts": [
+        [
+            "RevoUninPro.exe",
+            "Revo Uninstaller Pro"
+        ]
+    ],
+    "elevate": true,
+    "checkver": {
+        "url": "https://revouninstaller.com",
+        "re": "Version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe"
+    }
+}
