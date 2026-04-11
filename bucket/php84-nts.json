@@ -9,7 +9,7 @@
     "architecture": {
         "64bit": {
             "url": "https://downloads.php.net/~windows/releases/archives/php-8.4.20-nts-Win32-vs17-x64.zip",
-            "hash": "107f64f689eec2a0966b4d8a42f0e34e8dfa04c5097c9548e35fb951cba0a464"
+            "hash": "BAC1A970A676E8D875D5D39FC5FF388F231FADB9FB051B77B17DB06A657673DF"
         },
         "32bit": {
             "url": "https://downloads.php.net/~windows/releases/archives/php-8.4.20-nts-Win32-vs17-x86.zip",
