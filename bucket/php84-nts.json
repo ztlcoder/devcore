@@ -1,46 +1,62 @@
 {
-    "version": "8.4.19",
-    "description": "PHP 8.4 NTS for personal bucket. Isolated configuration for multi-version coexistence.",
-    "homepage": "https://windows.php.net",
+    "version": "8.4.20",
+    "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
+    "homepage": "https://www.php.net/",
     "license": "PHP-3.01",
+    "suggest": {
+        "vcredist": "extras/vcredist2022"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://windows.php.net/downloads/releases/archives/php-8.4.19-nts-Win32-vs17-x64.zip",
-            "hash": "1E26901FDB155D49A1A0EB8A0167A4F8528C0C700AE62E8AF1C48230B68AF1D9"
+            "url": "https://downloads.php.net/~windows/releases/archives/php-8.4.20-nts-Win32-vs17-x64.zip",
+            "hash": "107f64f689eec2a0966b4d8a42f0e34e8dfa04c5097c9548e35fb951cba0a464"
+        },
+        "32bit": {
+            "url": "https://downloads.php.net/~windows/releases/archives/php-8.4.20-nts-Win32-vs17-x86.zip",
+            "hash": "abc9f14bc0771fcb62f4c379abebe0fb43a399f5e45aa258b01ae291eb6d2cb1"
         }
     },
-    "env_set": {
-        "PHPRC": "$dir\\cli",
-        "PHP_INI_SCAN_DIR": "$dir\\cli\\conf.d;$persist_dir\\conf.d"
-    },
-    "bin": [
-        "php.exe",
-        "php-cgi.exe"
-    ],
-    "persist": [
-        "cli"
-    ],
     "pre_install": [
-        "if (!(Test-Path \"$dir\\cli\")) { New-Item -Type directory \"$dir\\cli\" | Out-Null }",
-        "if (!(Test-Path \"$dir\\cli\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\cli\\php.ini\" }",
-        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { New-Item -Type directory \"$dir\\cli\\conf.d\" | Out-Null }"
+        "# Create directory for custom PHP configuration",
+        "if (!(Test-Path \"$dir\\cli\\conf.d\")) {",
+        "    (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null",
+        "}"
     ],
     "post_install": [
-        "$ini = \"$dir\\cli\\php.ini\"",
-        "(Get-Content $ini) -replace ';extension_dir = \"ext\"', 'extension_dir = \"ext\"' | Set-Content $ini"
+        "# Enable extensions to be found in installation-relative folder (the default is to search C:/php)",
+        "(Get-Content \"$dir\\cli\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\cli\\php.ini\""
+    ],
+    "bin": [
+        "php.exe",
+        "php-cgi.exe",
+        "phpdbg.exe"
+    ],
+    "env_set": {
+        "PHP_INI_SCAN_DIR": "$dir\\cli;$dir\\cli\\conf.d;"
+    },
+    "persist": [
+        "cli",
+        [
+            "php.ini-development",
+            "cli\\php.ini"
+        ]
     ],
     "checkver": {
-        "url": "https://windows.php.net/downloads/releases/archives/",
-        "re": "php-(8\\.4\\.[\\d.]+)-nts-Win32-vs17-x64\\.zip"
+        "url": "https://www.php.net/releases/branches.php",
+        "jsonpath": "$[0].latest"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://windows.php.net/downloads/releases/archives/php-$version-nts-Win32-vs17-x64.zip"
+                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs17-x64.zip"
+            },
+            "32bit": {
+                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs17-x86.zip"
             }
         },
         "hash": {
-            "url": "https://windows.php.net/downloads/releases/archives/sha256sum.txt"
+            "url": "https://www.php.net/backend/win-releases.json",
+            "jsonpath": "$..[?(@.path == '$basename')].sha256"
         }
     }
 }
