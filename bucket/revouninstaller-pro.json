@@ -1,40 +1,50 @@
 {
     "version": "5.4.7",
     "description": "Powerful software uninstaller with advanced leftover scanning.",
-    "homepage": "https://revouninstaller.com",
+    "homepage": "https://www.revouninstaller.com/",
     "license": "Shareware",
     "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe",
     "hash": "6552AE17F3A024D74DB56B083B91895D780EDE60423EACDB578A03103EDFFC21",
     "innosetup": true,
     "pre_install": [
-        "# 1. 递归修复带逗号后缀的文件名 (例如 RevoUninPro,1.exe -> RevoUninPro.exe)",
+        "# 1. 修复所有带逗号后缀的文件名 (含 .exe, .dll, .lic)",
         "Get-ChildItem \"$dir\" -Recurse | Where-Object { $_.Name -match ',\\d+\\.' } | ForEach-Object {",
         "    $newName = $_.Name -replace ',\\d+', ''",
         "    $target = Join-Path $_.DirectoryName $newName",
         "    if (!(Test-Path $target)) { Move-Item $_.FullName $target -Force }",
         "}",
         "",
-        "# 2. 将 {app} 目录下的文件移到根目录",
+        "# 2. 移动核心程序文件",
         "if (Test-Path \"$dir\\{app}\") {",
         "    Move-Item \"$dir\\{app}\\*\" \"$dir\" -Force",
         "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
         "}",
         "",
-        "# 3. 将授权模板文件从 {commonappdata} 移到 persist 预备目录",
-        "if (Test-Path \"$dir\\{commonappdata}\\VS Revo Group\") {",
-        "    $tempLicense = \"$dir\\LicenseTemplate\"",
-        "    Move-Item \"$dir\\{commonappdata}\\VS Revo Group\" $tempLicense -Force",
+        "# 3. 提取授权文件并重命名为标准名称",
+        "if (Test-Path \"$dir\\{commonappdata}\") {",
+        "    $licFile = Get-ChildItem \"$dir\\{commonappdata}\" -Recurse -Filter \"*.lic\" | Select-Object -First 1",
+        "    if ($licFile) { Move-Item $licFile.FullName \"$dir\\revouninstallerpro5.lic\" -Force }",
         "    Remove-Item \"$dir\\{commonappdata}\" -Force -Recurse",
         "}",
-        "",
-        "# 清理其他 Inno 冗余目录",
         "Get-ChildItem \"$dir\" -Include '{*}' -Directory | Remove-Item -Force -Recurse"
     ],
     "installer": {
         "script": [
-            "# 处理全局数据目录的持久化链接",
+            "# 准备持久化目录结构",
+            "$revoPersist = \"$persist_dir\\Revo Uninstaller Pro\"",
+            "if (!(Test-Path $revoPersist)) { New-Item $revoPersist -ItemType Directory -Force | Out-Null }",
+            "",
+            "# 将修复后的授权文件放入持久化目录",
+            "if (Test-Path \"$dir\\revouninstallerpro5.lic\") {",
+            "    Move-Item \"$dir\\revouninstallerpro5.lic\" \"$revoPersist\\revouninstallerpro5.lic\" -Force",
+            "}",
+            "",
+            "# 建立 Junction 链接到 %ProgramData% (Revo 必须在 C 盘该位置看到授权)",
             "$commonData = \"$env:ProgramData\\VS Revo Group\"",
-            "if (!(Test-Path \"$persist_dir\")) { New-Item \"$persist_dir\" -ItemType Directory | Out-Null }",
+            "if (Test-Path $commonData) {",
+            "    $item = Get-Item $commonData",
+            "    if ($item.LinkType -ne 'Junction') { Remove-Item $commonData -Force -Recurse }",
+            "}",
             "if (!(Test-Path $commonData)) {",
             "    New-Item -Path $commonData -ItemType Junction -Target \"$persist_dir\" -Force | Out-Null",
             "}"
@@ -50,10 +60,10 @@
     "persist": "Data",
     "elevate": true,
     "checkver": {
-        "url": "https://revouninstaller.comrevo-uninstaller-pro-full-version-history/",
+        "url": "https://revouninstaller.com",
         "re": "Version ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://revouninstaller.com"
+        "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe"
     }
 }
