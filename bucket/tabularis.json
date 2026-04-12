@@ -1,12 +1,12 @@
 {
-    "version": "0.9.11",
+    "version": "0.9.16",
     "description": "A modern, lightweight data table viewer and editor.",
     "homepage": "https://github.com/debba/tabularis",
     "license": "GPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/debba/tabularis/releases/download/v0.9.11/tabularis_0.9.11_x64-portable.exe#/tabularis.exe",
-            "hash": "C6D33C24D0BB170227FEEC074BB385F601A51CECA6FE257E6399064CE39E25FE"
+            "url": "https://github.com/debba/tabularis/releases/download/v0.9.16/tabularis_0.9.16_x64-portable.exe#/tabularis.exe",
+            "hash": "6F0111C68CADB26EA736AE41D262D9043B0F03351C83ECB99F14E00407860A1F"
         }
     },
     "bin": "tabularis.exe",
