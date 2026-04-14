@@ -57,10 +57,15 @@
     ],
     "uninstaller": {
         "script": [
-            "$updaterDir = \"$env:LOCALAPPDATA\\quark-cloud-drive-updater\"",
-            "if (Test-Path $updaterDir) { Remove-Item $updaterDir -Force -ErrorAction SilentlyContinue }",
-            "Remove-Item \"$env:APPDATA\\quark-cloud-drive\" -Recurse -Force -ErrorAction SilentlyContinue",
-            "Remove-Item \"$env:APPDATA\\Quark\" -Recurse -Force -ErrorAction SilentlyContinue"
+            "$paths = @('TinyRDM', 'Tiny RDM.exe', 'quark-cloud-drive-updater')",
+            "foreach ($path in $paths) {",
+            "    $target = \"$env:APPDATA\\$path\"",
+            "    if (Test-Path $target) {",
+            "        $item = Get-Item $target",
+            "        # 如果是 Junction 则删除联结，如果是普通文件夹则递归删除",
+            "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force -ErrorAction SilentlyContinue }",
+            "    }",
+            "}"
         ]
     },
     "checkver": {
