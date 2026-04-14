@@ -20,7 +20,7 @@
     "installer": {
         "script": [
             "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
-            "$navicatPersist = \"$persist_dir\\Navicat_Data\"",
+            "$navicatPersist = \"$persist_dir\\Data\"",
             "if (!(Test-Path $navicatPersist)) { New-Item $navicatPersist -ItemType Directory -Force | Out-Null }",
             "if (Test-Path $navicatDoc) {",
             "    $item = Get-Item $navicatDoc",
