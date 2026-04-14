@@ -17,9 +17,34 @@
         ]
     ],
     "persist": "data",
-    "pre_install": ". \"$bucketsdir\\devcore\\scripts\\tinyrdm_pre_install.ps1\"",
+    "pre_install": [
+        "$paths = @('TinyRDM', 'Tiny RDM.exe')",
+        "foreach ($path in $paths) {",
+        "    $target = \"$env:APPDATA\\$path\"",
+        "    $persist = \"$persist_dir\\$path\"",
+        "    if (!(Test-Path $persist)) { New-Item $persist -ItemType Directory -Force | Out-Null }",
+        "    if (Test-Path $target) {",
+        "        $item = Get-Item $target",
+        "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
+        "    }",
+        "    $parent = Split-Path $target",
+        "    if (!(Test-Path $parent)) { New-Item $parent -ItemType Directory -Force | Out-Null }",
+        "    New-Item -ItemType Junction -Path $target -Target $persist | Out-Null",
+        "}",
+        "$local_webview = \"$env:LOCALAPPDATA\\Tiny RDM.exe\"",
+        "if (Test-Path $local_webview) { Remove-Item $local_webview -Recurse -Force -ErrorAction SilentlyContinue }"
+    ],
     "uninstaller": {
-        "script": ". \"$bucketsdir\\devcore\\scripts\\tinyrdm_uninstaller.ps1\""
+        "script": [
+            "$paths = @('TinyRDM', 'Tiny RDM.exe')",
+            "foreach ($path in $paths) {",
+            "    $target = \"$env:APPDATA\\$path\"",
+            "    if (Test-Path $target) {",
+            "        $item = Get-Item $target",
+            "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
+            "    }",
+            "}"
+        ]
     },
     "checkver": "github",
     "autoupdate": {
