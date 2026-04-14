@@ -5,18 +5,21 @@
     "architecture": {
         "64bit": {
             "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
-            "hash": "C29FC05630CFC95EF6483F6B5B52AABFE74265BB260E210E78AE437D305D8990"
+            "hash": "b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90"
         }
     },
     "installer": {
         "script": [
-            "# 1. 解压嵌套的二级压缩包 install.7z",
             "if (Test-Path \"$dir\\install.7z\") {",
-            "    Expand-7zipArchive \"$dir\\install.7z\" \"$dir\" -Removal",
+            "    # 使用 7zip 静默解压到当前目录",
+            "    Invoke-ExternalCommand 7z x \"$dir\\install.7z\" \"-o$dir\" -y | Out-Null",
+            "    Remove-Item \"$dir\\install.7z\" -Force",
             "}",
-            "# 2. 清理多余的安装辅助文件夹和卸载程序",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall.exe\" -Force -Recurse -ErrorAction SilentlyContinue",
-            "# 3. 建立配置目录软链接 (Roaming)",
+            "# 清理安装包自带的多余文件夹",
+            "if (Test-Path \"$dir\\`$PLUGINSDIR\") { Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse }",
+            "if (Test-Path \"$dir\\Uninstall.exe\") { Remove-Item \"$dir\\Uninstall.exe\" -Force }",
+            "",
+            "# 建立配置目录软链接 (Roaming Double-Protection)",
             "$target = \"$env:APPDATA\\Tencent\\xwechat\"",
             "$persist_cfg = \"$persist_dir\\roaming_cfg\"",
             "if (!(Test-Path $persist_cfg)) { New-Item $persist_cfg -ItemType Directory -Force | Out-Null }",
@@ -26,7 +29,8 @@
             "}",
             "if (!(Test-Path (Split-Path $target))) { New-Item (Split-Path $target) -ItemType Directory -Force | Out-Null }",
             "New-Item -ItemType Junction -Path $target -Target $persist_cfg | Out-Null",
-            "# 4. 路径注入 (配置文件 + 注册表)",
+            "",
+            "# 注入路径配置",
             "$config_ini = \"$target\\config\\51a1fffea11325a1e4104c6b3de47af7.ini\"",
             "ensure (Split-Path $config_ini) | Out-Null",
             "Set-Content -NoNewline -Path $config_ini -Value \"$persist_dir\"",
