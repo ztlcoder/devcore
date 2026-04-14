@@ -1,0 +1,75 @@
+{
+    "version": "3.24.0",
+    "description": "夸克网盘",
+    "homepage": "https://pan.quark.cn/",
+    "license": "Proprietary",
+    "url": "https://pdds.quark.cn/download/stfile/ccihhklhccdgceken/QuarkCloudDrive_v3.24.0_release_(Build2838867-20260309135831).exe",
+    "hash": "965abb5c21c2352d173db6c806c5fc465a4a9d860a6c7b50fc5553b6bac78b88",
+    "innosetup": true,
+    "shortcuts": [
+        [
+            "QuarkCloudDrive.exe",
+            "夸克网盘"
+        ]
+    ],
+    "pre_install": [
+        "Move-Item -Force -Path \"$dir\\app-$version\\*\" -Destination \"$dir\"",
+        "Remove-Item -Force -Recurse -Path \"$dir\\app-$version\""
+    ],
+    "installer": {
+        "script": [
+            "Ensure \"$persist_dir\" | Out-Null",
+            "# 1. 原有的持久化逻辑",
+            "$quarkData1 = \"$env:APPDATA\\quark-cloud-drive\"",
+            "$quarkData2 = \"$env:APPDATA\\Quark\"",
+            "foreach ($path in @($quarkData1, $quarkData2)) {",
+            "    if (Test-Path $path) {",
+            "        $linkType = (Get-Item -Path $path -ErrorAction SilentlyContinue).LinkType",
+            "        if ($linkType -eq 'Junction') { Remove-Item -Path $path -Force }",
+            "        else {",
+            "            Get-ChildItem -Path $path -Force | Move-Item -Destination \"$persist_dir\\$(Split-Path $path -Leaf)\" -Force",
+            "            Remove-Item -Path $path -Force -Recurse",
+            "        }",
+            "    }",
+            "    $targetPersist = \"$persist_dir\\$(Split-Path $path -Leaf)\"",
+            "    if (!(Test-Path $targetPersist)) { New-Item -ItemType Directory -Path $targetPersist -Force | Out-Null }",
+            "    New-Item -Path $path -ItemType Junction -Target $targetPersist | Out-Null",
+            "}",
+            "",
+            "# 2. 禁止升级：封锁 AppData 下的更新目录",
+            "$updaterDir = \"$env:LOCALAPPDATA\\quark-cloud-drive-updater\"",
+            "if (Test-Path $updaterDir) { Remove-Item $updaterDir -Recurse -Force -ErrorAction SilentlyContinue }",
+            "if (!(Test-Path $updaterDir)) {",
+            "    New-Item -Path $updaterDir -ItemType File -Force | Out-Null",
+            "    $acl = Get-Acl $updaterDir",
+            "    $denyAll = New-Object System.Security.AccessControl.FileSystemAccessRule('Everyone', 'FullControl', 'Deny')",
+            "    $acl.AddAccessRule($denyAll)",
+            "    Set-Acl $updaterDir $acl",
+            "}"
+        ]
+    },
+    "post_install": [
+        "# 3. 物理删除安装目录下的更新执行文件",
+        "$files = @('QuarkUpdate.exe', 'QuarkCloudDriveUpdate.exe')",
+        "foreach ($f in $files) {",
+        "    if (Test-Path \"$dir\\$f\") { Remove-Item \"$dir\\$f\" -Force }",
+        "}"
+    ],
+    "uninstaller": {
+        "script": [
+            "$updaterDir = \"$env:LOCALAPPDATA\\quark-cloud-drive-updater\"",
+            "if (Test-Path $updaterDir) { Remove-Item $updaterDir -Force -ErrorAction SilentlyContinue }",
+            "Remove-Item \"$env:APPDATA\\quark-cloud-drive\" -Recurse -Force -ErrorAction SilentlyContinue",
+            "Remove-Item \"$env:APPDATA\\Quark\" -Recurse -Force -ErrorAction SilentlyContinue"
+        ]
+    },
+    "checkver": {
+        "url": "https://pan.quark.cn/api/client_version",
+        "jsonpath": "$.data.clouddrive_backup_packages[1].winInstallerUrl",
+        "re": "pdds.quark.cn/download/stfile/(?<release>\\w+)/QuarkCloudDrive_v(?<version>[\\d.]+)_release_\\(Build(?<build>\\d+)-(?<timestamp>\\d+)\\).exe",
+        "replace": "${version}"
+    },
+    "autoupdate": {
+        "url": "https://pdds.quark.cn/download/stfile/$matchRelease/QuarkCloudDrive_v$matchVersion_release_(Build$matchBuild-$matchTimestamp).exe"
+    }
+}
