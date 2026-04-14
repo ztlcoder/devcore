@@ -4,7 +4,7 @@
     "homepage": "https://www.navicat.com/",
     "license": "Proprietary",
     "url": "https://download.navicat.com/download/navicat17_premium_cs_x64.exe",
-    "hash": "C302C5110CD7BE6AE5A7234628A392CD35D835CE846115CB9AFBFD6ABEF5ADA6",
+    "hash": "643892A25785560B221DE804ED01CFA6CA228C3FFE62975BD50F810ACECF2444",
     "innosetup": true,
     "pre_install": [
         "# 1. 模仿 Revo 逻辑：提取 {app} 文件夹中的所有内容到根目录",
