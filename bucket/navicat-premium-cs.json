@@ -17,11 +17,25 @@
         "# 3. 创建 Profiles 目录用于后续持久化",
         "if (!(Test-Path \"$dir\\Profiles\")) { New-Item \"$dir\\Profiles\" -ItemType Directory -Force | Out-Null }"
     ],
+    "installer": {
+        "script": [
+            "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
+            "$navicatPersist = \"$persist_dir\\Navicat_Data\"",
+            "if (!(Test-Path $navicatPersist)) { New-Item $navicatPersist -ItemType Directory -Force | Out-Null }",
+            "if (Test-Path $navicatDoc) {",
+            "    $item = Get-Item $navicatDoc",
+            "    if ($item.LinkType -ne 'Junction') { Remove-Item $navicatDoc -Force -Recurse }",
+            "}",
+            "if (!(Test-Path $navicatDoc)) {",
+            "    New-Item -Path $navicatDoc -ItemType Junction -Target $navicatPersist -Force | Out-Null",
+            "}"
+        ]
+    },
     "bin": "navicat.exe",
     "shortcuts": [
         [
             "navicat.exe",
-            "Navicat Premium"
+            "Navicat"
         ]
     ],
     "persist": "Profiles",
