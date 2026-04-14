@@ -1,0 +1,35 @@
+{
+    "version": "17.3.9",
+    "description": "Navicat Premium 17 - 强大的数据库管理和开发工具",
+    "homepage": "https://www.navicat.com/",
+    "license": "Proprietary",
+    "url": "https://download.navicat.com/download/navicat17_premium_cs_x64.exe",
+    "hash": "C302C5110CD7BE6AE5A7234628A392CD35D835CE846115CB9AFBFD6ABEF5ADA6",
+    "innosetup": true,
+    "pre_install": [
+        "# 1. 模仿 Revo 逻辑：提取 {app} 文件夹中的所有内容到根目录",
+        "if (Test-Path \"$dir\\{app}\") {",
+        "    Get-ChildItem \"$dir\\{app}\\*\" | Move-Item -Destination \"$dir\" -Force",
+        "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
+        "}",
+        "# 2. 清理 Inno Setup 自动生成的脚本残留",
+        "if (Test-Path \"$dir\\install_script.iss\") { Remove-Item \"$dir\\install_script.iss\" -Force }",
+        "# 3. 创建 Profiles 目录用于后续持久化",
+        "if (!(Test-Path \"$dir\\Profiles\")) { New-Item \"$dir\\Profiles\" -ItemType Directory -Force | Out-Null }"
+    ],
+    "bin": "navicat.exe",
+    "shortcuts": [
+        [
+            "navicat.exe",
+            "Navicat Premium"
+        ]
+    ],
+    "persist": "Profiles",
+    "checkver": {
+        "url": "https://www.navicat.com.cn/products/navicat-premium-release-note",
+        "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://download.navicat.com/download/navicat$majorversion_premium_cs_x64.exe"
+    }
+}
