@@ -5,7 +5,7 @@
     "architecture": {
         "64bit": {
             "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.30.205130_64.exe#/dl.7z",
-            "hash": "9ae0f1fabc4286bc4121176d864b871e85c7b5bc24b40a41883dd19ecbe6aba5"
+            "hash": "9AE0F1FABC4286BC4121176D864B871E85C7B5BC24B40A41883DD19ECBE6ABA5"
         },
         "32bit": {
             "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.30.205130_32.exe#/dl.7z",
@@ -48,7 +48,10 @@
     },
     "bin": "cloudmusic.exe",
     "shortcuts": [
-        ["cloudmusic.exe", "网易云音乐"]
+        [
+            "cloudmusic.exe",
+            "网易云音乐"
+        ]
     ],
     "persist": "data",
     "checkver": {
