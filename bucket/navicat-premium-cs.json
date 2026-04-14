@@ -31,6 +31,18 @@
             "}"
         ]
     },
+    "uninstaller": {
+        "script": [
+            "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
+            "if (Test-Path $navicatDoc) {",
+            "    $item = Get-Item $navicatDoc",
+            "    if ($item.LinkType -eq 'Junction') {",
+            "        Write-Host \"Removing Navicat document junction...\" -ForegroundColor Yellow",
+            "        Remove-Item $navicatDoc -Force",
+            "    }",
+            "}"
+        ]
+    },
     "bin": "navicat.exe",
     "shortcuts": [
         [
