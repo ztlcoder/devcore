@@ -10,16 +10,18 @@
     },
     "installer": {
         "script": [
+            "# 1. 深度解压逻辑：处理嵌套的 install.7z",
             "if (Test-Path \"$dir\\install.7z\") {",
-            "    # 使用 7zip 静默解压到当前目录",
-            "    Invoke-ExternalCommand 7z x \"$dir\\install.7z\" \"-o$dir\" -y | Out-Null",
+            "    & \"7z.exe\" x \"$dir\\install.7z\" \"-o$dir\" -y | Out-Null",
             "    Remove-Item \"$dir\\install.7z\" -Force",
             "}",
-            "# 清理安装包自带的多余文件夹",
-            "if (Test-Path \"$dir\\`$PLUGINSDIR\") { Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse }",
-            "if (Test-Path \"$dir\\Uninstall.exe\") { Remove-Item \"$dir\\Uninstall.exe\" -Force }",
+            "# 处理可能存在的版本号子文件夹，确保 Weixin.exe 暴露在根目录",
+            "Get-ChildItem \"$dir\" -Directory | Where-Object { $_.Name -match '^\\d+\\.' } | ForEach-Object {",
+            "    Get-ChildItem \"$_.FullName\\*\" | Move-Item -Destination \"$dir\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall.exe\" -Force -Recurse -ErrorAction SilentlyContinue",
             "",
-            "# 建立配置目录软链接 (Roaming Double-Protection)",
+            "# 2. 物理联结 (双保之一)：重定向 Roaming 配置目录",
             "$target = \"$env:APPDATA\\Tencent\\xwechat\"",
             "$persist_cfg = \"$persist_dir\\roaming_cfg\"",
             "if (!(Test-Path $persist_cfg)) { New-Item $persist_cfg -ItemType Directory -Force | Out-Null }",
@@ -27,17 +29,17 @@
             "    $item = Get-Item $target",
             "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
             "}",
-            "if (!(Test-Path (Split-Path $target))) { New-Item (Split-Path $target) -ItemType Directory -Force | Out-Null }",
+            "ensure (Split-Path $target) | Out-Null",
             "New-Item -ItemType Junction -Path $target -Target $persist_cfg | Out-Null",
             "",
-            "# 注入路径配置",
-            "$config_ini = \"$target\\config\\51a1fffea11325a1e4104c6b3de47af7.ini\"",
-            "ensure (Split-Path $config_ini) | Out-Null",
-            "Set-Content -NoNewline -Path $config_ini -Value \"$persist_dir\"",
+            "# 3. 逻辑注入 (双保之二)：重定向聊天记录存储路径",
+            "$config_path = \"$target\\config\"",
+            "ensure \"$config_path\" | Out-Null",
+            "Set-Content -NoNewline -Path \"$config_path\\51a1fffea11325a1e4104c6b3de47af7.ini\" -Value \"$persist_dir\"",
             "$reg_path = \"HKCU:Software\\Tencent\\Wexin\"",
             "if (!(Test-Path \"$reg_path\")) { New-Item -Path \"$reg_path\" -Type Directory -Force | Out-Null }",
             "New-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Value \"$persist_dir\" -Force | Out-Null",
-            "New-Item -Path $reg_path -Name \"InstallPath\" -Value \"$dir\" -Force -ErrorAction SilentlyContinue | Out-Null"
+            "New-ItemProperty -Path $reg_path -Name \"InstallPath\" -Value \"$dir\" -Force | Out-Null"
         ]
     },
     "uninstaller": {
@@ -56,10 +58,7 @@
     },
     "bin": "Weixin.exe",
     "shortcuts": [
-        [
-            "Weixin.exe",
-            "微信"
-        ]
+        ["Weixin.exe", "微信"]
     ],
     "persist": "xwechat_files",
     "checkver": {
