@@ -6,7 +6,7 @@
     "architecture": {
         "64bit": {
             "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=x64&from=mpwiki&download_version=2012510260&version_type=1#/installer.exe",
-            "hash": "62981f7c5b3b4bc61641832a555c494326db6c95c193d9e1e0f1a266d99969d6"
+            "hash": "62981F7C5B3B4BC61641832A555C494326DB6C95C193D9E1E0F1A266D99969D6"
         },
         "32bit": {
             "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=ia32&from=mpwiki&download_version=2012510260&version_type=1#/installer.exe",
@@ -18,7 +18,7 @@
         "script": [
             "Expand-7zipArchive \"$dir\\installer.exe\" \"$dir\\app\" -Removal",
             "@('$PLUGINSDIR', '卸载微信开发者工具.exe.nsis') | ForEach-Object {",
-            "    Remove-Item \"$dir\\app\\$_\" -Recurse -Force",
+            "    if (Test-Path \"$dir\\app\\$_\") { Remove-Item \"$dir\\app\\$_\" -Recurse -Force -ErrorAction SilentlyContinue }",
             "}",
             "if (!(Test-Path \"$persist_dir\")) { New-Item \"$persist_dir\" -ItemType Directory | Out-Null }",
             "$appdata_path = \"$env:APPDATA\\微信开发者工具\"",
