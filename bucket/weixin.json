@@ -5,8 +5,8 @@
     "license": "Proprietary",
     "architecture": {
         "64bit": {
-            "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
-            "hash": "C29FC05630CFC95EF6483F6B5B52AABFE74265BB260E210E78AE437D305D8990"
+            "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.8.exe#/dl.7z",
+            "hash": "B79AA3FDFD208D64F38FCC354684F9AF213C05993C6F603521F2813930362B90"
         }
     },
     "installer": {
