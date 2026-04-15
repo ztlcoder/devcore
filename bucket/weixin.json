@@ -1,7 +1,8 @@
 {
     "version": "4.1.8.107",
-    "description": "官方微信",
+    "description": "微信官方版",
     "homepage": "https://pc.weixin.qq.com/",
+    "license": "Proprietary",
     "architecture": {
         "64bit": {
             "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
@@ -10,54 +11,45 @@
     },
     "installer": {
         "script": [
-            "# 1. 动态获取 Scoop 安装的 7z 绝对路径",
-            "$sevenZip = (Get-Command '7z.exe' -ErrorAction SilentlyContinue).Source",
-            "if (!$sevenZip) { $sevenZip = \"$env:USERPROFILE\\scoop\\apps\\7zip\\current\\7z.exe\" }",
-            "",
-            "# 2. 执行二级解压",
+            "# 1. 二级解压：官方 exe 里的 install.7z 包含所有程序文件",
             "if (Test-Path \"$dir\\install.7z\") {",
-            "    Write-Host \"检测到嵌套包，正在调用 7z 提取...\" -ForegroundColor Cyan",
-            "    & \"$sevenZip\" x \"$dir\\install.7z\" \"-o$dir\" -y -aoa | Out-Null",
-            "    Remove-Item \"$dir\\install.7z\" -Force",
+            "    Expand-7zipArchive \"$dir\\install.7z\" \"$dir\" -Removal",
             "}",
-            "",
-            "# 3. 提取版本号子目录下的核心文件",
-            "$versionSubDir = Get-ChildItem \"$dir\" -Directory | Where-Object { $_.Name -match '^\\d+\\.' } | Select-Object -First 1",
-            "if ($versionSubDir) {",
-            "    Get-ChildItem \"$($versionSubDir.FullName)\\*\" | Move-Item -Destination \"$dir\" -Force -ErrorAction SilentlyContinue",
-            "    Remove-Item $versionSubDir.FullName -Force -Recurse",
-            "}",
-            "",
-            "# 4. 清理残留与注入注册表 (同前)",
+            "# 2. 清理安装包残留，但保持版本号子文件夹（核心 DLL 所在）不被错误扁平化",
             "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Force -Recurse -ErrorAction SilentlyContinue",
+            "",
+            "# 3. 配置文件注入：重定向 AppData 中的配置到 persist 目录",
+            "$config_path = \"$env:APPDATA\\Tencent\\xwechat\\config\"",
+            "ensure \"$config_path\" | Out-Null",
+            "# 这个哈希值命名的 ini 文件是微信读取自定义存储路径的关键",
+            "Set-Content -NoNewline -Path \"$config_path\\51a1fffea11325a1e4104c6b3de47af7.ini\" -Value \"$persist_dir\"",
+            "",
+            "# 4. 注册表重定向：确保微信知道数据存哪里，以及安装路径在哪里",
             "$reg_path = \"HKCU:Software\\Tencent\\Wexin\"",
-            "if (!(Test-Path $reg_path)) { New-Item -Path $reg_path -Type Directory -Force | Out-Null }",
-            "New-ItemProperty -Path $reg_path -Name \"InstallPath\" -Value \"$dir\" -Force | Out-Null",
-            "New-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Value \"$persist_dir\" -Force | Out-Null"
+            "if (!(Test-Path \"$reg_path\")) { New-Item -Path \"$reg_path\" -Type Directory -Force | Out-Null }",
+            "New-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Value \"$persist_dir\" -Force | Out-Null",
+            "New-ItemProperty -Path $reg_path -Name \"InstallPath\" -Value \"$dir\" -Force | Out-Null"
         ]
     },
     "uninstaller": {
         "script": [
-            "$paths = @(\"Tencent\\xwechat\", \"Tencent\\xwechat-updater\")",
-            "foreach ($path in $paths) {",
-            "    $target = \"$env:APPDATA\\$path\"",
-            "    if (Test-Path $target) {",
-            "        $item = Get-Item $target",
-            "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
-            "        Remove-Item $target -Force -Recurse -ErrorAction SilentlyContinue",
-            "    }",
-            "}",
-            "Remove-ItemProperty -Path \"HKCU:Software\\Tencent\\Wexin\" -Name \"FileSavePath\" -Force -ErrorAction SilentlyContinue"
+            "# 清理 AppData 中的路径指示器和注册表项",
+            "Remove-Item -Path \"$env:APPDATA\\Tencent\\xwechat\\config\\51a1fffea11325a1e4104c6b3de47af7.ini\" -Force -ErrorAction SilentlyContinue",
+            "Remove-ItemProperty -Path \"HKCU:Software\\Tencent\\Wexin\" -Name \"FileSavePath\" -Force -ErrorAction SilentlyContinue",
+            "Remove-ItemProperty -Path \"HKCU:Software\\Tencent\\Wexin\" -Name \"InstallPath\" -Force -ErrorAction SilentlyContinue"
         ]
     },
     "bin": "Weixin.exe",
     "shortcuts": [
-        ["Weixin.exe", "微信"]
+        [
+            "Weixin.exe",
+            "微信"
+        ]
     ],
     "persist": "xwechat_files",
     "checkver": {
         "url": "https://pc.weixin.qq.com",
-        "re": "version\\s+([\\d.]+)"
+        "regex": "version\\s+([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
