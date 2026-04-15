@@ -26,7 +26,15 @@
             "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
             "}",
             "if (!(Test-Path (Split-Path $target))) { New-Item (Split-Path $target) -ItemType Directory -Force | Out-Null }",
-            "New-Item -ItemType Junction -Path $target -Target $persist_app | Out-Null"
+            "New-Item -ItemType Junction -Path $target -Target $persist_app | Out-Null",
+            "",
+            "# 禁止自动更新逻辑：封锁 Update 目录",
+            "$updatePath = \"$persist_app\\Update\"",
+            "if (Test-Path $updatePath) { Remove-Item $updatePath -Recurse -Force -ErrorAction SilentlyContinue }",
+            "if (!(Test-Path $updatePath)) {",
+            "    New-Item -Path $updatePath -ItemType File -Force | Out-Null",
+            "    Set-ItemProperty -Path $updatePath -Name IsReadOnly -Value $true",
+            "}"
         ]
     },
     "uninstaller": {
