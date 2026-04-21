@@ -5,15 +5,32 @@
     "license": "GPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/debba/tabularis/releases/download/v0.9.16/tabularis_0.9.16_x64-portable.exe#/tabularis.exe",
-            "hash": "6F0111C68CADB26EA736AE41D262D9043B0F03351C83ECB99F14E00407860A1F"
+            "url": "https://github.com/debba/tabularis/releases/download/v0.9.19/tabularis_0.9.19_x64-portable.exe#/tabularis.exe",
+            "hash": "ECC25188AE72E9FEDE2613158977AD43F3AA861D732FAA3C0FC4AC50D68164B4"
         }
     },
     "bin": "tabularis.exe",
     "persist": "tabularis",
-    "pre_install": ". \"$bucketsdir\\devcore\\scripts\\tabularis_pre_install.ps1\"",
+    "pre_install": [
+        "$paths = @{'debba\\tabularis'=\"$persist_dir\\debba_data\"; 'tabularis'=\"$persist_dir\\app_data\"}",
+        "foreach ($rel in $paths.Keys) {",
+        "$junc = Join-Path $env:APPDATA $rel; $target = $paths[$rel]",
+        "if (!(Test-Path $target)) { New-Item $target -ItemType Directory -Force | Out-Null }",
+        "if (Test-Path $junc) { $item = Get-Item $junc; if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $junc -Recurse -Force } }",
+        "$parent = Split-Path $junc; if (!(Test-Path $parent)) { New-Item $parent -ItemType Directory -Force | Out-Null }",
+        "New-Item -ItemType Junction -Path $junc -Value $target | Out-Null",
+        "}",
+        "Remove-Item \"$env:LOCALAPPDATA\\tabularis\" -Recurse -Force -ErrorAction SilentlyContinue"
+    ],
     "uninstaller": {
-        "script": ". \"$bucketsdir\\devcore\\scripts\\tabularis_uninstaller.ps1\""
+        "script": [
+            "$junctions = @(\"debba\\tabularis\", \"tabularis\")",
+            "foreach ($rel in $junctions) {",
+            "$j = Join-Path $env:APPDATA $rel",
+            "if (Test-Path $j) { $item = Get-Item $j; if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } }",
+            "}",
+            "Remove-Item \"$env:LOCALAPPDATA\\tabularis\" -Recurse -Force -ErrorAction SilentlyContinue"
+        ]
     },
     "checkver": "github",
     "shortcuts": [
