@@ -4,7 +4,7 @@
     "homepage": "https://www.scootersoftware.com/",
     "license": "Shareware",
     "url": "https://github.com/ztlcoder/software/raw/refs/heads/master/BCompare.7z",
-    "hash": "08764CABE12D505D29603F4A0D708FB34F2DF7345F9E9A7837581F811B7FBF24",
+    "hash": "71762C4923ABBD5BCED94B5285A079076C899CDEF2D746891631A96BE7FA3473",
     "bin": [
         "BCompare.exe",
         "BComp.exe",
