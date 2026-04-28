@@ -1,6 +1,6 @@
 {
     "version": "2026.4.28",
-    "description": "Tolaria 是一款为 AI 时代设计的开源 Markdown 知识库管理工具，内置 MCP 服务。",
+    "description": "Tolaria 是一款开源 Markdown 笔记软件",
     "homepage": "https://tolaria.md/",
     "license": "AGPL-3.0",
     "url": "https://github.com/refactoringhq/tolaria/releases/download/stable-v2026.4.28/Tolaria_2026.4.28_x64-setup.exe",
@@ -8,17 +8,32 @@
     "installer": {
         "args": [
             "/S",
+            "/allusers",
             "/D=$dir"
         ]
     },
+    "persist": [
+        [
+            "AppData/Local/club.refactoring.tolaria",
+            "AppData\\Local\\club.refactoring.tolaria"
+        ],
+        [
+            "AppData/Roaming/com.tolaria.app",
+            "AppData\\Roaming\\com.tolaria.app"
+        ]
+    ],
+    "post_install": [
+        "$desktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Tolaria.lnk')",
+        "if (Test-Path $desktopPath) { Remove-Item $desktopPath -Force }",
+        "$commonDesktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('CommonDesktopDirectory'), 'Tolaria.lnk')",
+        "if (Test-Path $commonDesktopPath) { Remove-Item $commonDesktopPath -Force }"
+    ],
     "uninstaller": {
         "script": [
             "if (Test-Path \"$dir\\Uninstall.exe\") { Start-Process \"$dir\\Uninstall.exe\" -ArgumentList '/S' -Wait }",
-            "$appData = [Environment]::GetFolderPath('ApplicationData')",
-            "$localAppData = [Environment]::GetFolderPath('LocalApplicationData')",
-            "$paths = @(\"$appData\\tolaria\", \"$localAppData\\tolaria\", \"$localAppData\\com.refactoringhq.tolaria\", \"$localAppData\\Tolaria\")",
-            "foreach ($path in $paths) { if (Test-Path $path) { Remove-Item -Recurse -Force $path -ErrorAction SilentlyContinue } }",
-            "Remove-Item -Path \"HKCU:\\Software\\tolaria\" -Recurse -ErrorAction SilentlyContinue"
+            "Remove-Item -Path \"HKCU:\\Software\\tolaria\" -Recurse -ErrorAction SilentlyContinue",
+            "Write-Host '正在物理清除 Persist 目录下的所有持久化数据...' -ForegroundColor Red",
+            "if (Test-Path \"$persist_dir\") { Remove-Item -Recurse -Force \"$persist_dir\" }"
         ]
     },
     "bin": "Tolaria.exe",
@@ -27,12 +42,5 @@
             "Tolaria.exe",
             "Tolaria"
         ]
-    ],
-    "checkver": {
-        "github": "https://github.com/refactoringhq/tolaria",
-        "regex": "stable-v([\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "https://github.com/refactoringhq/tolaria/releases/download/stable-v$version/Tolaria_$version_x64-setup.exe"
-    }
+    ]
 }
