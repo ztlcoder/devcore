@@ -26,8 +26,7 @@
         "$desktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Tolaria.lnk')",
         "if (Test-Path $desktopPath) { Remove-Item $desktopPath -Force }",
         "$startMenuPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Programs'), 'Tolaria.lnk')",
-        "if (Test-Path $startMenuPath) { Remove-Item $startMenuPath -Force }",
-        "Write-Host '已清理桌面及开始菜单根目录的冗余快捷方式。' -ForegroundColor Cyan"
+        "if (Test-Path $startMenuPath) { Remove-Item $startMenuPath -Force }"
     ],
     "uninstaller": {
         "script": [
