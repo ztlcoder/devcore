@@ -1,0 +1,33 @@
+{
+    "version": "5.2.1",
+    "description": "Beyond Compare 5 是一款顶级的文件和文件夹比较工具，支持多种格式对比。",
+    "homepage": "https://www.scootersoftware.com/",
+    "license": "Shareware",
+    "url": "https://gitee.com/ztlcoder/software/raw/master/BCompare.7z",
+    "hash": "71762C4923ABBD5BCED94B5285A079076C899CDEF2D746891631A96BE7FA3473",
+    "bin": [
+        "BCompare.exe",
+        "BComp.exe",
+        "BComp.com"
+    ],
+    "shortcuts": [
+        [
+            "BCompare.exe",
+            "Beyond Compare 5"
+        ]
+    ],
+    "uninstaller": {
+        "script": [
+            "Write-Host '正在注销并清理 Beyond Compare 5 残留...' -ForegroundColor Yellow",
+            "if (Test-Path \"$dir\\BCShellEx64.dll\") { Start-Process regsvr32.exe -ArgumentList \"/u /s `\"$dir\\BCShellEx64.dll`\"\" -Wait }",
+            "$appData = [Environment]::GetFolderPath('ApplicationData')",
+            "$localAppData = [Environment]::GetFolderPath('LocalApplicationData')",
+            "$paths = @(\"$appData\\Scooter Software\", \"$localAppData\\Scooter Software\")",
+            "foreach ($path in $paths) { if (Test-Path $path) { Remove-Item -Recurse -Force $path } }",
+            "Remove-Item -Path 'HKCU:\\Software\\Scooter Software' -Recurse -ErrorAction SilentlyContinue",
+            "Get-PSDrive -PSProvider Registry | Where-Object { $_.Name -eq 'HKCR' } | Out-Null",
+            "$menuPaths = @('HKCU:\\Software\\Classes\\*\\shell\\Beyond Compare', 'HKCU:\\Software\\Classes\\Directory\\shell\\Beyond Compare')",
+            "foreach ($reg in $menuPaths) { if (Test-Path $reg) { Remove-Item -Path $reg -Recurse -Force } }"
+        ]
+    }
+}
