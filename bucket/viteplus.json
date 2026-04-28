@@ -14,12 +14,7 @@
             "Remove-Item -Path \"HKCU:\\Software\\vite-plus\" -ErrorAction SilentlyContinue"
         ]
     },
-    "bin": [
-        [
-            "vite-plus.exe",
-            "vp"
-        ]
-    ],
+    "bin": "vite-plus.exe",
     "shortcuts": [
         [
             "vite-plus.exe",
