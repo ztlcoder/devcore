@@ -25,14 +25,14 @@
     "post_install": [
         "$desktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Tolaria.lnk')",
         "if (Test-Path $desktopPath) { Remove-Item $desktopPath -Force }",
-        "$commonDesktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('CommonDesktopDirectory'), 'Tolaria.lnk')",
-        "if (Test-Path $commonDesktopPath) { Remove-Item $commonDesktopPath -Force }"
+        "$startMenuPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Programs'), 'Tolaria.lnk')",
+        "if (Test-Path $startMenuPath) { Remove-Item $startMenuPath -Force }",
+        "Write-Host '已清理桌面及开始菜单根目录的冗余快捷方式。' -ForegroundColor Cyan"
     ],
     "uninstaller": {
         "script": [
             "if (Test-Path \"$dir\\Uninstall.exe\") { Start-Process \"$dir\\Uninstall.exe\" -ArgumentList '/S' -Wait }",
             "Remove-Item -Path \"HKCU:\\Software\\tolaria\" -Recurse -ErrorAction SilentlyContinue",
-            "Write-Host '正在物理清除 Persist 目录下的所有持久化数据...' -ForegroundColor Red",
             "if (Test-Path \"$persist_dir\") { Remove-Item -Recurse -Force \"$persist_dir\" }"
         ]
     },
