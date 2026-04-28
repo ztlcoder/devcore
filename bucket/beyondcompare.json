@@ -3,7 +3,7 @@
     "description": "Beyond Compare 5 是一款顶级的文件和文件夹比较工具，支持多种格式对比。",
     "homepage": "https://www.scootersoftware.com/",
     "license": "Shareware",
-    "url": "https://gitee.com/ztlcoder/software/raw/master/BCompare.7z",
+    "url": "https://github.com/ztlcoder/software/raw/refs/heads/master/BCompare.7z",
     "hash": "71762C4923ABBD5BCED94B5285A079076C899CDEF2D746891631A96BE7FA3473",
     "bin": [
         "BCompare.exe",
