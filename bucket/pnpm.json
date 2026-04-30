@@ -16,10 +16,12 @@
             "hash": "d945324b6a81ecca8d9813be66bc5c4039756edb8a452b70615fd568452c6b56"
         }
     },
-    "env_set":
-    {
+    "env_set": {
+        "PNPM_HOME": "$persist_dir",
         "XDG_CONFIG_HOME": "$persist_dir\\config",
-        "PNPM_HOME": "$persist_dir"
+        "XDG_CACHE_HOME": "$persist_dir\\cache",
+        "XDG_DATA_HOME": "$persist_dir\\data",
+        "XDG_STATE_HOME": "$persist_dir\\state"
     },
     "bin":
     [
@@ -38,25 +40,21 @@
         "cache",
         "state"
     ],
-    "post_install":
-    [
+    "post_install": [
+        "# 定义需要创建的持久化子目录",
+        "$dirs = @('bin', 'config/pnpm', 'cache', 'data', 'state', 'store')",
+        "foreach ($subDir in $dirs) {",
+        "    $targetPath = \"$persist_dir\\$subDir\"",
+        "    if (!(Test-Path $targetPath)) { ",
+        "        New-Item -ItemType Directory -Path $targetPath -Force | Out-Null ",
+        "    }",
+        "}",
+        "# 将物理 bin 目录注入 Path (解决 pnpm v11 的路径自检问题)",
         "$pnpmBin = \"$persist_dir\\bin\"",
-        "if (!(Test-Path $pnpmBin)) { New-Item -ItemType Directory -Path $pnpmBin -Force | Out-Null }",
-        "# 方案1：手动将物理路径注入当前进程和永久环境变量",
         "$oldPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
-        "if ($oldPath -notlike \"*$pnpmBin*\") { [Environment]::SetEnvironmentVariable('Path', \"$oldPath;$pnpmBin\", 'User') }",
-        "$pnpmConfigDir = \"$persist_dir\\config\\pnpm\"",
-        "if (!(Test-Path $pnpmConfigDir)) { New-Item -ItemType Directory -Path $pnpmConfigDir -Force | Out-Null }",
-        "# 方案2：写入配置，确保物理路径被 pnpm 识别",
-        "$yamlContent = @(",
-        "  \"store-dir: $persist_dir/store\"",
-        "  \"cache-dir: $persist_dir/cache\"",
-        "  \"state-dir: $persist_dir/state\"",
-        "  \"global-bin-dir: $persist_dir/bin\"",
-        ")",
-        "Set-Content -Path \"$pnpmConfigDir\\config.yaml\" -Value ($yamlContent -join \"`n\") -Encoding UTF8",
-        "$rcContent = @(\"registry=https://registry.npmmirror.com/\", \"\")",
-        "Set-Content -Path \"$pnpmConfigDir\\rc\" -Value ($rcContent -join \"`n\") -Encoding UTF8"
+        "if ($oldPath -notlike \"*$pnpmBin*\") { ",
+        "    [Environment]::SetEnvironmentVariable('Path', \"$oldPath;$pnpmBin\", 'User') ",
+        "}"
     ],
     "checkver":
     {
