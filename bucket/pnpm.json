@@ -1,0 +1,48 @@
+{
+    "version": "10.33.2",
+    "description": "A fast and disk space efficient Node package manager.",
+    "homepage": "https://pnpm.io/",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-win-x64.exe#/pnpm.exe",
+            "hash": "3d1af71e9da7081efd58f95942e1f7e2107bf8fcdae03eb2331c0b6cea59510b"
+        },
+        "arm64": {
+            "url": "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-win-arm64.exe#/pnpm.exe",
+            "hash": "0605f8a3a707cf9a5e525ebbb84282f095668f928e1cd6e6a3a31bf78571e8d0"
+        }
+    },
+    "env_set": {
+        "XDG_CONFIG_HOME": "$persist_dir\\config",
+        "PNPM_HOME": "$persist_dir\\bin"
+    },
+    "env_add_path": "bin",
+    "bin": [
+        "pnpm.exe",
+        ["pnpm.exe", "pnpx", "dlx"]
+    ],
+    "persist": ["config", "store", "bin", "cache", "state"],
+    "post_install": [
+        "$pnpm = \"$dir\\pnpm.exe\"",
+        "& $pnpm config set store-dir \"$persist_dir\\store\" --global",
+        "& $pnpm config set cache-dir \"$persist_dir\\cache\" --global",
+        "& $pnpm config set state-dir \"$persist_dir\\state\" --global",
+        "$rcPath = \"$persist_dir\\config\\pnpm\\rc\"",
+        "if (!(Test-Path (Split-Path $rcPath))) { New-Item -ItemType Directory -Path (Split-Path $rcPath) -Force | Out-Null }",
+        "if (!(Test-Path $rcPath)) { Set-Content -Path $rcPath -Value 'registry=https://registry.npmmirror.com' -Encoding UTF8 }"
+    ],
+    "checkver": {
+        "github": "https://github.com/pnpm/pnpm"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win-x64.exe#/pnpm.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win-arm64.exe#/pnpm.exe"
+            }
+        }
+    }
+}
