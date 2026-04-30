@@ -21,7 +21,8 @@
         "XDG_CONFIG_HOME": "$persist_dir\\config",
         "XDG_CACHE_HOME": "$persist_dir\\cache",
         "XDG_DATA_HOME": "$persist_dir\\data",
-        "XDG_STATE_HOME": "$persist_dir\\state"
+        "XDG_STATE_HOME": "$persist_dir\\state",
+        "pnpm_config_registry": "https://registry.npmmirror.com/"
     },
     "bin":
     [
