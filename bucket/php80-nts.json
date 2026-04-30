@@ -20,14 +20,10 @@
             "hash": "b649889ac73add91c02ec7f6fdb9182f148cfa3181761e32a1be02a3b1d85100"
         }
     },
-    "pre_install":
-    [
-        "if (!(Test-Path \"$persist_dir\\ext\")) { Copy-Item \"$dir\\ext\" \"$persist_dir\" -Recurse }",
-        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
+    "pre_install": [
         "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
     ],
-    "post_install":
-    [
+    "post_install": [
         "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
     ],
     "bin":
@@ -36,13 +32,8 @@
         "php-cgi.exe",
         "phpdbg.exe"
     ],
-    "env_set":
-    {
-        "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
-    },
     "persist":
     [
-        "cli",
         "ext",
         "php.ini"
     ],

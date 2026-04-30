@@ -22,7 +22,6 @@
     },
     "pre_install":
     [
-        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
         "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
     ],
     "post_install":
@@ -35,13 +34,8 @@
         "php-cgi.exe",
         "phpdbg.exe"
     ],
-    "env_set":
-    {
-        "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
-    },
     "persist":
     [
-        "cli",
         "ext",
         "php.ini"
     ],
