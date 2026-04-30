@@ -27,9 +27,7 @@
         "COMPOSER_HOME": "$persist_dir\\home",
         "COMPOSER_CACHE_DIR": "$persist_dir\\cache"
     },
-    "env_add_path": [
-        "home\\vendor\\bin"
-    ],
+    "env_add_path": "home\\vendor\\bin",
     "persist": [
         "home",
         "cache"
