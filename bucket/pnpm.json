@@ -24,7 +24,7 @@
         "pnpm_config_cache_dir": "$persist_dir/cache",
         "pnpm_config_state_dir": "$persist_dir/state"
     },
-    "env_add_path": "$persist_dir\\bin",
+    "env_add_path": "bin",
     "bin":
     [
         "pnpm.exe",
