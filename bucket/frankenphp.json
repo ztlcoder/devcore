@@ -1,0 +1,51 @@
+{
+    "version": "1.12.2",
+    "description": "The modern PHP application server, written in Go on top of Caddy",
+    "homepage": "https://frankenphp.dev/",
+    "license": "MIT",
+    "architecture":
+    {
+        "64bit":
+        {
+            "url": "https://github.com/php/frankenphp/releases/download/v1.12.2/frankenphp-windows-x86_64.zip",
+            "hash": "7129271c677c8be861ed95284806c33e43562f327ca1af74175886ab51dbaab5"
+        }
+    },
+    "bin": "frankenphp.exe",
+    "persist":
+    [
+        "php.ini",
+        "conf.d",
+        "ext"
+    ],
+    "suggest":
+    {
+        "vcredist": "extras/vcredist2022"
+    },
+    "pre_install":
+    [
+        "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }",
+        "if (!(Test-Path \"$dir\\conf.d\")) { New-Item \"$dir\\conf.d\" -ItemType Directory | Out-Null }"
+    ],
+    "post_install":
+    [
+        "$ini = \"$dir\\php.ini\"",
+        "(Get-Content $ini) | ForEach-Object {",
+        "    $_ -replace ';\\s?(extension_dir = \"ext\")', '$1'",
+        "} | Set-Content $ini"
+    ],
+    "checkver":
+    {
+        "github": "https://github.com/php/frankenphp"
+    },
+    "autoupdate":
+    {
+        "architecture":
+        {
+            "64bit":
+            {
+                "url": "https://github.com/php/frankenphp/releases/download/v$version/frankenphp-windows-x86_64.zip"
+            }
+        }
+    }
+}
