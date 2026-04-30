@@ -1,0 +1,45 @@
+{
+    "version": "2026.4.28",
+    "description": "Tolaria 是一款开源 Markdown 笔记软件",
+    "homepage": "https://tolaria.md/",
+    "license": "AGPL-3.0",
+    "url": "https://github.com/refactoringhq/tolaria/releases/download/stable-v2026.4.28/Tolaria_2026.4.28_x64-setup.exe",
+    "hash": "E2BE25411C93B0AB740287F8C7C4AC3E617F10E8DE32DA4119C2D35173409419",
+    "installer": {
+        "args": [
+            "/S",
+            "/allusers",
+            "/D=$dir"
+        ]
+    },
+    "persist": [
+        [
+            "AppData/Local/club.refactoring.tolaria",
+            "AppData\\Local\\club.refactoring.tolaria"
+        ],
+        [
+            "AppData/Roaming/com.tolaria.app",
+            "AppData\\Roaming\\com.tolaria.app"
+        ]
+    ],
+    "post_install": [
+        "$desktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Tolaria.lnk')",
+        "if (Test-Path $desktopPath) { Remove-Item $desktopPath -Force }",
+        "$startMenuPath = [System.IO.Path]::Combine([Environment]::GetFolderPath('Programs'), 'Tolaria.lnk')",
+        "if (Test-Path $startMenuPath) { Remove-Item $startMenuPath -Force }"
+    ],
+    "uninstaller": {
+        "script": [
+            "if (Test-Path \"$dir\\Uninstall.exe\") { Start-Process \"$dir\\Uninstall.exe\" -ArgumentList '/S' -Wait }",
+            "Remove-Item -Path \"HKCU:\\Software\\tolaria\" -Recurse -ErrorAction SilentlyContinue",
+            "if (Test-Path \"$persist_dir\") { Remove-Item -Recurse -Force \"$persist_dir\" }"
+        ]
+    },
+    "bin": "Tolaria.exe",
+    "shortcuts": [
+        [
+            "Tolaria.exe",
+            "Tolaria"
+        ]
+    ]
+}
