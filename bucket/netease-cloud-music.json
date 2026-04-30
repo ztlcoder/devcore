@@ -1,80 +1,80 @@
 {
-    "homepage": "https://music.163.com/",
-    "description": "The official NetEase Cloud Music client with Double-Protection.",
-    "version": "3.1.30.205130",
-    "architecture": {
-        "64bit": {
-            "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.30.205130_64.exe#/dl.7z",
-            "hash": "9AE0F1FABC4286BC4121176D864B871E85C7B5BC24B40A41883DD19ECBE6ABA5"
-        },
-        "32bit": {
-            "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.30.205130_32.exe#/dl.7z",
-            "hash": "b38e0448c75451c7f52799153197120a88322a09b080db1489e7917d73bf8ae9"
-        }
+  "homepage": "https://music.163.com/",
+  "description": "The official NetEase Cloud Music client with Double-Protection.",
+  "version": "3.1.31.205174",
+  "architecture": {
+    "64bit": {
+      "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.31.205174_64.exe#/dl.7z",
+      "hash": "fe215276fdd68c07cec8f331f4d25d6067c0d8f311fb77343d6e2d19014bb8f1"
     },
-    "installer": {
-        "script": [
-            "if (Test-Path \"$dir\\redist_packages\") {",
-            "    Get-ChildItem \"$dir\\redist_packages\" | Move-Item -Destination \"$dir\" -Force",
-            "}",
-            "# 建立 Local 缓存目录软链接",
-            "$target = \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
-            "$persist_app = \"$persist_dir\\appdata\"",
-            "if (!(Test-Path $persist_app)) { New-Item $persist_app -ItemType Directory -Force | Out-Null }",
-            "if (Test-Path $target) {",
-            "    $item = Get-Item $target",
-            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
-            "}",
-            "if (!(Test-Path (Split-Path $target))) { New-Item (Split-Path $target) -ItemType Directory -Force | Out-Null }",
-            "New-Item -ItemType Junction -Path $target -Target $persist_app | Out-Null",
-            "",
-            "# 禁止自动更新逻辑：封锁 Update 目录",
-            "$updatePath = \"$persist_app\\Update\"",
-            "if (Test-Path $updatePath) { Remove-Item $updatePath -Recurse -Force -ErrorAction SilentlyContinue }",
-            "if (!(Test-Path $updatePath)) {",
-            "    New-Item -Path $updatePath -ItemType File -Force | Out-Null",
-            "    Set-ItemProperty -Path $updatePath -Name IsReadOnly -Value $true",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$paths = @(\"$env:LOCALAPPDATA\\Netease\\CloudMusic\", \"$env:APPDATA\\Netease\\CloudMusic\")",
-            "foreach ($path in $paths) {",
-            "    if (Test-Path $path) {",
-            "        $item = Get-Item $path",
-            "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
-            "        Remove-Item $path -Force -Recurse -ErrorAction SilentlyContinue",
-            "    }",
-            "}",
-            "# 如果 Netease 目录下为空，则彻底删除父目录",
-            "$neteaseLocal = \"$env:LOCALAPPDATA\\Netease\"",
-            "if (Test-Path $neteaseLocal) {",
-            "    if (@(Get-ChildItem $neteaseLocal).Count -eq 0) { Remove-Item $neteaseLocal -Force }",
-            "}"
-        ]
-    },
-    "bin": "cloudmusic.exe",
-    "shortcuts": [
-        [
-            "cloudmusic.exe",
-            "网易云音乐"
-        ]
-    ],
-    "persist": "data",
-    "checkver": {
-        "url": "https://music.163.com/api/appcustomconfig/get",
-        "jsonpath": "$.data.web-new-download.pc64.downloadUrl",
-        "regex": "NeteaseCloudMusic_Music_official_([\\d.]+)_64.exe"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_$version_64.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_$version_32.exe#/dl.7z"
-            }
-        }
+    "32bit": {
+      "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.30.205130_32.exe#/dl.7z",
+      "hash": "b38e0448c75451c7f52799153197120a88322a09b080db1489e7917d73bf8ae9"
     }
+  },
+  "installer": {
+    "script": [
+      "if (Test-Path \"$dir\\redist_packages\") {",
+      "    Get-ChildItem \"$dir\\redist_packages\" | Move-Item -Destination \"$dir\" -Force",
+      "}",
+      "# 建立 Local 缓存目录软链接",
+      "$target = \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
+      "$persist_app = \"$persist_dir\\appdata\"",
+      "if (!(Test-Path $persist_app)) { New-Item $persist_app -ItemType Directory -Force | Out-Null }",
+      "if (Test-Path $target) {",
+      "    $item = Get-Item $target",
+      "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
+      "}",
+      "if (!(Test-Path (Split-Path $target))) { New-Item (Split-Path $target) -ItemType Directory -Force | Out-Null }",
+      "New-Item -ItemType Junction -Path $target -Target $persist_app | Out-Null",
+      "",
+      "# 禁止自动更新逻辑：封锁 Update 目录",
+      "$updatePath = \"$persist_app\\Update\"",
+      "if (Test-Path $updatePath) { Remove-Item $updatePath -Recurse -Force -ErrorAction SilentlyContinue }",
+      "if (!(Test-Path $updatePath)) {",
+      "    New-Item -Path $updatePath -ItemType File -Force | Out-Null",
+      "    Set-ItemProperty -Path $updatePath -Name IsReadOnly -Value $true",
+      "}"
+    ]
+  },
+  "uninstaller": {
+    "script": [
+      "$paths = @(\"$env:LOCALAPPDATA\\Netease\\CloudMusic\", \"$env:APPDATA\\Netease\\CloudMusic\")",
+      "foreach ($path in $paths) {",
+      "    if (Test-Path $path) {",
+      "        $item = Get-Item $path",
+      "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
+      "        Remove-Item $path -Force -Recurse -ErrorAction SilentlyContinue",
+      "    }",
+      "}",
+      "# 如果 Netease 目录下为空，则彻底删除父目录",
+      "$neteaseLocal = \"$env:LOCALAPPDATA\\Netease\"",
+      "if (Test-Path $neteaseLocal) {",
+      "    if (@(Get-ChildItem $neteaseLocal).Count -eq 0) { Remove-Item $neteaseLocal -Force }",
+      "}"
+    ]
+  },
+  "bin": "cloudmusic.exe",
+  "shortcuts": [
+    [
+      "cloudmusic.exe",
+      "网易云音乐"
+    ]
+  ],
+  "persist": "data",
+  "checkver": {
+    "url": "https://music.163.com/api/appcustomconfig/get",
+    "jsonpath": "$.data.web-new-download.pc64.downloadUrl",
+    "regex": "NeteaseCloudMusic_Music_official_([\\d.]+)_64.exe"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_$version_64.exe#/dl.7z"
+      },
+      "32bit": {
+        "url": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_$version_32.exe#/dl.7z"
+      }
+    }
+  }
 }

@@ -1,62 +1,56 @@
 {
-    "version": "8.1.34",
-    "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
-    "homepage": "https://www.php.net/",
-    "license": "PHP-3.01",
-    "suggest": {
-        "vcredist": "extras/vcredist2022"
+  "version": "8.1.34",
+  "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
+  "homepage": "https://www.php.net/",
+  "license": "PHP-3.01",
+  "suggest": {
+    "vcredist": "extras/vcredist2022"
+  },
+  "architecture": {
+    "64bit": {
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.1.34-nts-Win32-vs16-x64.zip",
+      "hash": "9cfe246cb144076c16f5913a3ef88a474c3dd7e60f0f0c8bb95faf68674016cc"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.php.net/~windows/releases/archives/php-8.1.34-nts-Win32-vs17-x64.zip",
-            "hash": "107f64f689eec2a0966b4d8a42f0e34e8dfa04c5097c9548e35fb951cba0a464"
-        },
-        "32bit": {
-            "url": "https://downloads.php.net/~windows/releases/archives/php-8.1.34-nts-Win32-vs17-x86.zip",
-            "hash": "abc9f14bc0771fcb62f4c379abebe0fb43a399f5e45aa258b01ae291eb6d2cb1"
-        }
-    },
-    "pre_install": [
-        "# Create directory for custom PHP configuration",
-        "if (!(Test-Path \"$dir\\cli\\conf.d\")) {",
-        "    (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null",
-        "}"
-    ],
-    "post_install": [
-        "# Enable extensions to be found in installation-relative folder (the default is to search C:/php)",
-        "(Get-Content \"$dir\\cli\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\cli\\php.ini\""
-    ],
-    "bin": [
-        "php.exe",
-        "php-cgi.exe",
-        "phpdbg.exe"
-    ],
-    "env_set": {
-        "PHP_INI_SCAN_DIR": "$dir\\cli;$dir\\cli\\conf.d;"
-    },
-    "persist": [
-        "cli",
-        [
-            "php.ini-development",
-            "cli\\php.ini"
-        ]
-    ],
-    "checkver": {
-        "url": "https://www.php.net/releases/branches.php",
-        "jsonpath": "$[0].latest"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs17-x64.zip"
-            },
-            "32bit": {
-                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs17-x86.zip"
-            }
-        },
-        "hash": {
-            "url": "https://www.php.net/backend/win-releases.json",
-            "jsonpath": "$..[?(@.path == '$basename')].sha256"
-        }
+    "32bit": {
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.1.34-nts-Win32-vs16-x86.zip",
+      "hash": "925f3b6b098cfc4b324056b8b8b8b870ad11cd22c15c2c29a03067a5eb14dc4c"
     }
+  },
+  "pre_install": [
+    "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
+    "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
+  ],
+  "post_install": [
+    "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
+  ],
+  "bin": [
+    "php.exe",
+    "php-cgi.exe",
+    "phpdbg.exe"
+  ],
+  "env_set": {
+    "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
+  },
+  "persist": [
+    "cli",
+    "php.ini"
+  ],
+  "checkver": {
+    "url": "https://www.php.net/releases/branches.php",
+    "jsonpath": "$..[?(@.version == '8.1')].latest"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x64.zip"
+      },
+      "32bit": {
+        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x86.zip"
+      }
+    },
+    "hash": {
+      "url": "https://www.php.net/backend/win-releases.json",
+      "jsonpath": "$..[?(@.path == '$basename')].sha256"
+    }
+  }
 }

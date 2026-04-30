@@ -1,90 +1,90 @@
 {
-    "version": "4.1.8",
-    "description": "微信官方版",
-    "homepage": "https://pc.weixin.qq.com/",
-    "license": "Proprietary",
-    "architecture": {
-        "64bit": {
-            "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.8.exe#/dl.7z",
-            "hash": "B79AA3FDFD208D64F38FCC354684F9AF213C05993C6F603521F2813930362B90"
-        }
-    },
-    "installer": {
-        "script": [
-            "if (Test-Path \"$dir\\install.7z\") {",
-            "    Expand-7zipArchive \"$dir\\install.7z\" \"$dir\" -Removal",
-            "}",
-            "",
-            "# 1. 路径定义：$persist_dir 即是 ...\\persist\\weixin\\xwechat_files",
-            "$roaming_tencent = \"$env:APPDATA\\Tencent\"",
-            "$roaming_xwechat = \"$roaming_tencent\\xwechat\"",
-            "# 将 AppData 配置重定向到 persist 内部的 appdata 文件夹",
-            "$persist_appdata = \"$persist_dir\\appdata\"",
-            "",
-            "if (!(Test-Path $persist_appdata)) { New-Item $persist_appdata -ItemType Directory -Force | Out-Null }",
-            "ensure \"$roaming_tencent\" | Out-Null",
-            "",
-            "# 2. 处理 Roaming 重定向",
-            "if (Test-Path $roaming_xwechat) {",
-            "    $item = Get-Item $roaming_xwechat",
-            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $roaming_xwechat -Recurse -Force }",
-            "}",
-            "New-Item -ItemType Junction -Path $roaming_xwechat -Target $persist_appdata | Out-Null",
-            "",
-            "# 3. 核心修复：直接指向 $persist_dir，实现扁平化存储",
-            "$config_path = \"$roaming_xwechat\\config\"",
-            "ensure \"$config_path\" | Out-Null",
-            "Set-Content -NoNewline -Path \"$config_path\\51a1fffea11325a1e4104c6b3de47af7.ini\" -Value \"$persist_dir\"",
-            "",
-            "# 4. 注册表同步",
-            "$reg_path = \"HKCU:Software\\Tencent\\Wexin\"",
-            "if (!(Test-Path $reg_path)) { New-Item -Path $reg_path -Type Directory -Force | Out-Null }",
-            "New-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Value \"$persist_dir\" -Force | Out-Null",
-            "New-ItemProperty -Path $reg_path -Name \"InstallPath\" -Value \"$dir\" -Force | Out-Null",
-            "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Force -Recurse -ErrorAction SilentlyContinue"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "# 1. 断开 Roaming 软链接",
-            "$roaming_xwechat = \"$env:APPDATA\\Tencent\\xwechat\"",
-            "if (Test-Path $roaming_xwechat) {",
-            "    $item = Get-Item $roaming_xwechat",
-            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
-            "}",
-            "",
-            "# 2. 清理注册表项",
-            "$reg_path = \"HKCU:Software\\Tencent\\Wexin\"",
-            "if (Test-Path $reg_path) {",
-            "    Remove-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Force -ErrorAction SilentlyContinue",
-            "    Remove-ItemProperty -Path $reg_path -Name \"InstallPath\" -Force -ErrorAction SilentlyContinue",
-            "    if ((Get-Item $reg_path).PropertyCount -eq 0) { Remove-Item $reg_path -Force }",
-            "}",
-            "",
-            "# 3. 清理空父目录",
-            "$tencent_path = \"$env:APPDATA\\Tencent\"",
-            "if (Test-Path $tencent_path) {",
-            "    if (@(Get-ChildItem $tencent_path).Count -eq 0) { Remove-Item $tencent_path -Force }",
-            "}"
-        ]
-    },
-    "bin": "Weixin.exe",
-    "shortcuts": [
-        [
-            "Weixin.exe",
-            "微信"
-        ]
-    ],
-    "persist": "xwechat_files",
-    "checkver": {
-        "url": "https://pc.weixin.qq.com",
-        "regex": "version\\s+([\\d.]+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
-            }
-        }
+  "version": "4.1.9",
+  "description": "微信官方版",
+  "homepage": "https://pc.weixin.qq.com/",
+  "license": "Proprietary",
+  "architecture": {
+    "64bit": {
+      "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.9.exe#/dl.7z",
+      "hash": "81d05e79ead9d310bdf00b64e94809fe808adbe21d95588bf3a52395c29c52bd"
     }
+  },
+  "installer": {
+    "script": [
+      "if (Test-Path \"$dir\\install.7z\") {",
+      "    Expand-7zipArchive \"$dir\\install.7z\" \"$dir\" -Removal",
+      "}",
+      "",
+      "# 1. 路径定义：$persist_dir 即是 ...\\persist\\weixin\\xwechat_files",
+      "$roaming_tencent = \"$env:APPDATA\\Tencent\"",
+      "$roaming_xwechat = \"$roaming_tencent\\xwechat\"",
+      "# 将 AppData 配置重定向到 persist 内部的 appdata 文件夹",
+      "$persist_appdata = \"$persist_dir\\appdata\"",
+      "",
+      "if (!(Test-Path $persist_appdata)) { New-Item $persist_appdata -ItemType Directory -Force | Out-Null }",
+      "ensure \"$roaming_tencent\" | Out-Null",
+      "",
+      "# 2. 处理 Roaming 重定向",
+      "if (Test-Path $roaming_xwechat) {",
+      "    $item = Get-Item $roaming_xwechat",
+      "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $roaming_xwechat -Recurse -Force }",
+      "}",
+      "New-Item -ItemType Junction -Path $roaming_xwechat -Target $persist_appdata | Out-Null",
+      "",
+      "# 3. 核心修复：直接指向 $persist_dir，实现扁平化存储",
+      "$config_path = \"$roaming_xwechat\\config\"",
+      "ensure \"$config_path\" | Out-Null",
+      "Set-Content -NoNewline -Path \"$config_path\\51a1fffea11325a1e4104c6b3de47af7.ini\" -Value \"$persist_dir\"",
+      "",
+      "# 4. 注册表同步",
+      "$reg_path = \"HKCU:Software\\Tencent\\Wexin\"",
+      "if (!(Test-Path $reg_path)) { New-Item -Path $reg_path -Type Directory -Force | Out-Null }",
+      "New-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Value \"$persist_dir\" -Force | Out-Null",
+      "New-ItemProperty -Path $reg_path -Name \"InstallPath\" -Value \"$dir\" -Force | Out-Null",
+      "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Force -Recurse -ErrorAction SilentlyContinue"
+    ]
+  },
+  "uninstaller": {
+    "script": [
+      "# 1. 断开 Roaming 软链接",
+      "$roaming_xwechat = \"$env:APPDATA\\Tencent\\xwechat\"",
+      "if (Test-Path $roaming_xwechat) {",
+      "    $item = Get-Item $roaming_xwechat",
+      "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
+      "}",
+      "",
+      "# 2. 清理注册表项",
+      "$reg_path = \"HKCU:Software\\Tencent\\Wexin\"",
+      "if (Test-Path $reg_path) {",
+      "    Remove-ItemProperty -Path $reg_path -Name \"FileSavePath\" -Force -ErrorAction SilentlyContinue",
+      "    Remove-ItemProperty -Path $reg_path -Name \"InstallPath\" -Force -ErrorAction SilentlyContinue",
+      "    if ((Get-Item $reg_path).PropertyCount -eq 0) { Remove-Item $reg_path -Force }",
+      "}",
+      "",
+      "# 3. 清理空父目录",
+      "$tencent_path = \"$env:APPDATA\\Tencent\"",
+      "if (Test-Path $tencent_path) {",
+      "    if (@(Get-ChildItem $tencent_path).Count -eq 0) { Remove-Item $tencent_path -Force }",
+      "}"
+    ]
+  },
+  "bin": "Weixin.exe",
+  "shortcuts": [
+    [
+      "Weixin.exe",
+      "微信"
+    ]
+  ],
+  "persist": "xwechat_files",
+  "checkver": {
+    "url": "https://pc.weixin.qq.com",
+    "regex": "version\\s+([\\d.]+)"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
+      }
+    }
+  }
 }

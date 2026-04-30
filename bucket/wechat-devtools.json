@@ -1,15 +1,15 @@
 {
     "homepage": "https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html",
     "description": "微信开发者工具官方版",
-    "version": "2.01.2012510290",
+    "version": "2.01.2510290",
     "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=x64&from=mpwiki&download_version=2012510260&version_type=1#/installer.exe",
+            "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=win32_x64&from=mpwiki&download_version=2012510290&version_type=1#/installer.exe",
             "hash": "62981F7C5B3B4BC61641832A555C494326DB6C95C193D9E1E0F1A266D99969D6"
         },
         "32bit": {
-            "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=ia32&from=mpwiki&download_version=2012510260&version_type=1#/installer.exe",
+            "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=win32_ia32&from=mpwiki&download_version=2012510290&version_type=1#/installer.exe",
             "hash": "17f04128750f671481eba21129216da23ad77601a9e41cca26984eae22e29ac3"
         }
     },

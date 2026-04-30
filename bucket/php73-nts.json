@@ -1,46 +1,56 @@
 {
-    "version": "7.3.33",
-    "description": "PHP 7.3 NTS (Legacy VC15 build) for personal bucket.",
-    "homepage": "https://windows.php.net",
-    "license": "PHP-3.01",
-    "architecture": {
-        "64bit": {
-            "url": "https://windows.php.net/downloads/releases/archives/php-7.3.33-nts-Win32-VC15-x64.zip",
-            "hash": "5EAF3CAD80E678623F222A42C99BCEFCC60EEA359D407FB51E805AFDB3B13E5E"
-        }
+  "version": "7.3.33",
+  "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
+  "homepage": "https://www.php.net/",
+  "license": "PHP-3.01",
+  "suggest": {
+    "vcredist": "extras/vcredist2017"
+  },
+  "architecture": {
+    "64bit": {
+      "url": "https://downloads.php.net/~windows/releases/archives/php-7.3.33-nts-Win32-VC15-x64.zip",
+      "hash": "5eaf3cad80e678623f222a42c99bcefcc60eea359d407fb51e805afdb3b13e5e"
     },
-    "env_set": {
-        "PHPRC": "$dir\\cli",
-        "PHP_INI_SCAN_DIR": "$dir\\cli\\conf.d;$persist_dir\\conf.d"
-    },
-    "bin": [
-        "php.exe",
-        "php-cgi.exe"
-    ],
-    "persist": [
-        "cli"
-    ],
-    "pre_install": [
-        "if (!(Test-Path \"$dir\\cli\")) { New-Item -Type directory \"$dir\\cli\" | Out-Null }",
-        "if (!(Test-Path \"$dir\\cli\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\cli\\php.ini\" }",
-        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { New-Item -Type directory \"$dir\\cli\\conf.d\" | Out-Null }"
-    ],
-    "post_install": [
-        "$ini = \"$dir\\cli\\php.ini\"",
-        "(Get-Content $ini) -replace ';extension_dir = \"ext\"', 'extension_dir = \"ext\"' | Set-Content $ini"
-    ],
-    "checkver": {
-        "url": "https://windows.php.net/downloads/releases/archives/",
-        "re": "php-(7\\.3\\.[\\d.]+)-nts-Win32-VC15-x64\\.zip"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://windows.php.net/downloads/releases/archives/php-$version-nts-Win32-VC15-x64.zip"
-            }
-        },
-        "hash": {
-            "url": "https://windows.php.net/downloads/releases/archives/sha256sum.txt"
-        }
+    "32bit": {
+      "url": "https://downloads.php.net/~windows/releases/archives/php-7.3.33-nts-Win32-VC15-x86.zip",
+      "hash": "5e65873d5fb9d63df17de991c736bac56389342851310bb84d8e2c22f6c9663e"
     }
+  },
+  "pre_install": [
+    "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
+    "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
+  ],
+  "post_install": [
+    "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
+  ],
+  "bin": [
+    "php.exe",
+    "php-cgi.exe",
+    "phpdbg.exe"
+  ],
+  "env_set": {
+    "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
+  },
+  "persist": [
+    "cli",
+    "php.ini"
+  ],
+  "checkver": {
+    "url": "https://www.php.net/releases/branches.php",
+    "jsonpath": "$..[?(@.version == '7.3')].latest"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-VC15-x64.zip"
+      },
+      "32bit": {
+        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-VC15-x86.zip"
+      }
+    },
+    "hash": {
+      "url": "https://www.php.net/backend/win-releases.json",
+      "jsonpath": "$..[?(@.path == '$basename')].sha256"
+    }
+  }
 }
