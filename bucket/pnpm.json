@@ -1,68 +1,68 @@
 {
-    "version": "11.0.1",
-    "description": "A fast and disk space efficient Node package manager.",
-    "homepage": "https://pnpm.io/",
-    "license": "MIT",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-x64.zip",
-            "hash": "581e222e622cd0cc4f0ac5f85dd0db76b65117e3b17507979d89e63fdc68edca"
-        },
-        "arm64": {
-            "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-arm64.zip",
-            "hash": "0746be8e98ca183078d0747559f0cbbd30a13a53eb177f67474eb3c52dc21bc8"
-        }
+  "version": "11.0.1",
+  "description": "A fast and disk space efficient Node package manager.",
+  "homepage": "https://pnpm.io/",
+  "license": "MIT",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-x64.zip",
+      "hash": "08f1301a2fe9d089ca0e5c31c4377d52316b38a09434dec443e656883de254af"
     },
-    "env_set": {
-        "PNPM_HOME": "$persist_dir",
-        "XDG_CONFIG_HOME": "$persist_dir\\config",
-        "XDG_CACHE_HOME": "$persist_dir\\cache",
-        "XDG_DATA_HOME": "$persist_dir\\data",
-        "XDG_STATE_HOME": "$persist_dir\\state",
-        "pnpm_config_registry": "https://registry.npmmirror.com/"
-    },
-    "bin": [
-        "pnpm.exe",
-        [
-            "pnpm.exe",
-            "pnpx",
-            "dlx"
-        ]
-    ],
-    "persist": [
-        "config",
-        "store",
-        "bin",
-        "cache",
-        "state"
-    ],
-    "post_install": [
-        "# 定义需要创建的持久化子目录",
-        "$dirs = @('bin', 'config/pnpm', 'cache', 'data', 'state', 'store')",
-        "foreach ($subDir in $dirs) {",
-        "    $targetPath = \"$persist_dir\\$subDir\"",
-        "    if (!(Test-Path $targetPath)) { ",
-        "        New-Item -ItemType Directory -Path $targetPath -Force | Out-Null ",
-        "    }",
-        "}",
-        "# 将物理 bin 目录注入 Path (解决 pnpm v11 的路径自检问题)",
-        "$pnpmBin = \"$persist_dir\\bin\"",
-        "$oldPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
-        "if ($oldPath -notlike \"*$pnpmBin*\") { ",
-        "    [Environment]::SetEnvironmentVariable('Path', \"$oldPath;$pnpmBin\", 'User') ",
-        "}"
-    ],
-    "checkver": {
-        "github": "https://github.com/pnpm/pnpm"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-x64.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-arm64.zip"
-            }
-        }
+    "arm64": {
+      "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-arm64.zip",
+      "hash": "d945324b6a81ecca8d9813be66bc5c4039756edb8a452b70615fd568452c6b56"
     }
+  },
+  "env_set": {
+    "PNPM_HOME": "$persist_dir",
+    "XDG_CONFIG_HOME": "$persist_dir\\config",
+    "XDG_CACHE_HOME": "$persist_dir\\cache",
+    "XDG_DATA_HOME": "$persist_dir\\data",
+    "XDG_STATE_HOME": "$persist_dir\\state",
+    "pnpm_config_registry": "https://registry.npmmirror.com/"
+  },
+  "bin": [
+    "pnpm.exe",
+    [
+      "pnpm.exe",
+      "pnpx",
+      "dlx"
+    ]
+  ],
+  "persist": [
+    "config",
+    "store",
+    "bin",
+    "cache",
+    "state"
+  ],
+  "post_install": [
+    "# 定义需要创建的持久化子目录",
+    "$dirs = @('bin', 'config/pnpm', 'cache', 'data', 'state', 'store')",
+    "foreach ($subDir in $dirs) {",
+    "    $targetPath = \"$persist_dir\\$subDir\"",
+    "    if (!(Test-Path $targetPath)) { ",
+    "        New-Item -ItemType Directory -Path $targetPath -Force | Out-Null ",
+    "    }",
+    "}",
+    "# 将物理 bin 目录注入 Path (解决 pnpm v11 的路径自检问题)",
+    "$pnpmBin = \"$persist_dir\\bin\"",
+    "$oldPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
+    "if ($oldPath -notlike \"*$pnpmBin*\") { ",
+    "    [Environment]::SetEnvironmentVariable('Path', \"$oldPath;$pnpmBin\", 'User') ",
+    "}"
+  ],
+  "checkver": {
+    "github": "https://github.com/pnpm/pnpm"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-x64.zip"
+      },
+      "arm64": {
+        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-arm64.zip"
+      }
+    }
+  }
 }
