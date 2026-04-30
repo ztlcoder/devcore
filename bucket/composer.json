@@ -20,30 +20,23 @@
         "    'if ($args.length -eq 1 -and ($args -eq \"selfupdate\" -or $args -eq \"self-update\")) { & scoop update composer }'",
         "    'else { & php (Join-Path $PSScriptRoot \"composer.phar\") @args }'",
         ") | Add-Content -Path \"$dir\\composer.ps1\"",
-        "if (!(Test-Path \"$persist_dir\\home\") -and (Test-Path \"$env:Appdata\\Composer\")) {",
-        "    Write-Host -F yellow \"Moving old 'COMPOSER_HOME' to '$persist_dir\\home'\"",
-        "    Move-Item \"$env:Appdata\\Composer\" \"$persist_dir\\home\" -Force",
-        "}"
-    ],
-    "post_install":
-    [
-        "$targetPath = \"$persist_dir\\home\\vendor\\bin\"",
-        "if (!(Test-Path $targetPath)) { New-Item -ItemType Directory -Force -Path $targetPath | Out-Null }",
-        "$currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
-        "if ($currentPath -notlike \"*$targetPath*\") {",
-        "    [Environment]::SetEnvironmentVariable('Path', \"$currentPath;$targetPath\", 'User')",
+        "if (!(Test-Path \"$persist_dir\\vendor\") -and (Test-Path \"$env:Appdata\\Composer\")) {",
+        "    Write-Host -F yellow \"Moving old 'COMPOSER_HOME' to '$persist_dir'\"",
+        "    Move-Item \"$env:Appdata\\Composer\\*\" \"$persist_dir\" -Force -ErrorAction SilentlyContinue",
         "}"
     ],
     "bin": "composer.ps1",
     "env_set":
     {
-        "COMPOSER_HOME": "$persist_dir\\home",
+        "COMPOSER_HOME": "$persist_dir",
         "COMPOSER_CACHE_DIR": "$persist_dir\\cache"
     },
+    "env_add_path": "vendor\\bin",
     "persist":
     [
-        "home",
-        "cache"
+        "vendor",
+        "cache",
+        "auth.json"
     ],
     "checkver": "Latest: <strong>\\s*([\\d.]+)\\s*</strong>",
     "autoupdate":
