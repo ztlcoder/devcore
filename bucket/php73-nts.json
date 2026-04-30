@@ -1,56 +1,73 @@
 {
-  "version": "7.3.33",
-  "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
-  "homepage": "https://www.php.net/",
-  "license": "PHP-3.01",
-  "suggest": {
-    "vcredist": "extras/vcredist2017"
-  },
-  "architecture": {
-    "64bit": {
-      "url": "https://downloads.php.net/~windows/releases/archives/php-7.3.33-nts-Win32-VC15-x64.zip",
-      "hash": "5eaf3cad80e678623f222a42c99bcefcc60eea359d407fb51e805afdb3b13e5e"
+    "version": "7.3.33",
+    "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
+    "homepage": "https://www.php.net/",
+    "license": "PHP-3.01",
+    "suggest":
+    {
+        "vcredist": "extras/vcredist2017"
     },
-    "32bit": {
-      "url": "https://downloads.php.net/~windows/releases/archives/php-7.3.33-nts-Win32-VC15-x86.zip",
-      "hash": "5e65873d5fb9d63df17de991c736bac56389342851310bb84d8e2c22f6c9663e"
-    }
-  },
-  "pre_install": [
-    "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
-    "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
-  ],
-  "post_install": [
-    "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
-  ],
-  "bin": [
-    "php.exe",
-    "php-cgi.exe",
-    "phpdbg.exe"
-  ],
-  "env_set": {
-    "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
-  },
-  "persist": [
-    "cli",
-    "php.ini"
-  ],
-  "checkver": {
-    "url": "https://www.php.net/releases/branches.php",
-    "jsonpath": "$..[?(@.version == '7.3')].latest"
-  },
-  "autoupdate": {
-    "architecture": {
-      "64bit": {
-        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-VC15-x64.zip"
-      },
-      "32bit": {
-        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-VC15-x86.zip"
-      }
+    "architecture":
+    {
+        "64bit":
+        {
+            "url": "https://downloads.php.net/~windows/releases/archives/php-7.3.33-nts-Win32-VC15-x64.zip",
+            "hash": "5eaf3cad80e678623f222a42c99bcefcc60eea359d407fb51e805afdb3b13e5e"
+        },
+        "32bit":
+        {
+            "url": "https://downloads.php.net/~windows/releases/archives/php-7.3.33-nts-Win32-VC15-x86.zip",
+            "hash": "5e65873d5fb9d63df17de991c736bac56389342851310bb84d8e2c22f6c9663e"
+        }
     },
-    "hash": {
-      "url": "https://www.php.net/backend/win-releases.json",
-      "jsonpath": "$..[?(@.path == '$basename')].sha256"
+    "pre_install":
+    [
+        "if (!(Test-Path \"$persist_dir\\ext\")) { Copy-Item \"$dir\\ext\" \"$persist_dir\" -Recurse }",
+        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
+        "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
+    ],
+    "post_install":
+    [
+        "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
+    ],
+    "bin":
+    [
+        "php.exe",
+        "php-cgi.exe",
+        "phpdbg.exe"
+    ],
+    "env_set":
+    {
+        "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
+    },
+    "persist":
+    [
+        "cli",
+        "ext",
+        "php.ini"
+    ],
+    "checkver":
+    {
+        "url": "https://www.php.net/releases/branches.php",
+        "jsonpath": "$..[?(@.version == '7.3')].latest"
+    },
+    "autoupdate":
+    {
+        "architecture":
+        {
+            "64bit":
+            {
+                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-VC15-x64.zip"
+            },
+            "32bit":
+            {
+                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-VC15-x86.zip"
+            }
+        },
+        "hash":
+        {
+            "url": "https://www.php.net/backend/win-releases.json",
+            "jsonpath": "$..[?(@.path == '$basename')].sha256"
+        }
     }
-  }
 }
