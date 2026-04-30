@@ -18,13 +18,10 @@
     },
     "env_set":
     {
-        "PNPM_HOME": "$persist_dir",
-        "pnpm_config_registry": "https://registry.npmmirror.com/",
-        "pnpm_config_store_dir": "$persist_dir/store",
-        "pnpm_config_cache_dir": "$persist_dir/cache",
-        "pnpm_config_state_dir": "$persist_dir/state"
+        "XDG_CONFIG_HOME": "$persist_dir\\config",
+        "PNPM_HOME": "$persist_dir"
     },
-    "env_add_path": "bin",
+    "env_add_path": "$persist_dir\\bin",
     "bin":
     [
         "pnpm.exe",
@@ -44,7 +41,17 @@
     ],
     "post_install":
     [
-        "if (!(Test-Path \"$persist_dir\\bin\")) { New-Item -ItemType Directory -Path \"$persist_dir\\bin\" -Force | Out-Null }"
+        "$pnpmConfigDir = \"$persist_dir\\config\\pnpm\"",
+        "if (!(Test-Path $pnpmConfigDir)) { New-Item -ItemType Directory -Path $pnpmConfigDir -Force | Out-Null }",
+        "$yamlContent = @(",
+        "  \"store-dir: $persist_dir/store\"",
+        "  \"cache-dir: $persist_dir/cache\"",
+        "  \"state-dir: $persist_dir/state\"",
+        "  \"global-bin-dir: $persist_dir/bin\"",
+        ")",
+        "Set-Content -Path \"$pnpmConfigDir\\config.yaml\" -Value ($yamlContent -join \"`n\") -Encoding UTF8",
+        "$rcContent = @(\"registry=https://registry.npmmirror.com/\", \"\")",
+        "Set-Content -Path \"$pnpmConfigDir\\rc\" -Value ($rcContent -join \"`n\") -Encoding UTF8"
     ],
     "checkver":
     {
