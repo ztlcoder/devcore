@@ -4,15 +4,18 @@
     "homepage": "https://getcomposer.org/",
     "license": "MIT",
     "notes": "'composer selfupdate' is aliased to 'scoop update composer'",
-    "suggest": {
-        "PHP": [
+    "suggest":
+    {
+        "PHP":
+        [
             "php",
             "php-nts"
         ]
     },
     "url": "https://getcomposer.org/download/2.9.7/composer.phar",
     "hash": "d3c6801ea6e5dd291d0f149295a4d0f1539a74d5231958fe8fdaa889a497e6cf",
-    "pre_install": [
+    "pre_install":
+    [
         "@(",
         "    'if ($args.length -eq 1 -and ($args -eq \"selfupdate\" -or $args -eq \"self-update\")) { & scoop update composer }'",
         "    'else { & php (Join-Path $PSScriptRoot \"composer.phar\") @args }'",
@@ -22,20 +25,32 @@
         "    Move-Item \"$env:Appdata\\Composer\" \"$persist_dir\\home\" -Force",
         "}"
     ],
+    "post_install":
+    [
+        "$targetPath = \"$persist_dir\\home\\vendor\\bin\"",
+        "if (!(Test-Path $targetPath)) { New-Item -ItemType Directory -Force -Path $targetPath | Out-Null }",
+        "$currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
+        "if ($currentPath -notlike \"*$targetPath*\") {",
+        "    [Environment]::SetEnvironmentVariable('Path', \"$currentPath;$targetPath\", 'User')",
+        "}"
+    ],
     "bin": "composer.ps1",
-    "env_set": {
+    "env_set":
+    {
         "COMPOSER_HOME": "$persist_dir\\home",
         "COMPOSER_CACHE_DIR": "$persist_dir\\cache"
     },
-    "env_add_path": "home\\vendor\\bin",
-    "persist": [
+    "persist":
+    [
         "home",
         "cache"
     ],
     "checkver": "Latest: <strong>\\s*([\\d.]+)\\s*</strong>",
-    "autoupdate": {
+    "autoupdate":
+    {
         "url": "https://getcomposer.org/download/$version/composer.phar",
-        "hash": {
+        "hash":
+        {
             "url": "$url.sha256sum"
         }
     }
