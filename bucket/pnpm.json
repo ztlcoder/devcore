@@ -1,61 +1,73 @@
 {
-  "version": "11.0.1",
-  "description": "A fast and disk space efficient Node package manager.",
-  "homepage": "https://pnpm.io/",
-  "license": "MIT",
-  "architecture": {
-    "64bit": {
-      "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-x64.zip",
-      "hash": "08f1301a2fe9d089ca0e5c31c4377d52316b38a09434dec443e656883de254af"
+    "version": "11.0.1",
+    "description": "A fast and disk space efficient Node package manager.",
+    "homepage": "https://pnpm.io/",
+    "license": "MIT",
+    "architecture":
+    {
+        "64bit":
+        {
+            "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-x64.zip",
+            "hash": "08f1301a2fe9d089ca0e5c31c4377d52316b38a09434dec443e656883de254af"
+        },
+        "arm64":
+        {
+            "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-arm64.zip",
+            "hash": "d945324b6a81ecca8d9813be66bc5c4039756edb8a452b70615fd568452c6b56"
+        }
     },
-    "arm64": {
-      "url": "https://github.com/pnpm/pnpm/releases/download/v11.0.1/pnpm-win32-arm64.zip",
-      "hash": "d945324b6a81ecca8d9813be66bc5c4039756edb8a452b70615fd568452c6b56"
-    }
-  },
-  "env_set": {
-    "XDG_CONFIG_HOME": "$persist_dir\\config",
-    "PNPM_HOME": "$persist_dir\\bin"
-  },
-  "env_add_path": "bin",
-  "bin": [
-    "pnpm.exe",
+    "env_set":
+    {
+        "XDG_CONFIG_HOME": "$persist_dir\\config",
+        "PNPM_HOME": "$persist_dir"
+    },
+    "env_add_path": "bin",
+    "bin":
     [
-      "pnpm.exe",
-      "pnpx",
-      "dlx"
-    ]
-  ],
-  "persist": [
-    "config",
-    "store",
-    "bin",
-    "cache",
-    "state"
-  ],
-  "post_install": [
-    "$rcPath = \"$persist_dir\\config\\pnpm\\rc\"",
-    "if (!(Test-Path (Split-Path $rcPath))) { New-Item -ItemType Directory -Path (Split-Path $rcPath) -Force | Out-Null }",
-    "$content = @(",
-    "    \"store-dir=$persist_dir\\store\"",
-    "    \"cache-dir=$persist_dir\\cache\"",
-    "    \"state-dir=$persist_dir\\state\"",
-    "    \"registry=https://registry.npmmirror.com\"",
-    "    \"\"",
-    ")",
-    "Set-Content -Path $rcPath -Value ($content -join \"`n\") -Encoding UTF8"
-  ],
-  "checkver": {
-    "github": "https://github.com/pnpm/pnpm"
-  },
-  "autoupdate": {
-    "architecture": {
-      "64bit": {
-        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-x64.zip"
-      },
-      "arm64": {
-        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-arm64.zip"
-      }
+        "pnpm.exe",
+        [
+            "pnpm.exe",
+            "pnpx",
+            "dlx"
+        ]
+    ],
+    "persist":
+    [
+        "config",
+        "store",
+        "bin",
+        "cache",
+        "state"
+    ],
+    "post_install":
+    [
+        "$rcPath = \"$persist_dir\\config\\pnpm\\rc\"",
+        "if (!(Test-Path (Split-Path $rcPath))) { New-Item -ItemType Directory -Path (Split-Path $rcPath) -Force | Out-Null }",
+        "$content = @(",
+        "    \"store-dir=$persist_dir\\store\"",
+        "    \"cache-dir=$persist_dir\\cache\"",
+        "    \"state-dir=$persist_dir\\state\"",
+        "    \"registry=https://registry.npmmirror.com\"",
+        "    \"\"",
+        ")",
+        "Set-Content -Path $rcPath -Value ($content -join \"`n\") -Encoding UTF8"
+    ],
+    "checkver":
+    {
+        "github": "https://github.com/pnpm/pnpm"
+    },
+    "autoupdate":
+    {
+        "architecture":
+        {
+            "64bit":
+            {
+                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-x64.zip"
+            },
+            "arm64":
+            {
+                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-arm64.zip"
+            }
+        }
     }
-  }
 }
