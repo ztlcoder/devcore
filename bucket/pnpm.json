@@ -39,18 +39,19 @@
         "cache",
         "state"
     ],
-    "post_install":
-    [
-        "$rcPath = \"$persist_dir\\config\\pnpm\\rc\"",
-        "if (!(Test-Path (Split-Path $rcPath))) { New-Item -ItemType Directory -Path (Split-Path $rcPath) -Force | Out-Null }",
-        "$content = @(",
-        "    \"store-dir=$persist_dir\\store\"",
-        "    \"cache-dir=$persist_dir\\cache\"",
-        "    \"state-dir=$persist_dir\\state\"",
-        "    \"registry=https://registry.npmmirror.com\"",
-        "    \"\"",
+    "post_install": [
+        "$pnpmConfigDir = \"$persist_dir\\config\\pnpm\"",
+        "if (!(Test-Path $pnpmConfigDir)) { New-Item -ItemType Directory -Path $pnpmConfigDir -Force | Out-Null }",
+        "# 写入镜像配置 (rc 格式)",
+        "$rcContent = @(\"registry=https://registry.npmmirror.com/\", \"\")",
+        "Set-Content -Path \"$pnpmConfigDir\\rc\" -Value ($rcContent -join \"`n\") -Encoding UTF8",
+        "# 写入路径配置 (YAML 格式)",
+        "$yamlContent = @(",
+        "  \"store-dir: $persist_dir/store\"",
+        "  \"cache-dir: $persist_dir/cache\"",
+        "  \"state-dir: $persist_dir/state\"",
         ")",
-        "Set-Content -Path $rcPath -Value ($content -join \"`n\") -Encoding UTF8"
+        "Set-Content -Path \"$pnpmConfigDir\\config.yaml\" -Value ($yamlContent -join \"`n\") -Encoding UTF8"
     ],
     "checkver":
     {
