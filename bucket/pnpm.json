@@ -21,7 +21,6 @@
         "XDG_CONFIG_HOME": "$persist_dir\\config",
         "PNPM_HOME": "$persist_dir"
     },
-    "env_add_path": "$persist_dir\\bin",
     "bin":
     [
         "pnpm.exe",
@@ -41,8 +40,14 @@
     ],
     "post_install":
     [
+        "$pnpmBin = \"$persist_dir\\bin\"",
+        "if (!(Test-Path $pnpmBin)) { New-Item -ItemType Directory -Path $pnpmBin -Force | Out-Null }",
+        "# 方案1：手动将物理路径注入当前进程和永久环境变量",
+        "$oldPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
+        "if ($oldPath -notlike \"*$pnpmBin*\") { [Environment]::SetEnvironmentVariable('Path', \"$oldPath;$pnpmBin\", 'User') }",
         "$pnpmConfigDir = \"$persist_dir\\config\\pnpm\"",
         "if (!(Test-Path $pnpmConfigDir)) { New-Item -ItemType Directory -Path $pnpmConfigDir -Force | Out-Null }",
+        "# 方案2：写入配置，确保物理路径被 pnpm 识别",
         "$yamlContent = @(",
         "  \"store-dir: $persist_dir/store\"",
         "  \"cache-dir: $persist_dir/cache\"",
