@@ -17,14 +17,11 @@
         }
     },
     "pre_install": [
-        "# Create directory for custom PHP configuration",
-        "if (!(Test-Path \"$dir\\cli\\conf.d\")) {",
-        "    (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null",
-        "}"
+        "if (!(Test-Path \"$dir\\cli\\conf.d\")) { (New-Item -Type directory \"$dir\\cli\\conf.d\") | Out-Null }",
+        "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
     ],
     "post_install": [
-        "# Enable extensions to be found in installation-relative folder (the default is to search C:/php)",
-        "(Get-Content \"$dir\\cli\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\cli\\php.ini\""
+        "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
     ],
     "bin": [
         "php.exe",
@@ -32,14 +29,11 @@
         "phpdbg.exe"
     ],
     "env_set": {
-        "PHP_INI_SCAN_DIR": "$dir\\cli;$dir\\cli\\conf.d;"
+        "PHP_INI_SCAN_DIR": "$persist_dir\\cli;$persist_dir\\cli\\conf.d"
     },
     "persist": [
         "cli",
-        [
-            "php.ini-development",
-            "cli\\php.ini"
-        ]
+        "php.ini"
     ],
     "checkver": {
         "url": "https://www.php.net/releases/branches.php",
