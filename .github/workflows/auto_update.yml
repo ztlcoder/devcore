@@ -1,0 +1,21 @@
+name: Auto Update Bucket
+on:
+  schedule:
+    - cron: '0 */4 * * *' # 每 4 小时自动巡检一次
+  workflow_dispatch:      # 允许你手动点击按钮触发更新
+
+jobs:
+  check-updates:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Scoop Update Action
+        uses: ScoopInstaller/github-action@master
+        with:
+          # 该 Action 会自动寻找 bucket 目录下的 json
+          # 并在发现新版本时自动计算 hash 并提交代码
+          execute_checkver: true
+          execute_autoupdate: true
+          commit_message: "chore: update versions [skip ci]"
