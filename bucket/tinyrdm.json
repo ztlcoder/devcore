@@ -1,57 +1,57 @@
 {
-    "version": "1.2.6",
-    "description": "A modern, lightweight Redis desktop client.",
-    "homepage": "https://tinyrdm.app/",
-    "license": "GPL-3.0",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v1.2.6/TinyRDM_Portable_1.2.6_windows_x64.zip",
-            "hash": "5E71449329F017CD0BE734F146DC83B3A0AD7BF5F4B7BB09536F5D0C1D57697F"
-        }
-    },
-    "bin": "Tiny RDM.exe",
-    "shortcuts": [
-        [
-            "Tiny RDM.exe",
-            "TinyRDM"
-        ]
-    ],
-    "persist": "data",
-    "pre_install": [
-        "$paths = @('TinyRDM', 'Tiny RDM.exe')",
-        "foreach ($path in $paths) {",
-        "    $target = \"$env:APPDATA\\$path\"",
-        "    $persist = \"$persist_dir\\$path\"",
-        "    if (!(Test-Path $persist)) { New-Item $persist -ItemType Directory -Force | Out-Null }",
-        "    if (Test-Path $target) {",
-        "        $item = Get-Item $target",
-        "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
-        "    }",
-        "    $parent = Split-Path $target",
-        "    if (!(Test-Path $parent)) { New-Item $parent -ItemType Directory -Force | Out-Null }",
-        "    New-Item -ItemType Junction -Path $target -Target $persist | Out-Null",
-        "}",
-        "$local_webview = \"$env:LOCALAPPDATA\\Tiny RDM.exe\"",
-        "if (Test-Path $local_webview) { Remove-Item $local_webview -Recurse -Force -ErrorAction SilentlyContinue }"
-    ],
-    "uninstaller": {
-        "script": [
-            "$paths = @('TinyRDM', 'Tiny RDM.exe')",
-            "foreach ($path in $paths) {",
-            "    $target = \"$env:APPDATA\\$path\"",
-            "    if (Test-Path $target) {",
-            "        $item = Get-Item $target",
-            "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
-            "    }",
-            "}"
-        ]
-    },
-    "checkver": "github",
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v$version/TinyRDM_Portable_$version_windows_x64.zip"
-            }
-        }
+  "version": "1.2.7",
+  "description": "A modern, lightweight Redis desktop client.",
+  "homepage": "https://tinyrdm.app/",
+  "license": "GPL-3.0",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v1.2.7/TinyRDM_Portable_1.2.7_windows_x64.zip",
+      "hash": "e4ec11abe5ffccb3277d60eba3980b9b23d254b5906c4980ee39562a8ea9beb3"
     }
+  },
+  "bin": "Tiny RDM.exe",
+  "shortcuts": [
+    [
+      "Tiny RDM.exe",
+      "TinyRDM"
+    ]
+  ],
+  "persist": "data",
+  "pre_install": [
+    "$paths = @('TinyRDM', 'Tiny RDM.exe')",
+    "foreach ($path in $paths) {",
+    "    $target = \"$env:APPDATA\\$path\"",
+    "    $persist = \"$persist_dir\\$path\"",
+    "    if (!(Test-Path $persist)) { New-Item $persist -ItemType Directory -Force | Out-Null }",
+    "    if (Test-Path $target) {",
+    "        $item = Get-Item $target",
+    "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
+    "    }",
+    "    $parent = Split-Path $target",
+    "    if (!(Test-Path $parent)) { New-Item $parent -ItemType Directory -Force | Out-Null }",
+    "    New-Item -ItemType Junction -Path $target -Target $persist | Out-Null",
+    "}",
+    "$local_webview = \"$env:LOCALAPPDATA\\Tiny RDM.exe\"",
+    "if (Test-Path $local_webview) { Remove-Item $local_webview -Recurse -Force -ErrorAction SilentlyContinue }"
+  ],
+  "uninstaller": {
+    "script": [
+      "$paths = @('TinyRDM', 'Tiny RDM.exe')",
+      "foreach ($path in $paths) {",
+      "    $target = \"$env:APPDATA\\$path\"",
+      "    if (Test-Path $target) {",
+      "        $item = Get-Item $target",
+      "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
+      "    }",
+      "}"
+    ]
+  },
+  "checkver": "github",
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/tiny-craft/tiny-rdm/releases/download/v$version/TinyRDM_Portable_$version_windows_x64.zip"
+      }
+    }
+  }
 }
