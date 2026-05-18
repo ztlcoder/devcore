@@ -18,47 +18,42 @@
         "    Move-Item \"$dir\\{app}\\*\" \"$dir\" -Force",
         "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
         "}",
-        "# 3. 提取授权文件并存入标准位置",
+        "# 3. 提取授权文件",
         "if (Test-Path \"$dir\\{commonappdata}\") {",
-        "    $revoData = New-Item \"$dir\\VS Revo Group\\Revo Uninstaller Pro\" -ItemType Directory -Force",
         "    $licFile = Get-ChildItem \"$dir\\{commonappdata}\" -Recurse -Filter \"*.lic\" | Select-Object -First 1",
-        "    if ($licFile) { Move-Item $licFile.FullName $revoData.FullName -Force }",
+        "    if ($licFile) { Move-Item $licFile.FullName \"$dir\\revouninstallerpro5.lic\" -Force }",
         "    Remove-Item \"$dir\\{commonappdata}\" -Force -Recurse",
         "}",
         "Get-ChildItem \"$dir\" -Include '{*}' -Directory | Remove-Item -Force -Recurse"
     ],
     "installer": {
         "script": [
-            "# 1. 初始化持久化数据总目录",
-            "if (!(Test-Path \"$persist_dir\")) { New-Item \"$persist_dir\" -ItemType Directory -Force | Out-Null }",
-            "# 2. 将解压出的授权释放到持久化目录",
-            "$targetPersistDir = \"$persist_dir\\VS Revo Group\"",
-            "if (!(Test-Path $targetPersistDir) -and (Test-Path \"$dir\\VS Revo Group\")) {",
-            "    Move-Item \"$dir\\VS Revo Group\" \"$persist_dir\" -Force",
+            "$revoPersist = \"$persist_dir\\Revo Uninstaller Pro\"",
+            "if (!(Test-Path $revoPersist)) { New-Item $revoPersist -ItemType Directory -Force | Out-Null }",
+            "if (Test-Path \"$dir\\revouninstallerpro5.lic\") {",
+            "    Move-Item \"$dir\\revouninstallerpro5.lic\" \"$revoPersist\\revouninstallerpro5.lic\" -Force",
             "}",
-            "# 3. 建立 Junction 链接到 %ProgramData%",
             "$commonData = \"$env:ProgramData\\VS Revo Group\"",
             "if (Test-Path $commonData) {",
             "    $item = Get-Item $commonData",
-            "    if ($item.LinkType -ne 'Junction') { Remove-Item $commonData -Force -Recurse } else { $item.Delete() }",
+            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $commonData -Force -Recurse }",
             "}",
             "if (!(Test-Path $commonData)) {",
-            "    New-Item -Path $commonData -ItemType Junction -Target $targetPersistDir -Force | Out-Null",
+            "    New-Item -ItemType Junction -Path $commonData -Target \"$persist_dir\" -Force | Out-Null",
             "}"
         ]
     },
     "uninstaller": {
         "script": [
-            "# 卸载时仅解除 Junction 软链接",
             "$commonData = \"$env:ProgramData\\VS Revo Group\"",
             "if (Test-Path $commonData) {",
             "    $item = Get-Item $commonData",
-            "    if ($item.LinkType -eq 'Junction') { $item.Delete() }",
+            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
             "}",
             "$appData = \"$env:AppData\\VS Revo Group\"",
             "if (Test-Path $appData) { Remove-Item $appData -Force -Recurse -ErrorAction SilentlyContinue }"
         ]
-    ],
+    },
     "bin": "RevoUninPro.exe",
     "shortcuts": [
         [
