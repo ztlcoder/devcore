@@ -16,24 +16,6 @@
         "script": [
             "if (Test-Path \"$dir\\redist_packages\") {",
             "    Get-ChildItem \"$dir\\redist_packages\" | Move-Item -Destination \"$dir\" -Force",
-            "}",
-            "# 建立 Local 缓存目录软链接",
-            "$target = \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
-            "$persist_app = \"$persist_dir\\appdata\"",
-            "if (!(Test-Path $persist_app)) { New-Item $persist_app -ItemType Directory -Force | Out-Null }",
-            "if (Test-Path $target) {",
-            "    $item = Get-Item $target",
-            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $target -Recurse -Force }",
-            "}",
-            "if (!(Test-Path (Split-Path $target))) { New-Item (Split-Path $target) -ItemType Directory -Force | Out-Null }",
-            "New-Item -ItemType Junction -Path $target -Target $persist_app | Out-Null",
-            "",
-            "# 禁止自动更新逻辑：封锁 Update 目录",
-            "$updatePath = \"$persist_app\\Update\"",
-            "if (Test-Path $updatePath) { Remove-Item $updatePath -Recurse -Force -ErrorAction SilentlyContinue }",
-            "if (!(Test-Path $updatePath)) {",
-            "    New-Item -Path $updatePath -ItemType File -Force | Out-Null",
-            "    Set-ItemProperty -Path $updatePath -Name IsReadOnly -Value $true",
             "}"
         ]
     },
@@ -42,15 +24,20 @@
             "$paths = @(\"$env:LOCALAPPDATA\\Netease\\CloudMusic\", \"$env:APPDATA\\Netease\\CloudMusic\")",
             "foreach ($path in $paths) {",
             "    if (Test-Path $path) {",
+            "        Write-Host \"Cleaning up NetEase CloudMusic data from $path...\" -ForegroundColor Yellow",
             "        $item = Get-Item $path",
             "        if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
             "        Remove-Item $path -Force -Recurse -ErrorAction SilentlyContinue",
             "    }",
             "}",
-            "# 如果 Netease 目录下为空，则彻底删除父目录",
+            "# 清理可能为空的父目录",
             "$neteaseLocal = \"$env:LOCALAPPDATA\\Netease\"",
             "if (Test-Path $neteaseLocal) {",
             "    if (@(Get-ChildItem $neteaseLocal).Count -eq 0) { Remove-Item $neteaseLocal -Force }",
+            "}",
+            "$neteaseRoaming = \"$env:APPDATA\\Netease\"",
+            "if (Test-Path $neteaseRoaming) {",
+            "    if (@(Get-ChildItem $neteaseRoaming).Count -eq 0) { Remove-Item $neteaseRoaming -Force }",
             "}"
         ]
     },
@@ -61,7 +48,6 @@
             "网易云音乐"
         ]
     ],
-    "persist": "data",
     "checkver": {
         "url": "https://music.163.com/api/appcustomconfig/get",
         "jsonpath": "$.data.web-new-download.pc64.downloadUrl",
