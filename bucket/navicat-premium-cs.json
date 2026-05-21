@@ -11,31 +11,14 @@
         "    Get-ChildItem \"$dir\\{app}\\*\" | Move-Item -Destination \"$dir\" -Force",
         "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
         "}",
-        "if (Test-Path \"$dir\\install_script.iss\") { Remove-Item \"$dir\\install_script.iss\" -Force }",
+        "if (Test-Path \"$dir\\install_script.iss\") { Remove-Item \"$dir\\install_script.iss\" -Force }"
     ],
-    "installer": {
-        "script": [
-            "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
-            "$navicatPersist = \"$persist_dir\\Data\"",
-            "if (!(Test-Path $navicatPersist)) { New-Item $navicatPersist -ItemType Directory -Force | Out-Null }",
-            "if (Test-Path $navicatDoc) {",
-            "    $item = Get-Item $navicatDoc",
-            "    if ($item.LinkType -ne 'Junction') { Remove-Item $navicatDoc -Force -Recurse }",
-            "}",
-            "if (!(Test-Path $navicatDoc)) {",
-            "    New-Item -Path $navicatDoc -ItemType Junction -Target $navicatPersist -Force | Out-Null",
-            "}"
-        ]
-    },
     "uninstaller": {
         "script": [
             "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
             "if (Test-Path $navicatDoc) {",
-            "    $item = Get-Item $navicatDoc",
-            "    if ($item.LinkType -eq 'Junction') {",
-            "        Write-Host \"Removing Navicat document junction...\" -ForegroundColor Yellow",
-            "        Remove-Item $navicatDoc -Force",
-            "    }",
+            "    Write-Host \"Cleaning up Navicat data and configurations from Documents...\" -ForegroundColor Yellow",
+            "    Remove-Item $navicatDoc -Force -Recurse -ErrorAction Ignore",
             "}"
         ]
     },
@@ -46,7 +29,6 @@
             "Navicat Premium"
         ]
     ],
-    "persist": "Data",
     "checkver": {
         "url": "https://www.navicat.com.cn/products/navicat-premium-release-note",
         "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
