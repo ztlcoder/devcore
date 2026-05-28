@@ -1,72 +1,72 @@
 {
-    "version": "5.5.0",
-    "description": "Powerful software uninstaller with advanced leftover scanning.",
-    "homepage": "https://www.revouninstaller.com/",
-    "license": "Shareware",
-    "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe",
-    "hash": "6552AE17F3A024D74DB56B083B91895D780EDE60423EACDB578A03103EDFFC21",
-    "innosetup": true,
-    "pre_install": [
-        "# 1. 修复所有带逗号后缀的文件名",
-        "Get-ChildItem \"$dir\" -Recurse | Where-Object { $_.Name -match ',\\d+\\.' } | ForEach-Object {",
-        "    $newName = $_.Name -replace ',\\d+', ''",
-        "    $target = Join-Path $_.DirectoryName $newName",
-        "    if (!(Test-Path $target)) { Move-Item $_.FullName $target -Force }",
-        "}",
-        "# 2. 移动核心程序文件",
-        "if (Test-Path \"$dir\\{app}\") {",
-        "    Move-Item \"$dir\\{app}\\*\" \"$dir\" -Force",
-        "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
-        "}",
-        "# 3. 提取授权文件",
-        "if (Test-Path \"$dir\\{commonappdata}\") {",
-        "    $licFile = Get-ChildItem \"$dir\\{commonappdata}\" -Recurse -Filter \"*.lic\" | Select-Object -First 1",
-        "    if ($licFile) { Move-Item $licFile.FullName \"$dir\\revouninstallerpro5.lic\" -Force }",
-        "    Remove-Item \"$dir\\{commonappdata}\" -Force -Recurse",
-        "}",
-        "Get-ChildItem \"$dir\" -Include '{*}' -Directory | Remove-Item -Force -Recurse"
-    ],
-    "installer": {
-        "script": [
-            "$revoPersist = \"$persist_dir\\Revo Uninstaller Pro\"",
-            "if (!(Test-Path $revoPersist)) { New-Item $revoPersist -ItemType Directory -Force | Out-Null }",
-            "if (Test-Path \"$dir\\revouninstallerpro5.lic\") {",
-            "    Move-Item \"$dir\\revouninstallerpro5.lic\" \"$revoPersist\\revouninstallerpro5.lic\" -Force",
-            "}",
-            "$commonData = \"$env:ProgramData\\VS Revo Group\"",
-            "if (Test-Path $commonData) {",
-            "    $item = Get-Item $commonData",
-            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $commonData -Force -Recurse }",
-            "}",
-            "if (!(Test-Path $commonData)) {",
-            "    New-Item -ItemType Junction -Path $commonData -Target \"$persist_dir\" -Force | Out-Null",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$commonData = \"$env:ProgramData\\VS Revo Group\"",
-            "if (Test-Path $commonData) {",
-            "    $item = Get-Item $commonData",
-            "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
-            "}",
-            "$appData = \"$env:AppData\\VS Revo Group\"",
-            "if (Test-Path $appData) { Remove-Item $appData -Force -Recurse -ErrorAction SilentlyContinue }"
-        ]
-    },
-    "bin": "RevoUninPro.exe",
-    "shortcuts": [
-        [
-            "RevoUninPro.exe",
-            "Revo Uninstaller Pro"
-        ]
-    ],
-    "elevate": true,
-    "checkver": {
-        "url": "https://revouninstaller.com",
-        "re": "Version ([\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe"
-    }
+  "version": "5.5.0",
+  "description": "Powerful software uninstaller with advanced leftover scanning.",
+  "homepage": "https://www.revouninstaller.com/",
+  "license": "Shareware",
+  "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe",
+  "hash": "4aa4ac0ee865d3526f5631f51b91160131755c051677c629310733e25883ef3f",
+  "innosetup": true,
+  "pre_install": [
+    "# 1. 修复所有带逗号后缀的文件名",
+    "Get-ChildItem \"$dir\" -Recurse | Where-Object { $_.Name -match ',\\d+\\.' } | ForEach-Object {",
+    "    $newName = $_.Name -replace ',\\d+', ''",
+    "    $target = Join-Path $_.DirectoryName $newName",
+    "    if (!(Test-Path $target)) { Move-Item $_.FullName $target -Force }",
+    "}",
+    "# 2. 移动核心程序文件",
+    "if (Test-Path \"$dir\\{app}\") {",
+    "    Move-Item \"$dir\\{app}\\*\" \"$dir\" -Force",
+    "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
+    "}",
+    "# 3. 提取授权文件",
+    "if (Test-Path \"$dir\\{commonappdata}\") {",
+    "    $licFile = Get-ChildItem \"$dir\\{commonappdata}\" -Recurse -Filter \"*.lic\" | Select-Object -First 1",
+    "    if ($licFile) { Move-Item $licFile.FullName \"$dir\\revouninstallerpro5.lic\" -Force }",
+    "    Remove-Item \"$dir\\{commonappdata}\" -Force -Recurse",
+    "}",
+    "Get-ChildItem \"$dir\" -Include '{*}' -Directory | Remove-Item -Force -Recurse"
+  ],
+  "installer": {
+    "script": [
+      "$revoPersist = \"$persist_dir\\Revo Uninstaller Pro\"",
+      "if (!(Test-Path $revoPersist)) { New-Item $revoPersist -ItemType Directory -Force | Out-Null }",
+      "if (Test-Path \"$dir\\revouninstallerpro5.lic\") {",
+      "    Move-Item \"$dir\\revouninstallerpro5.lic\" \"$revoPersist\\revouninstallerpro5.lic\" -Force",
+      "}",
+      "$commonData = \"$env:ProgramData\\VS Revo Group\"",
+      "if (Test-Path $commonData) {",
+      "    $item = Get-Item $commonData",
+      "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $commonData -Force -Recurse }",
+      "}",
+      "if (!(Test-Path $commonData)) {",
+      "    New-Item -ItemType Junction -Path $commonData -Target \"$persist_dir\" -Force | Out-Null",
+      "}"
+    ]
+  },
+  "uninstaller": {
+    "script": [
+      "$commonData = \"$env:ProgramData\\VS Revo Group\"",
+      "if (Test-Path $commonData) {",
+      "    $item = Get-Item $commonData",
+      "    if ($item.Attributes -match 'ReparsePoint') { $item.Delete() }",
+      "}",
+      "$appData = \"$env:AppData\\VS Revo Group\"",
+      "if (Test-Path $appData) { Remove-Item $appData -Force -Recurse -ErrorAction SilentlyContinue }"
+    ]
+  },
+  "bin": "RevoUninPro.exe",
+  "shortcuts": [
+    [
+      "RevoUninPro.exe",
+      "Revo Uninstaller Pro"
+    ]
+  ],
+  "elevate": true,
+  "checkver": {
+    "url": "https://revouninstaller.com",
+    "re": "Version ([\\d.]+)"
+  },
+  "autoupdate": {
+    "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe"
+  }
 }
