@@ -16,6 +16,16 @@
       "RedisME"
     ]
   ],
+  "uninstaller": {
+    "script": [
+      "$clean_paths = @(\"$env:APPDATA\\com.hepengju.redis\", \"$env:LOCALAPPDATA\\com.hepengju.redis\")",
+      "foreach ($path in $clean_paths) {",
+      "    if (Test-Path $path) {",
+      "        Remove-Item $path -Recurse -Force -ErrorAction SilentlyContinue",
+      "    }",
+      "}"
+    ]
+  },
   "checkver": "github",
   "autoupdate": {
     "architecture": {
