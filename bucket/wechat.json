@@ -1,11 +1,11 @@
 {
-  "version": "4.1.9",
+  "version": "4.1.11",
   "description": "微信官方版",
   "homepage": "https://pc.weixin.qq.com/",
   "license": "Proprietary",
   "architecture": {
     "64bit": {
-      "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.9.exe#/dl.7z",
+      "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.11.exe#/dl.7z",
       "hash": "8f43225b7388742a9797d31960bf19d6b0902ea58bf1a85b6d8b95d0b71877ed"
     }
   },
@@ -83,7 +83,7 @@
   "autoupdate": {
     "architecture": {
       "64bit": {
-        "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
+        "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_$version.exe#/dl.7z"
       }
     }
   }
