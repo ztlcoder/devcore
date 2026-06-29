@@ -1,39 +1,39 @@
 {
-    "version": "17",
-    "description": "强大的数据库管理和开发工具",
-    "homepage": "https://www.navicat.com/",
-    "license": "Proprietary",
-    "url": "https://download.navicat.com/download/navicat17_premium_cs_x64.exe",
-    "hash": "643892A25785560B221DE804ED01CFA6CA228C3FFE62975BD50F810ACECF2444",
-    "innosetup": true,
-    "pre_install": [
-        "if (Test-Path \"$dir\\{app}\") {",
-        "    Get-ChildItem \"$dir\\{app}\\*\" | Move-Item -Destination \"$dir\" -Force",
-        "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
-        "}",
-        "if (Test-Path \"$dir\\install_script.iss\") { Remove-Item \"$dir\\install_script.iss\" -Force }"
-    ],
-    "uninstaller": {
-        "script": [
-            "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
-            "if (Test-Path $navicatDoc) {",
-            "    Write-Host \"Cleaning up Navicat data and configurations from Documents...\" -ForegroundColor Yellow",
-            "    Remove-Item $navicatDoc -Force -Recurse -ErrorAction Ignore",
-            "}"
-        ]
-    },
-    "bin": "navicat.exe",
-    "shortcuts": [
-        [
-            "navicat.exe",
-            "Navicat Premium"
-        ]
-    ],
-    "checkver": {
-        "url": "https://www.navicat.com.cn/products/navicat-premium-release-note",
-        "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "https://download.navicat.com/download/navicat$majorversion_premium_cs_x64.exe"
-    }
+  "version": "17.3.11",
+  "description": "强大的数据库管理和开发工具",
+  "homepage": "https://www.navicat.com/",
+  "license": "Proprietary",
+  "url": "https://download.navicat.com/download/navicat17_premium_cs_x64.exe",
+  "hash": "6f7155806d669fb21f1f98673dc6edfe39be062afcc71e2d8cd4a788eae64077",
+  "innosetup": true,
+  "pre_install": [
+    "if (Test-Path \"$dir\\{app}\") {",
+    "    Get-ChildItem \"$dir\\{app}\\*\" | Move-Item -Destination \"$dir\" -Force",
+    "    Remove-Item \"$dir\\{app}\" -Force -Recurse",
+    "}",
+    "if (Test-Path \"$dir\\install_script.iss\") { Remove-Item \"$dir\\install_script.iss\" -Force }"
+  ],
+  "uninstaller": {
+    "script": [
+      "$navicatDoc = \"$([Environment]::GetFolderPath('MyDocuments'))\\Navicat\"",
+      "if (Test-Path $navicatDoc) {",
+      "    Write-Host \"Cleaning up Navicat data and configurations from Documents...\" -ForegroundColor Yellow",
+      "    Remove-Item $navicatDoc -Force -Recurse -ErrorAction Ignore",
+      "}"
+    ]
+  },
+  "bin": "navicat.exe",
+  "shortcuts": [
+    [
+      "navicat.exe",
+      "Navicat Premium"
+    ]
+  ],
+  "checkver": {
+    "url": "https://www.navicat.com.cn/products/navicat-premium-release-note",
+    "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
+  },
+  "autoupdate": {
+    "url": "https://download.navicat.com/download/navicat$majorversion_premium_cs_x64.exe"
+  }
 }
