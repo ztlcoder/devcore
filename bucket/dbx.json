@@ -1,0 +1,49 @@
+{
+  "version": "0.5.41",
+  "description": "DBX database client or utility.",
+  "homepage": "https://github.com/t8y2/dbx",
+  "license": "Freeware",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/t8y2/dbx/releases/download/v0.5.41/DBX_0.5.41_x64-portable.zip",
+      "hash": "77383c284d09d1673437c88191aadc3ea4ed0630b577d51df0e271cdec9f0567"
+    }
+  },
+  "bin": "DBX.exe",
+  "persist": "dbx",
+  "pre_install": [
+    "$paths = @{'com.dbx.app'=\"$persist_dir\\com.dbx.app_roaming\"}",
+    "foreach ($rel in $paths.Keys) {",
+    "    $junc = Join-Path $env:APPDATA $rel; $target = $paths[$rel]",
+    "    if (!(Test-Path $target)) { New-Item $target -ItemType Directory -Force | Out-Null }",
+    "    if (Test-Path $junc) { $item = Get-Item $junc; if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $junc -Recurse -Force } }",
+    "    $parent = Split-Path $junc; if (!(Test-Path $parent)) { New-Item $parent -ItemType Directory -Force | Out-Null }",
+    "    New-Item -ItemType Junction -Path $junc -Value $target | Out-Null",
+    "}",
+    "Remove-Item \"$env:LOCALAPPDATA\\com.dbx.app\" -Recurse -Force -ErrorAction SilentlyContinue"
+  ],
+  "uninstaller": {
+    "script": [
+      "$junctions = @(\"com.dbx.app\")",
+      "foreach ($rel in $junctions) {",
+      "    $j = Join-Path $env:APPDATA $rel",
+      "    if (Test-Path $j) { $item = Get-Item $j; if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } }",
+      "}",
+      "Remove-Item \"$env:LOCALAPPDATA\\com.dbx.app\" -Recurse -Force -ErrorAction SilentlyContinue"
+    ]
+  },
+  "checkver": "github",
+  "shortcuts": [
+    [
+      "DBX.exe",
+      "DBX"
+    ]
+  ],
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/t8y2/dbx/releases/download/v$version/DBX_$version_x64-portable.zip"
+      }
+    }
+  }
+}
