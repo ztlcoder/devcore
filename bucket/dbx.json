@@ -10,7 +10,9 @@
         }
     },
     "bin": "DBX.exe",
-    "persist": "dbx",
+    "persist": [
+        "data"
+    ],
     "pre_install": [
         "$paths = @{'com.dbx.app'=\"$persist_dir\\com.dbx.app_roaming\"}",
         "foreach ($rel in $paths.Keys) {",
