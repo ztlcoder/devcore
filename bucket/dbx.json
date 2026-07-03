@@ -13,25 +13,17 @@
     "persist": [
         "data"
     ],
-    "pre_install": [
-        "$paths = @{'com.dbx.app'=\"$persist_dir\\com.dbx.app_roaming\"}",
-        "foreach ($rel in $paths.Keys) {",
-        "    $junc = Join-Path $env:APPDATA $rel; $target = $paths[$rel]",
-        "    if (!(Test-Path $target)) { New-Item $target -ItemType Directory -Force | Out-Null }",
-        "    if (Test-Path $junc) { $item = Get-Item $junc; if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } else { Remove-Item $junc -Recurse -Force } }",
-        "    $parent = Split-Path $junc; if (!(Test-Path $parent)) { New-Item $parent -ItemType Directory -Force | Out-Null }",
-        "    New-Item -ItemType Junction -Path $junc -Value $target | Out-Null",
-        "}",
-        "Remove-Item \"$env:LOCALAPPDATA\\com.dbx.app\" -Recurse -Force -ErrorAction SilentlyContinue"
-    ],
     "uninstaller": {
         "script": [
-            "$junctions = @(\"com.dbx.app\")",
-            "foreach ($rel in $junctions) {",
-            "    $j = Join-Path $env:APPDATA $rel",
-            "    if (Test-Path $j) { $item = Get-Item $j; if ($item.Attributes -match 'ReparsePoint') { $item.Delete() } }",
-            "}",
-            "Remove-Item \"$env:LOCALAPPDATA\\com.dbx.app\" -Recurse -Force -ErrorAction SilentlyContinue"
+            "$appDataDirs = @(",
+            "    \"$env:APPDATA\\com.dbx.app\",",
+            "    \"$env:LOCALAPPDATA\\com.dbx.app\"",
+            ")",
+            "foreach ($dir in $appDataDirs) {",
+            "    if (Test-Path $dir) {",
+            "        Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue",
+            "    }",
+            "}"
         ]
     },
     "checkver": "github",
