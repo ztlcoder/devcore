@@ -1,64 +1,53 @@
 {
-    "version": "8.2.30",
-    "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
-    "homepage": "https://www.php.net/",
-    "license": "PHP-3.01",
-    "suggest":
-    {
-        "vcredist": "extras/vcredist2022"
+  "version": "8.2.32",
+  "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
+  "homepage": "https://www.php.net/",
+  "license": "PHP-3.01",
+  "suggest": {
+    "vcredist": "extras/vcredist2022"
+  },
+  "architecture": {
+    "64bit": {
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.2.32-nts-Win32-vs16-x64.zip",
+      "hash": "44e561948d6e336ac91cba3e59f074b687e22d9ceb824056f28ed8dfbbfdbe35"
     },
-    "architecture":
-    {
-        "64bit":
-        {
-            "url": "https://downloads.php.net/~windows/releases/archives/php-8.2.30-nts-Win32-vs16-x64.zip",
-            "hash": "8a6e409adb5f7fb196c07315c69195c4eb87eec8acae2e74a0e04ec50745a055"
-        },
-        "32bit":
-        {
-            "url": "https://downloads.php.net/~windows/releases/archives/php-8.2.30-nts-Win32-vs16-x86.zip",
-            "hash": "6f00e490c4cad59f0ebe2f6891208e0630a14af54e81070b20480ecc5f67912b"
-        }
-    },
-    "pre_install": [
-        "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
-    ],
-    "post_install": [
-        "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
-    ],
-    "bin":
-    [
-        "php.exe",
-        "php-cgi.exe",
-        "phpdbg.exe"
-    ],
-    "persist":
-    [
-        "ext",
-        "php.ini"
-    ],
-    "checkver":
-    {
-        "url": "https://www.php.net/releases/branches.php",
-        "jsonpath": "$..[?(@.version == '8.2')].latest"
-    },
-    "autoupdate":
-    {
-        "architecture":
-        {
-            "64bit":
-            {
-                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x64.zip"
-            },
-            "32bit":
-            {
-                "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x86.zip"
-            }
-        },
-        "hash":
-        {
-            "url": "https://www.php.net/backend/win-releases.json",
-            "jsonpath": "$..[?(@.path == '$basename')].sha256"
-        }
+    "32bit": {
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.2.32-nts-Win32-vs16-x86.zip",
+      "hash": "9eca7dbb3de5ab43acdf810fade0cfd52bc8ad6603bd84d69616d7020f57f218"
     }
+  },
+  "pre_install": [
+    "if (!(Test-Path \"$dir\\php.ini\")) { Copy-Item \"$dir\\php.ini-development\" \"$dir\\php.ini\" }"
+  ],
+  "post_install": [
+    "(Get-Content \"$dir\\php.ini\") | % { $_ -replace ';\\s?(extension_dir = \"ext\")', '$1' } | Set-Content \"$dir\\php.ini\""
+  ],
+  "bin": [
+    "php.exe",
+    "php-cgi.exe",
+    "phpdbg.exe"
+  ],
+  "persist": [
+    "ext",
+    "php.ini"
+  ],
+  "checkver": {
+    "url": "https://downloads.php.net/~windows/releases/releases.json",
+    "jsonpath": "$.[?(@.version =~ /^8\\.5\\.\\d+/)]",
+    "reverse": true
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x64.zip"
+      },
+      "32bit": {
+        "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x86.zip"
+      }
+    },
+    "hash": {
+      "url": "https://downloads.php.net/~windows/releases/releases.json",
+      "jsonpath": "$.$version.nts.$architecture.sha256"
+    }
+  }
 }
