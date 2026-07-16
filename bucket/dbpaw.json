@@ -11,8 +11,9 @@
     },
     "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall.exe\" -Force -Recurse -ErrorAction Ignore",
     "pre_uninstall": [
-        "Remove-Item \"$env:APPDATA\\com.dbpaw.desktop\" -Force -Recurse -ErrorAction Ignore",
-        "Remove-Item \"$env:LOCALAPPDATA\\com.dbpaw.desktop\" -Force -Recurse -ErrorAction Ignore"
+        "Remove-Item \"$env:APPDATA\\dbpaw\" -Force -Recurse -ErrorAction Ignore",
+        "Remove-Item \"$env:APPDATA\\com.father.dbpaw\" -Force -Recurse -ErrorAction Ignore",
+        "Remove-Item \"$env:LOCALAPPDATA\\com.father.dbpaw\" -Force -Recurse -ErrorAction Ignore"
     ],
     "shortcuts": [
         [
