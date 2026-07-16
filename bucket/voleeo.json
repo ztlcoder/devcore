@@ -1,0 +1,34 @@
+{
+    "version": "0.15.0",
+    "description": "Voleeo API client - A modern API client application.",
+    "homepage": "https://github.com/voleeo/voleeo-api",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/voleeo/voleeo-api/releases/download/v0.15.0/Voleeo_0.15.0_x64-setup.exe#/dl.7z",
+            "hash": "c0a90098598da337731f66d1963ab758ba4ad79ef837010d5d481d7cf7ade6e1"
+        }
+    },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall.exe\" -Force -Recurse -ErrorAction Ignore",
+    "pre_uninstall": [
+        "Remove-Item \"$env:APPDATA\\voleeo-api\" -Force -Recurse -ErrorAction Ignore",
+        "Remove-Item \"$env:LOCALAPPDATA\\voleeo-api\" -Force -Recurse -ErrorAction Ignore"
+    ],
+    "shortcuts": [
+        [
+            "Voleeo.exe",
+            "Voleeo"
+        ]
+    ],
+    "checkver": {
+        "github": "https://github.com/voleeo/voleeo-api",
+        "regex": "v([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/voleeo/voleeo-api/releases/download/v$version/Voleeo_$version_x64-setup.exe#/dl.7z"
+            }
+        }
+    }
+}
