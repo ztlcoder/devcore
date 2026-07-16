@@ -11,8 +11,8 @@
     },
     "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall.exe\" -Force -Recurse -ErrorAction Ignore",
     "pre_uninstall": [
-        "Remove-Item \"$env:APPDATA\\voleeo-api\" -Force -Recurse -ErrorAction Ignore",
-        "Remove-Item \"$env:LOCALAPPDATA\\voleeo-api\" -Force -Recurse -ErrorAction Ignore"
+        "Remove-Item \"$env:APPDATA\\com.voleeo.desktop\" -Force -Recurse -ErrorAction Ignore",
+        "Remove-Item \"$env:LOCALAPPDATA\\com.voleeo.desktop\" -Force -Recurse -ErrorAction Ignore"
     ],
     "shortcuts": [
         [
