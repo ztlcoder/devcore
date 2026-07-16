@@ -1,33 +1,33 @@
 {
-    "version": "0.15.0",
-    "description": "Voleeo API client - A modern API client application.",
-    "homepage": "https://github.com/voleeo/voleeo-api",
-    "license": "MIT",
+    "version": "0.5.13",
+    "description": "DbPaw - A database client application.",
+    "homepage": "https://github.com/codeErrorSleep/dbpaw",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/voleeo/voleeo-api/releases/download/v0.15.0/Voleeo_0.15.0_x64-setup.exe#/dl.7z",
-            "hash": "c0a90098598da337731f66d1963ab758ba4ad79ef837010d5d481d7cf7ade6e1"
+            "url": "https://github.com/codeErrorSleep/dbpaw/releases/download/v0.5.13/DbPaw_0.5.13_x64-setup.exe#/dl.7z",
+            "hash": "8a5ffd46c8dc9e47e38d4385cc3738a343b7ec0463357b64fb0b719520792119"
         }
     },
     "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall.exe\" -Force -Recurse -ErrorAction Ignore",
     "pre_uninstall": [
-        "Remove-Item \"$env:APPDATA\\com.voleeo.desktop\" -Force -Recurse -ErrorAction Ignore",
-        "Remove-Item \"$env:LOCALAPPDATA\\com.voleeo.desktop\" -Force -Recurse -ErrorAction Ignore"
+        "Remove-Item \"$env:APPDATA\\com.dbpaw.desktop\" -Force -Recurse -ErrorAction Ignore",
+        "Remove-Item \"$env:LOCALAPPDATA\\com.dbpaw.desktop\" -Force -Recurse -ErrorAction Ignore"
     ],
     "shortcuts": [
         [
-            "Voleeo.exe",
-            "Voleeo"
+            "DbPaw.exe",
+            "DbPaw"
         ]
     ],
     "checkver": {
-        "github": "https://github.com/voleeo/voleeo-api",
+        "github": "https://github.com/codeErrorSleep/dbpaw",
         "regex": "v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/voleeo/voleeo-api/releases/download/v$version/Voleeo_$version_x64-setup.exe#/dl.7z"
+                "url": "https://github.com/codeErrorSleep/dbpaw/releases/download/v$version/DbPaw_$version_x64-setup.exe#/dl.7z"
             }
         }
     }
