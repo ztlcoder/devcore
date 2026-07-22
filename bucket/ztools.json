@@ -26,6 +26,15 @@
             "    if (Test-Path $dir) {",
             "        Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue",
             "    }",
+            "}",
+            "$fuzzyPaths = @(",
+            "    \"$env:LOCALAPPDATA\\CrashDumps\\*ZTools*\",",
+            "    \"$env:ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\*ZTools*\",",
+            "    \"${env:ProgramFiles(x86)}\\sougou\\用户数据\\SogouPY\\LOG\\IME\\*ZTools*\",",
+            "    \"$env:ProgramFiles\\sougou\\用户数据\\SogouPY\\LOG\\IME\\*ZTools*\"",
+            ")",
+            "foreach ($path in $fuzzyPaths) {",
+            "    Get-Item -Path $path -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue",
             "}"
         ]
     },
