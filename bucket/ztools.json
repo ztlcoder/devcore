@@ -1,0 +1,40 @@
+{
+    "version": "3.0.1",
+    "description": "ZTools software application.",
+    "homepage": "https://github.com/ZToolsCenter/ZTools",
+    "license": "Unknown",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ZToolsCenter/ZTools/releases/download/v3.0.1/ZTools-3.0.1-win-x64.zip",
+            "hash": "081cb3377d59c0b0371762cb5a41b8e93d6131987c3f656f4f866bda49f6d3d8"
+        }
+    },
+    "bin": "ZTools.exe",
+    "shortcuts": [
+        [
+            "ZTools.exe",
+            "ZTools"
+        ]
+    ],
+    "uninstaller": {
+        "script": [
+            "$appDataDirs = @(",
+            "    \"$env:USERPROFILE\\.ztools\",",
+            "    \"$env:APPDATA\\ZTools\"",
+            ")",
+            "foreach ($dir in $appDataDirs) {",
+            "    if (Test-Path $dir) {",
+            "        Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue",
+            "    }",
+            "}"
+        ]
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/ZToolsCenter/ZTools/releases/download/v$version/ZTools-$version-win-x64.zip"
+            }
+        }
+    }
+}
