@@ -1,10 +1,10 @@
 {
-  "version": "5.5.0",
+  "version": "5.5.2",
   "description": "Powerful software uninstaller with advanced leftover scanning.",
   "homepage": "https://www.revouninstaller.com/",
   "license": "Shareware",
   "url": "https://download.revouninstaller.com/download/RevoUninProSetup.exe",
-  "hash": "4aa4ac0ee865d3526f5631f51b91160131755c051677c629310733e25883ef3f",
+  "hash": "2c05cfcee763b863fc843f703d48083c1ec9299da7e18aab45fe9b019d043538",
   "innosetup": true,
   "pre_install": [
     "# 1. 修复所有带逗号后缀的文件名",
