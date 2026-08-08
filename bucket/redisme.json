@@ -1,12 +1,12 @@
 {
-    "version": "4.6.1",
+    "version": "4.7.0",
     "description": "A modern, lightweight Redis desktop client built with Electron / Webview.",
     "homepage": "https://github.com/hepengju/redis-me",
     "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/hepengju/redis-me/releases/download/v4.6.1/RedisME_4.6.1_portable_x64.zip",
-            "hash": "8aac45f4a20a6ec1f3968b909f7f00a5260ad5b21cf456a915b87ccba1a85003"
+            "url": "https://github.com/hepengju/redis-me/releases/download/v4.7.0/RedisME_4.7.0_portable_x64.zip",
+            "hash": "4afa7edcc79fc6e9c7142b29ddc65223b405d19935767261c33d0c54c5c46a39"
         }
     },
     "bin": "RedisME.exe",
