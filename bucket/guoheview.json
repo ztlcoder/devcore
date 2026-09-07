@@ -1,23 +1,23 @@
 {
-    "version": "3.2.7.98",
-    "description": "GuoheView",
-    "homepage": "https://rj.lovestu.com/",
-    "license": "Unknown",
-    "url": "https://rj.lovestu.com/api/v1/release-files/131/download?filename=1#/dl.7z",
-    "hash": "SKIP",
-    "extract_dir": "GuoheViewPortable",
-    "bin": "GuoheView.exe",
-    "shortcuts": [
-        [
-            "GuoheView.exe",
-            "GuoheView"
-        ]
-    ],
-    "checkver": {
-        "url": "https://rj.lovestu.com/api/v1/release-files/131",
-        "jsonpath": "$.data.version"
-    },
-    "autoupdate": {
-        "url": "https://rj.lovestu.com/api/v1/release-files/131/download?filename=1#/dl.7z"
-    }
+  "version": "3.2.7.98",
+  "description": "GuoheView",
+  "homepage": "https://rj.lovestu.com/",
+  "license": "Unknown",
+  "url": "https://rj.lovestu.com/api/v1/release-files/131/download?filename=1#/dl.7z",
+  "hash": "f577d810f4da0b749526937406fbb1699bb8da029334efa0fb5d31ea629630eb",
+  "extract_dir": "GuoheViewPortable",
+  "bin": "GuoheView.exe",
+  "shortcuts": [
+    [
+      "GuoheView.exe",
+      "GuoheView"
+    ]
+  ],
+  "checkver": {
+    "url": "https://rj.lovestu.com/api/v1/release-files/131",
+    "jsonpath": "$.data.version"
+  },
+  "autoupdate": {
+    "url": "https://rj.lovestu.com/api/v1/release-files/131/download?filename=1#/dl.7z"
+  }
 }
