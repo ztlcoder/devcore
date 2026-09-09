@@ -3,16 +3,8 @@
   "description": "微信开发者工具官方版",
   "version": "2.02.2608070",
   "license": "Freeware",
-  "architecture": {
-    "64bit": {
-      "url": "https://devtools.wxqcloud.qq.com.cn/WechatWebDev/release/be1ec64cf6184b0fa64091919793f068/wechat_devtools_2.02.2608070_win32_x64.exe",
-      "hash": "f817db8dd71c9a9b27583c18a17c300144314162ca7b7f944b6262c458b127f7"
-    },
-    "32bit": {
-      "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=win32_ia32&from=mpwiki&download_version=2022608070&version_type=1#/installer.exe",
-      "hash": "b221ca766c951bd195944517039b829ca2c98df784addc05b89201f9c6f96eac"
-    }
-  },
+  "url": "https://devtools.wxqcloud.qq.com.cn/WechatWebDev/release/be1ec64cf6184b0fa64091919793f068/wechat_devtools_2.02.2608070_win32_x64.exe#/installer.exe",
+  "hash": "a502dead2e4fb6dcb0b5e157e1f2b9ac00c10a20f1940917112a1f8481ed5ed9",
   "persist": "wechat-devtools",
   "installer": {
     "script": [
@@ -37,17 +29,10 @@
   ],
   "checkver": {
     "url": "https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html",
-    "regex": "href=\"(?<url>https://devtools\\.wxqcloud\\.qq\\.com\\.cn/WechatWebDev/release/(?<hash>[a-f0-9]+)/wechat_devtools_(?<version>[\\d.]+)_win32_x64\\.exe)\""
+    "regex": "/release/(?<path>[a-f0-9]+)/wechat_devtools_(?<version>[\\d.]+)_win32_x64\\.exe"
   },
   "autoupdate": {
-    "architecture": {
-      "64bit": {
-        "url": "https://devtools.wxqcloud.qq.com.cn/WechatWebDev/release/$matchHash/wechat_devtools_$version_win32_x64.exe#/installer.exe"
-      },
-      "32bit": {
-        "url": "https://servicewechat.com/wxa-dev-logic/download_redirect?type=win32_ia32&from=mpwiki&download_version=$cleanVersion&version_type=1#/installer.exe"
-      }
-    }
+    "url": "https://devtools.wxqcloud.qq.com.cn/WechatWebDev/release/$matchPath/wechat_devtools_$version_win32_x64.exe#/installer.exe"
   },
   "notes": "User data is persisted in the 'wechat-devtools' folder and symlinked to %APPDATA%."
 }
