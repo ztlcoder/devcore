@@ -1,12 +1,12 @@
 {
-    "version": "0.6.5",
+    "version": "0.6.8",
     "description": "DBX database client or utility.",
     "homepage": "https://github.com/t8y2/dbx",
     "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/t8y2/dbx/releases/download/v0.6.5/DBX_0.6.5_x64-portable.zip",
-            "hash": "f240bdf3ebf16787451219aac2e6fb5459e77196843e67d2f9972e52ac94bb8f"
+            "url": "https://github.com/t8y2/dbx/releases/download/v0.6.8/DBX_0.6.8_x64-portable.zip",
+            "hash": "cf9263aa230f8a8b4c859f78092699045f2205dd91e4328b66bc4a35c2ec7dec"
         }
     },
     "bin": "DBX.exe",
