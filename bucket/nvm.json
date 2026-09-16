@@ -6,12 +6,8 @@
     "notes": "You'll need to restart PowerShell/cmd to reload Environment Variables so nvm will work correctly.",
     "url": "https://github.com/nvm-windows/nvm/releases/download/v2.0.0/nvm-2.0.0-amd64-setup.exe",
     "hash": "afaee67d3d7bc8ccad0b1b06f63b0f2d6b008bc7e55d5205043f095b4906ac11",
-    "bin": [
-        [
-            "nvm-2.0.0-amd64-setup.exe",
-            "nvm"
-        ]
-    ],
+    "innosetup": true,
+    "bin": "nvm.exe",
     "pre_install": [
         "if (!(Test-Path \"$dir\\settings.txt\")) {",
         "    \"root: $persist_dir\\nodejs`r`narch: 64`r`nproxy: none\" | Out-File -Encoding ASCII \"$dir\\settings.txt\"",
@@ -32,12 +28,6 @@
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/nvm-windows/nvm/releases/download/v$version/nvm-$version-amd64-setup.exe",
-        "bin": [
-            [
-                "nvm-$version-amd64-setup.exe",
-                "nvm"
-            ]
-        ],
         "hash": {
             "url": "https://github.com/nvm-windows/nvm/releases/tag/v$version",
             "regex": "$sha256"
