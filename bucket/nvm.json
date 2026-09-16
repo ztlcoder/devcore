@@ -3,21 +3,26 @@
     "description": "A node.js version management utility for Windows.",
     "homepage": "https://github.com/nvm-windows/nvm",
     "license": "MIT",
-    "notes": "You'll need to restart PowerShell/cmd to reload Environment Variables so nvm will work correctly.",
-    "url": "https://github.com/nvm-windows/nvm/releases/download/v2.0.0/nvm-2.0.0-amd64-setup.exe",
-    "hash": "afaee67d3d7bc8ccad0b1b06f63b0f2d6b008bc7e55d5205043f095b4906ac11",
-    "innosetup": true,
-    "bin": "nvm.exe",
-    "post_install": [
-        "& \"$dir\\nvm.exe\" config set working_directory=\"$persist_dir\\nodejs\""
-    ],
-    "persist": "nodejs",
-    "checkver": "github",
+    "notes": "You'll need to restart powershell/cmd to have it reload Environment Variables so nvm will work correctly",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/nvm-windows/nvm/releases/download/v2.0.0/nvm-2.0.0-amd64-setup.exe",
+            "hash": "afaee67d3d7bc8ccad0b1b06f63b0f2d6b008bc7e55d5205043f095b4906ac11"
+        }
+    },
+    "installer": {
+        "script": [
+            "Start-Process -FilePath \"$dir\\nvm-2.0.0-amd64-setup.exe\" -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait"
+        ]
+    },
+    "checkver": {
+        "github": "https://github.com/nvm-windows/nvm"
+    },
     "autoupdate": {
-        "url": "https://github.com/nvm-windows/nvm/releases/download/v$version/nvm-$version-amd64-setup.exe",
-        "hash": {
-            "url": "https://github.com/nvm-windows/nvm/releases/tag/v$version",
-            "regex": "$sha256"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/nvm-windows/nvm/releases/download/v$version/nvm-$version-amd64-setup.exe"
+            }
         }
     }
 }
