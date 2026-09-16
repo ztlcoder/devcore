@@ -10,16 +10,16 @@
     "bin": "nvm.exe",
     "pre_install": [
         "if (!(Test-Path \"$dir\\settings.txt\")) {",
-        "    \"root: $persist_dir\\nodejs`r`narch: 64`r`nproxy: none\" | Out-File -Encoding ASCII \"$dir\\settings.txt\"",
+        "    \"root: $persist_dir\\nodejs`r`npath: $dir\\nodejs`r`narch: 64`r`nproxy: none\" | Out-File -Encoding ASCII \"$dir\\settings.txt\"",
         "}"
     ],
     "env_add_path": [
         ".",
-        "nodejs\\nodejs"
+        "nodejs"
     ],
     "env_set": {
         "NVM_HOME": "$dir",
-        "NVM_SYMLINK": "$persist_dir\\nodejs\\nodejs"
+        "NVM_SYMLINK": "$dir\\nodejs"
     },
     "persist": [
         "nodejs",
