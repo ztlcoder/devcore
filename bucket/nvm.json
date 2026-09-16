@@ -8,23 +8,10 @@
     "hash": "afaee67d3d7bc8ccad0b1b06f63b0f2d6b008bc7e55d5205043f095b4906ac11",
     "innosetup": true,
     "bin": "nvm.exe",
-    "pre_install": [
-        "if (!(Test-Path \"$dir\\settings.txt\")) {",
-        "    \"root: $persist_dir\\nodejs`r`npath: $dir\\nodejs`r`narch: 64`r`nproxy: none\" | Out-File -Encoding ASCII \"$dir\\settings.txt\"",
-        "}"
+    "post_install": [
+        "& \"$dir\\nvm.exe\" config set working_directory=\"$persist_dir\\nodejs\""
     ],
-    "env_add_path": [
-        ".",
-        "nodejs"
-    ],
-    "env_set": {
-        "NVM_HOME": "$dir",
-        "NVM_SYMLINK": "$dir\\nodejs"
-    },
-    "persist": [
-        "nodejs",
-        "settings.txt"
-    ],
+    "persist": "nodejs",
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/nvm-windows/nvm/releases/download/v$version/nvm-$version-amd64-setup.exe",
