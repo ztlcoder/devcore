@@ -1,71 +1,71 @@
 {
-  "version": "12.8.2",
-  "description": "A fast and disk space efficient Node package manager.",
-  "homepage": "https://pnpm.io/",
-  "license": "MIT",
-  "architecture": {
-    "64bit": {
-      "url": "https://github.com/pnpm/pnpm/releases/download/v12.8.2/pnpm-win32-x64.zip",
-      "hash": "4a3ac4823860e0f3dd657ce3dff0641c279d55f529dc3208b85ac208322964a4"
-    },
-    "arm64": {
-      "url": "https://github.com/pnpm/pnpm/releases/download/v12.8.2/pnpm-win32-arm64.zip",
-      "hash": "71aa8e79f008b9b07600df0e7ae78d414a679ed33f43d1f7ba90caa211baba94"
-    }
-  },
-  "env_set": {
-    "PNPM_HOME": "$persist_dir\\global",
-    "XDG_CONFIG_HOME": "$persist_dir\\config",
-    "XDG_CACHE_HOME": "$persist_dir\\cache",
-    "XDG_DATA_HOME": "$persist_dir\\data",
-    "XDG_STATE_HOME": "$persist_dir\\state",
-    "pnpm_config_registry": "https://registry.npmmirror.com/"
-  },
-  "env_add_path": "global",
-  "bin": [
-    "pnpm.exe",
-    [
-      "pnpm.exe",
-      "pnpx"
-    ]
-  ],
-  "persist": [
-    "config",
-    "store",
-    "cache",
-    "state",
-    "global"
-  ],
-  "post_install": [
-    "& \"$dir\\pnpm.exe\" config set store-dir \"$persist_dir\\store\"",
-    "& \"$dir\\pnpm.exe\" config set cache-dir \"$persist_dir\\cache\"",
-    "& \"$dir\\pnpm.exe\" config set state-dir \"$persist_dir\\state\"",
-    "& \"$dir\\pnpm.exe\" config set global-bin-dir \"$persist_dir\\global\""
-  ],
-  "uninstaller": {
-    "script": [
-      "# 1. 强行删除 persist 持久化数据目录（包含 store, config, global 等）",
-      "if (Test-Path $persist_dir) {",
-      "    Remove-Item -Path $persist_dir -Recurse -Force -ErrorAction SilentlyContinue",
-      "}",
-      "# 2. 强行清理可能残留在用户注册表中的 pnpm 环境变量（双重保险）",
-      "$envVars = @('PNPM_HOME', 'XDG_CONFIG_HOME', 'XDG_CACHE_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME', 'pnpm_config_registry')",
-      "foreach ($var in $envVars) {",
-      "    [Environment]::SetEnvironmentVariable($var, $null, 'User')",
-      "}"
-    ]
-  },
-  "checkver": {
-    "github": "https://github.com/pnpm/pnpm"
-  },
-  "autoupdate": {
+    "version": "12.8.1",
+    "description": "A fast and disk space efficient Node package manager.",
+    "homepage": "https://pnpm.io/",
+    "license": "MIT",
     "architecture": {
-      "64bit": {
-        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-x64.zip"
-      },
-      "arm64": {
-        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-arm64.zip"
-      }
+        "64bit": {
+            "url": "https://github.com/pnpm/pnpm/releases/download/v12.8.1/pnpm-win32-x64.zip",
+            "hash": "823fc131326afeee292e113e2299ca9851c3ee5148a7de921c897f0170de6f05"
+        },
+        "arm64": {
+            "url": "https://github.com/pnpm/pnpm/releases/download/v12.8.1/pnpm-win32-arm64.zip",
+            "hash": "e994ae2e82cd65fb7f0918414c9fcc104dc45782002db54e75e05c7bbb0c81b2"
+        }
+    },
+    "env_set": {
+        "PNPM_HOME": "$persist_dir\\global",
+        "XDG_CONFIG_HOME": "$persist_dir\\config",
+        "XDG_CACHE_HOME": "$persist_dir\\cache",
+        "XDG_DATA_HOME": "$persist_dir\\data",
+        "XDG_STATE_HOME": "$persist_dir\\state",
+        "pnpm_config_registry": "https://registry.npmmirror.com/"
+    },
+    "env_add_path": "global",
+    "bin": [
+        "pnpm.exe",
+        [
+            "pnpm.exe",
+            "pnpx"
+        ]
+    ],
+    "persist": [
+        "config",
+        "store",
+        "cache",
+        "state",
+        "global"
+    ],
+    "post_install": [
+        "& \"$dir\\pnpm.exe\" config set store-dir \"$persist_dir\\store\"",
+        "& \"$dir\\pnpm.exe\" config set cache-dir \"$persist_dir\\cache\"",
+        "& \"$dir\\pnpm.exe\" config set state-dir \"$persist_dir\\state\"",
+        "& \"$dir\\pnpm.exe\" config set global-bin-dir \"$persist_dir\\global\""
+    ],
+    "uninstaller": {
+        "script": [
+            "# 1. 强行删除 persist 持久化数据目录（包含 store, config, global 等）",
+            "if (Test-Path $persist_dir) {",
+            "    Remove-Item -Path $persist_dir -Recurse -Force -ErrorAction SilentlyContinue",
+            "}",
+            "# 2. 强行清理可能残留在用户注册表中的 pnpm 环境变量（双重保险）",
+            "$envVars = @('PNPM_HOME', 'XDG_CONFIG_HOME', 'XDG_CACHE_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME', 'pnpm_config_registry')",
+            "foreach ($var in $envVars) {",
+            "    [Environment]::SetEnvironmentVariable($var, $null, 'User')",
+            "}"
+        ]
+    },
+    "checkver": {
+        "github": "https://github.com/pnpm/pnpm"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-x64.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win32-arm64.zip"
+            }
+        }
     }
-  }
 }
