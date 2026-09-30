@@ -14,13 +14,14 @@
         }
     },
     "env_set": {
-        "PNPM_HOME": "$persist_dir",
+        "PNPM_HOME": "$persist_dir\\bin",
         "XDG_CONFIG_HOME": "$persist_dir\\config",
         "XDG_CACHE_HOME": "$persist_dir\\cache",
         "XDG_DATA_HOME": "$persist_dir\\data",
         "XDG_STATE_HOME": "$persist_dir\\state",
         "pnpm_config_registry": "https://registry.npmmirror.com/"
     },
+    "env_add_path": "bin",
     "bin": [
         "pnpm.exe",
         [
@@ -37,21 +38,25 @@
         "state"
     ],
     "post_install": [
-        "# 定义需要创建的持久化子目录",
-        "$dirs = @('bin', 'config/pnpm', 'cache', 'data', 'state', 'store')",
+        "$dirs = @('bin', 'config\\pnpm', 'cache', 'data', 'state', 'store')",
         "foreach ($subDir in $dirs) {",
         "    $targetPath = \"$persist_dir\\$subDir\"",
         "    if (!(Test-Path $targetPath)) { ",
         "        New-Item -ItemType Directory -Path $targetPath -Force | Out-Null ",
         "    }",
-        "}",
-        "# 将物理 bin 目录注入 Path (解决 pnpm v11 的路径自检问题)",
-        "$pnpmBin = \"$persist_dir\\bin\"",
-        "$oldPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
-        "if ($oldPath -notlike \"*$pnpmBin*\") { ",
-        "    [Environment]::SetEnvironmentVariable('Path', \"$oldPath;$pnpmBin\", 'User') ",
         "}"
     ],
+    "uninstaller": {
+        "script": [
+            "# 清理此前可能通过 PowerShell 手动写入 User Path 中的持久化 bin 目录",
+            "$pnpmBin = \"$persist_dir\\bin\"",
+            "$userPath = [Environment]::GetEnvironmentVariable('Path', 'User')",
+            "if ($userPath -like \"*$pnpmBin*\") {",
+            "    $newPath = ($userPath -split ';' | Where-Object { $_ -and $_ -ne $pnpmBin }) -join ';'",
+            "    [Environment]::SetEnvironmentVariable('Path', $newPath, 'User')",
+            "}"
+        ]
+    },
     "checkver": {
         "github": "https://github.com/pnpm/pnpm"
     },
