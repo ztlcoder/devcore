@@ -42,6 +42,19 @@
         "& \"$dir\\pnpm.exe\" config set state-dir \"$persist_dir\\state\"",
         "& \"$dir\\pnpm.exe\" config set global-bin-dir \"$persist_dir\\global\""
     ],
+    "uninstaller": {
+        "script": [
+            "# 1. 强行删除 persist 持久化数据目录（包含 store, config, global 等）",
+            "if (Test-Path $persist_dir) {",
+            "    Remove-Item -Path $persist_dir -Recurse -Force -ErrorAction SilentlyContinue",
+            "}",
+            "# 2. 强行清理可能残留在用户注册表中的 pnpm 环境变量（双重保险）",
+            "$envVars = @('PNPM_HOME', 'XDG_CONFIG_HOME', 'XDG_CACHE_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME', 'pnpm_config_registry')",
+            "foreach ($var in $envVars) {",
+            "    [Environment]::SetEnvironmentVariable($var, $null, 'User')",
+            "}"
+        ]
+    },
     "checkver": {
         "github": "https://github.com/pnpm/pnpm"
     },
