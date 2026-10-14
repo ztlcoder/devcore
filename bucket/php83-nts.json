@@ -1,5 +1,5 @@
 {
-  "version": "8.3.32",
+  "version": "8.3.35",
   "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
   "homepage": "https://www.php.net/",
   "license": "PHP-3.01",
@@ -8,12 +8,12 @@
   },
   "architecture": {
     "64bit": {
-      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.32-nts-Win32-vs16-x64.zip",
-      "hash": "67c724e7b675b50d8f0476d816c3e2a3064ce3a53d572575d63c321cc0a3a6cf"
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.35-nts-Win32-vs16-x64.zip",
+      "hash": "25a8e2ac9ff30f1d768d1447c09a600617fa6e6082729f6e95f008b59c91fe45"
     },
     "32bit": {
-      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.32-nts-Win32-vs16-x86.zip",
-      "hash": "f4053d542dda43b4e684be03d87f1b61bf8ccfe5a5ae9ad72ea59b4015234ea8"
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.35-nts-Win32-vs16-x86.zip",
+      "hash": "3021dcdd0432df641537ca193b0766dac18debc27d81f4dd9dc49240d04e6f75"
     }
   },
   "pre_install": [
