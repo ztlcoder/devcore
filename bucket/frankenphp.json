@@ -1,12 +1,12 @@
 {
-    "version": "1.13.0",
+    "version": "1.13.1",
     "description": "The modern PHP application server, written in Go on top of Caddy",
     "homepage": "https://frankenphp.dev/",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/php/frankenphp/releases/download/v1.13.0/frankenphp-windows-x86_64.zip",
-            "hash": "641cd13d3f887b5b98d90b2e0b7e14a2c163810a7abfb7da64a260ad1dfd8691"
+            "url": "https://github.com/php/frankenphp/releases/download/v1.13.1/frankenphp-windows-x86_64.zip",
+            "hash": "662c615f151ee8db62b055b3d0816a1c67ffb2deb787c36e2b57474d17792bd0"
         }
     },
     "bin": "frankenphp.exe",
