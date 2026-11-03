@@ -1,0 +1,28 @@
+{
+    "version": "1.5.5",
+    "description": "PHP Installer for Extensions (PIE), the official installer for PHP extensions.",
+    "homepage": "https://github.com/php/pie",
+    "license": "BSD-3-Clause",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/php/pie/releases/download/1.5.5/pie-Windows-X64.exe",
+            "hash": "2a719fd9e0920048ff30a8d086e61385da92e692b2df0c59cef5fb8aef310c5c"
+        }
+    },
+    "bin": [
+        [
+            "pie-Windows-X64.exe",
+            "pie"
+        ]
+    ],
+    "checkver": {
+        "github": "https://github.com/php/pie"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/php/pie/releases/download/$version/pie-Windows-X64.exe"
+            }
+        }
+    }
+}
