@@ -1,6 +1,6 @@
 {
     "version": "1.5.5",
-    "description": "PHP Installer for Extensions (PIE), the official installer for PHP extensions.",
+    "description": "The PHP Installer for Extensions.",
     "homepage": "https://github.com/php/pie",
     "license": "BSD-3-Clause",
     "architecture": {
