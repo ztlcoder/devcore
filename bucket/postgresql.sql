@@ -25,7 +25,7 @@
     "post_install": [
         "$dataDir = Join-Path $dir 'postgresql\\data'",
         "if (-not (Test-Path (Join-Path $dataDir 'PG_VERSION'))) {",
-        "    Invoke-ExternalCommand -FilePath \"$dir\\bin\\initdb.exe\" -ArgumentList @('--username=postgres', '--encoding=UTF8', '--locale=C', \"--pgdata=$dataDir\") | Out-Null",
+        "    Invoke-ExternalCommand -FilePath (Join-Path $dir 'bin\\initdb.exe') -ArgumentList @('--username=postgres', '--encoding=UTF8', '--locale=C', ('--pgdata=' + $dataDir)) | Out-Null",
         "}"
     ],
     "pre_uninstall": [
