@@ -1,6 +1,7 @@
+
 {
-  "version": "8.3.35",
-  "description": "A popular general-purpose scripting language that is especially suited to web development. (non-thread safe)",
+  "version": "8.3.36-1",
+  "description": "A popular general-purpose scripting language that is especially suited for web development. (non-thread safe)",
   "homepage": "https://www.php.net/",
   "license": "PHP-3.01",
   "suggest": {
@@ -8,12 +9,12 @@
   },
   "architecture": {
     "64bit": {
-      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.35-nts-Win32-vs16-x64.zip",
-      "hash": "25a8e2ac9ff30f1d768d1447c09a600617fa6e6082729f6e95f008b59c91fe45"
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.36-1-nts-Win32-vs16-x64.zip",
+      "hash": "1a097d52b7a68622cdc723073b61cc70caf79c941218ff65b2d8441dbc6b10d4"
     },
     "32bit": {
-      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.35-nts-Win32-vs16-x86.zip",
-      "hash": "3021dcdd0432df641537ca193b0766dac18debc27d81f4dd9dc49240d04e6f75"
+      "url": "https://downloads.php.net/~windows/releases/archives/php-8.3.36-1-nts-Win32-vs16-x86.zip",
+      "hash": "2dd0c25c136812d2b7fdca85cbdd442a28aee758bff938c973f644c1c9235b98"
     }
   },
   "pre_install": [
@@ -28,13 +29,11 @@
     "phpdbg.exe"
   ],
   "persist": [
-    "ext",
     "php.ini"
   ],
   "checkver": {
     "url": "https://downloads.php.net/~windows/releases/releases.json",
-    "jsonpath": "$.[?(@.version =~ /^8\\.5\\.\\d+/)]",
-    "reverse": true
+    "jsonpath": "$['8.3'].version"
   },
   "autoupdate": {
     "architecture": {
@@ -44,10 +43,6 @@
       "32bit": {
         "url": "https://downloads.php.net/~windows/releases/archives/php-$version-nts-Win32-vs16-x86.zip"
       }
-    },
-    "hash": {
-      "url": "https://downloads.php.net/~windows/releases/releases.json",
-      "jsonpath": "$.$version.nts.$architecture.sha256"
     }
   }
 }
