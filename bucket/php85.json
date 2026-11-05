@@ -28,7 +28,8 @@
     "phpdbg.exe"
   ],
   "persist": [
-    "php.ini"
+      "ext",
+      "php.ini"
   ],
   "checkver": {
     "url": "https://downloads.php.net/~windows/releases/releases.json",
