@@ -1,51 +1,51 @@
 {
-    "version": "2.11.8",
-    "description": "HTTP/2 web server with automatic HTTPS",
-    "homepage": "https://caddyserver.com",
-    "license": "Apache-2.0",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.8/caddy_2.11.8_windows_amd64.zip",
-            "hash": "fff45b117b9d9ea5cc3f824f3c18de89630bcb43a0b759ca5e7163b7a3c1fb39ec7dae7f3147012d602213c950a46c8b0ef8095c77109e807ebf90132deeb759"
-        },
-        "arm64": {
-            "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.8/caddy_2.11.8_windows_arm64.zip",
-            "hash": "7e650d020997cff6761caad667ea91cbb803cbccc358de83dd6fce332ce5fd13ec5d0c6e434803dca2f5877dc5a4243d9516395e51211e3fe204f963de70134d"
-        }
+  "version": "2.11.8",
+  "description": "HTTP/2 web server with automatic HTTPS",
+  "homepage": "https://caddyserver.com",
+  "license": "Apache-2.0",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.8/caddy_2.11.8_windows_amd64.zip",
+      "hash": "eaf062366aeba9d782af7f70edb4b49097652be1af31e8141f9f2761aa25cb1f"
     },
-    "bin": "caddy.exe",
-    "pre_install": [
-        "if (-not (Test-Path -LiteralPath (Join-Path $persist_dir 'caddy'))) {",
-        "    $caddyDir = Join-Path $dir 'caddy'",
-        "    New-Item -ItemType Directory -Path (Join-Path $caddyDir 'logs') -Force | Out-Null",
-        "    New-Item -ItemType File -Path (Join-Path $caddyDir 'Caddyfile') -Force | Out-Null",
-        "}"
-    ],
-    "persist": [
-        "caddy"
-    ],
-    "post_uninstall": [
-        "if ($cmd -eq 'uninstall' -and $env:APPDATA) {",
-        "    $caddyAppData = Join-Path $env:APPDATA 'Caddy'",
-        "    if (Test-Path -LiteralPath $caddyAppData) {",
-        "        Remove-Item -LiteralPath $caddyAppData -Recurse -Force",
-        "    }",
-        "}"
-    ],
-    "checkver": {
-        "github": "https://github.com/caddyserver/caddy"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/caddyserver/caddy/releases/download/v$version/caddy_$version_windows_amd64.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/caddyserver/caddy/releases/download/v$version/caddy_$version_windows_arm64.zip"
-            }
-        },
-        "hash": {
-            "url": "$baseurl/caddy_$version_checksums.txt"
-        }
+    "arm64": {
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.8/caddy_2.11.8_windows_arm64.zip",
+      "hash": "ac5fbbac1464bb1e1df7d39d68324d8986bc6e7343895efca5cbfcc5a2d17cf9"
     }
+  },
+  "bin": "caddy.exe",
+  "pre_install": [
+    "if (-not (Test-Path -LiteralPath (Join-Path $persist_dir 'caddy'))) {",
+    "    $caddyDir = Join-Path $dir 'caddy'",
+    "    New-Item -ItemType Directory -Path (Join-Path $caddyDir 'logs') -Force | Out-Null",
+    "    New-Item -ItemType File -Path (Join-Path $caddyDir 'Caddyfile') -Force | Out-Null",
+    "}"
+  ],
+  "persist": [
+    "caddy"
+  ],
+  "post_uninstall": [
+    "if ($cmd -eq 'uninstall' -and $env:APPDATA) {",
+    "    $caddyAppData = Join-Path $env:APPDATA 'Caddy'",
+    "    if (Test-Path -LiteralPath $caddyAppData) {",
+    "        Remove-Item -LiteralPath $caddyAppData -Recurse -Force",
+    "    }",
+    "}"
+  ],
+  "checkver": {
+    "github": "https://github.com/caddyserver/caddy"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/caddyserver/caddy/releases/download/v$version/caddy_$version_windows_amd64.zip"
+      },
+      "arm64": {
+        "url": "https://github.com/caddyserver/caddy/releases/download/v$version/caddy_$version_windows_arm64.zip"
+      }
+    },
+    "hash": {
+      "url": "$baseurl/caddy_$version_checksums.txt"
+    }
+  }
 }
