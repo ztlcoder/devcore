@@ -15,14 +15,12 @@
   },
   "bin": "caddy.exe",
   "pre_install": [
-    "if (-not (Test-Path -LiteralPath (Join-Path $persist_dir 'caddy'))) {",
-    "    $caddyDir = Join-Path $dir 'caddy'",
-    "    New-Item -ItemType Directory -Path (Join-Path $caddyDir 'logs') -Force | Out-Null",
-    "    New-Item -ItemType File -Path (Join-Path $caddyDir 'Caddyfile') -Force | Out-Null",
-    "}"
+      "New-Item -ItemType Directory -Path (Join-Path $dir 'logs') -Force | Out-Null",
+      "New-Item -ItemType File -Path (Join-Path $dir 'Caddyfile') -Force | Out-Null"
   ],
   "persist": [
-    "caddy"
+      "Caddyfile",
+      "logs"
   ],
   "post_uninstall": [
     "if ($cmd -eq 'uninstall' -and $env:APPDATA) {",
