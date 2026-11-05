@@ -1,62 +1,81 @@
 {
-    "version": "12.16.1",
+    "version": "12.17.0",
     "description": "A fast and disk space efficient Node package manager.",
     "homepage": "https://pnpm.io/",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pnpm/pnpm/releases/download/v12.16.1/pnpm-win32-x64.zip",
-            "hash": "253cd5caa8cdf3859a92995bdf1819d3b433690157616cc372af00d22eb0c6a4"
+            "url": "https://github.com/pnpm/pnpm/releases/download/v12.17.0/pnpm-win32-x64.zip",
+            "hash": "f160b053dac663c5931975d244920836ec26e6bc3516a42518db44c9d5c2ffc2"
         },
         "arm64": {
-            "url": "https://github.com/pnpm/pnpm/releases/download/v12.16.1/pnpm-win32-arm64.zip",
-            "hash": "9b401cc731e86d70de4407621d4916a5ff3ad7c3de86b42d623280b629af9dda"
+            "url": "https://github.com/pnpm/pnpm/releases/download/v12.17.0/pnpm-win32-arm64.zip",
+            "hash": "a762db3ca8975ab50356b2164b8bb988e0a10b5519476a387cd4df0678531f78"
         }
     },
-    "env_set": {
-        "PNPM_HOME": "$persist_dir\\global",
-        "XDG_CONFIG_HOME": "$persist_dir\\config",
-        "XDG_CACHE_HOME": "$persist_dir\\cache",
-        "XDG_DATA_HOME": "$persist_dir\\data",
-        "XDG_STATE_HOME": "$persist_dir\\state",
-        "pnpm_config_registry": "https://registry.npmmirror.com/"
-    },
-    "env_add_path": "global",
     "bin": [
         "pnpm.exe",
         [
             "pnpm.exe",
-            "pnpx"
+            "pn"
+        ],
+        [
+            "pnpm.exe",
+            "pnpx",
+            "dlx"
+        ],
+        [
+            "pnpm.exe",
+            "pnx",
+            "dlx"
         ]
-    ],
-    "persist": [
-        "config",
-        "store",
-        "cache",
-        "state",
-        "global"
     ],
     "post_install": [
-        "& \"$dir\\pnpm.exe\" config set store-dir \"$persist_dir\\store\"",
-        "& \"$dir\\pnpm.exe\" config set cache-dir \"$persist_dir\\cache\"",
-        "& \"$dir\\pnpm.exe\" config set state-dir \"$persist_dir\\state\"",
-        "& \"$dir\\pnpm.exe\" config set global-bin-dir \"$persist_dir\\global\""
+        "# Configure all pnpm data directories under the persistent directory",
+        "$pnpm = Join-Path $dir 'pnpm.exe'",
+        "$pnpm config set store-dir (Join-Path $persist_dir 'store')",
+        "$pnpm config set cache-dir (Join-Path $persist_dir 'cache')",
+        "$pnpm config set state-dir (Join-Path $persist_dir 'state')",
+        "$pnpm config set global-dir (Join-Path $persist_dir 'global')",
+        "$pnpm config set global-bin-dir (Join-Path $persist_dir 'bin')"
     ],
-    "uninstaller": {
-        "script": [
-            "# 1. 强行删除 persist 持久化数据目录（包含 store, config, global 等）",
-            "if (Test-Path $persist_dir) {",
-            "    Remove-Item -Path $persist_dir -Recurse -Force -ErrorAction SilentlyContinue",
-            "}",
-            "# 2. 强行清理可能残留在用户注册表中的 pnpm 环境变量（双重保险）",
-            "$envVars = @('PNPM_HOME', 'XDG_CONFIG_HOME', 'XDG_CACHE_HOME', 'XDG_DATA_HOME', 'XDG_STATE_HOME', 'pnpm_config_registry')",
-            "foreach ($var in $envVars) {",
-            "    [Environment]::SetEnvironmentVariable($var, $null, 'User')",
-            "}"
-        ]
+    "post_uninstall": [
+        "if ($cmd -eq 'uninstall') {",
+        "    foreach ($name in @('bin', 'global', 'store', 'cache', 'state')) {",
+        "        $path = Join-Path $persist_dir $name",
+        "        if (Test-Path -LiteralPath $path) {",
+        "            Remove-Item -LiteralPath $path -Recurse -Force",
+        "        }",
+        "    }",
+        "}"
+    ],
+    "env_add_path": "bin",
+    "env_set": {
+        "PNPM_HOME": "$dir"
     },
+    "persist": [
+        "bin",
+        "global",
+        "store",
+        "cache",
+        "state"
+    ],
     "checkver": {
-        "github": "https://github.com/pnpm/pnpm"
+        "github": "https://api.github.com/repos/pnpm/pnpm/releases",
+        "script": [
+            "# Check all release tags and select the latest stable version",
+            "$releases = $page | ConvertFrom-Json -ErrorAction Ignore",
+            "$latest_ver = [Version]::new(0,0,0,0)",
+            "$releases | ForEach-Object {",
+            "    if (!($_.tag_name -match '([\\d.]+)')) { return }",
+            "    if ($_.prerelease) { return }",
+            "    $ver = [Version]::new($matches[1])",
+            "    if ($ver -gt $latest_ver) { $latest_ver = $ver }",
+            "}",
+            "if ($latest_ver -eq [Version]::new(0,0,0,0)) { error \"Could not match version string in '$url'\"; return }",
+            "Write-Output $latest_ver"
+        ],
+        "regex": "([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
