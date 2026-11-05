@@ -1,3 +1,4 @@
+
 {
     "version": "18.6-5",
     "description": "Object-relational database management system based on POSTGRES.",
@@ -5,7 +6,7 @@
     "license": "PostgreSQL",
     "notes": [
         "Run 'pg_ctl start' to start the database and 'pg_ctl stop' to stop it.",
-        "Register it as a service by running 'pg_ctl register -N PostgreSQL -D \"$persist_dir\\postgresql\\data\"' from an elevated shell.",
+        "Register it as a service by running 'pg_ctl register -N PostgreSQL -D \"$persist_dir\\data\"' from an elevated shell.",
         "Add service description by running 'sc.exe description PostgreSQL \"PostgreSQL Database Server\"' from an elevated shell.",
         "Default superuser login: postgres, password: <blank>",
         "WARNING: Uninstalling this package deletes the PostgreSQL database and all persisted data."
@@ -18,34 +19,38 @@
     },
     "extract_dir": "pgsql",
     "pre_install": [
-        "if (-not (Test-Path -LiteralPath (Join-Path $persist_dir 'postgresql'))) {",
-        "    New-Item -ItemType Directory -Path (Join-Path $dir 'postgresql\\data') -Force | Out-Null",
+        "if (-not (Test-Path -LiteralPath (Join-Path $persist_dir 'data'))) {",
+        "    New-Item -ItemType Directory -Path (Join-Path $dir 'data') -Force | Out-Null",
         "}"
     ],
     "post_install": [
-        "$dataDir = Join-Path $dir 'postgresql\\data'",
-        "if (!(Test-Path (Join-Path $dataDir 'pg_hba.conf'))) {",
-        "    Invoke-ExternalCommand -FilePath \"$dir\\bin\\initdb.exe\" -ArgumentList @('--username=postgres', '--encoding=UTF8', '--locale=C', \"--pgdata=$dataDir\") | Out-Null",
+        "$dataDir = Join-Path $dir 'data'",
+        "if (-not (Test-Path -LiteralPath (Join-Path $dataDir 'PG_VERSION'))) {",
+        "    Invoke-ExternalCommand -FilePath (Join-Path $dir 'bin\\initdb.exe') -ArgumentList @('--username=postgres', '--encoding=UTF8', '--locale=C', \"--pgdata=$dataDir\") | Out-Null",
         "}"
     ],
     "pre_uninstall": [
-        "if ($cmd -eq 'uninstall') {",
-        "    $service = Get-Service -Name 'PostgreSQL' -ErrorAction SilentlyContinue",
-        "    if ($service -and $service.Status -eq 'Running') {",
-        "        Stop-Service -Name 'PostgreSQL' -Force -ErrorAction SilentlyContinue",
+        "$service = Get-Service -Name 'PostgreSQL' -ErrorAction SilentlyContinue",
+        "if ($service) {",
+        "    if ($service.Status -ne 'Stopped') {",
+        "        Stop-Service -Name 'PostgreSQL' -Force -ErrorAction Stop",
+        "    }",
+        "    & (Join-Path $dir 'bin\\pg_ctl.exe') unregister -N PostgreSQL",
+        "    if ($LASTEXITCODE -ne 0) {",
+        "        throw 'Failed to unregister PostgreSQL service. Uninstallation stopped.'",
         "    }",
         "}"
     ],
     "post_uninstall": [
         "if ($cmd -eq 'uninstall') {",
-        "    $persistData = Join-Path $persist_dir 'postgresql'",
-        "    if (Test-Path -LiteralPath $persistData) {",
-        "        Remove-Item -LiteralPath $persistData -Recurse -Force",
+        "    $dataDir = Join-Path $persist_dir 'data'",
+        "    if (Test-Path -LiteralPath $dataDir) {",
+        "        Remove-Item -LiteralPath $dataDir -Recurse -Force",
         "    }",
         "    if ($env:APPDATA) {",
-        "        $appData = Join-Path $env:APPDATA 'PostgreSQL'",
-        "        if (Test-Path -LiteralPath $appData) {",
-        "            Remove-Item -LiteralPath $appData -Recurse -Force",
+        "        $appDataDir = Join-Path $env:APPDATA 'PostgreSQL'",
+        "        if (Test-Path -LiteralPath $appDataDir) {",
+        "            Remove-Item -LiteralPath $appDataDir -Recurse -Force",
         "        }",
         "    }",
         "}"
@@ -58,11 +63,11 @@
     ],
     "env_add_path": "bin",
     "env_set": {
-        "PGDATA": "$dir\\postgresql\\data",
+        "PGDATA": "$dir\\data",
         "PG_LIB_DIR": "$dir\\lib",
         "PG_INCLUDE_DIR": "$dir\\include"
     },
-    "persist": "postgresql",
+    "persist": "data",
     "checkver": {
         "url": "https://www.enterprisedb.com/downloads/postgres-postgresql-downloads",
         "script": [
