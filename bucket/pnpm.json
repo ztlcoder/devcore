@@ -1,3 +1,4 @@
+
 {
     "version": "12.18.0",
     "description": "A fast and disk space efficient Node package manager.",
@@ -31,23 +32,10 @@
         ]
     ],
     "post_install": [
-        "# Configure all pnpm data directories under the persistent directory",
-        "$pnpm = Join-Path $dir 'pnpm.exe'",
-        "$pnpm config set store-dir (Join-Path $persist_dir 'store')",
-        "$pnpm config set cache-dir (Join-Path $persist_dir 'cache')",
-        "$pnpm config set state-dir (Join-Path $persist_dir 'state')",
-        "$pnpm config set global-dir (Join-Path $persist_dir 'global')",
-        "$pnpm config set global-bin-dir (Join-Path $persist_dir 'bin')"
-    ],
-    "post_uninstall": [
-        "if ($cmd -eq 'uninstall') {",
-        "    foreach ($name in @('bin', 'global', 'store', 'cache', 'state')) {",
-        "        $path = Join-Path $persist_dir $name",
-        "        if (Test-Path -LiteralPath $path) {",
-        "            Remove-Item -LiteralPath $path -Recurse -Force",
-        "        }",
-        "    }",
-        "}"
+        "# Configure pnpm directories under Scoop persistent directory",
+        "& \"$dir\\pnpm.exe\" config set storeDir \"$persist_dir\\store\"",
+        "& \"$dir\\pnpm.exe\" config set cacheDir \"$persist_dir\\cache\"",
+        "& \"$dir\\pnpm.exe\" config set stateDir \"$persist_dir\\state\""
     ],
     "env_add_path": "bin",
     "env_set": {
