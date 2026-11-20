@@ -54,12 +54,6 @@
         "    }",
         "}"
     ],
-    "shortcuts": [
-        [
-            "pgAdmin 4\\runtime\\pgAdmin4.exe",
-            "pgAdmin 4"
-        ]
-    ],
     "env_add_path": "bin",
     "env_set": {
         "PGDATA": "$dir\\data",
