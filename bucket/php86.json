@@ -38,7 +38,7 @@
     ],
     "checkver": {
         "url": "https://downloads.php.net/~windows/releases/releases.json",
-        "jsonpath": "$['8.5'].version"
+        "jsonpath": "$['8.6'].version"
     },
     "autoupdate": {
         "architecture": {
