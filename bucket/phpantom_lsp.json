@@ -1,12 +1,12 @@
 {
-    "version": "0.11.1",
+    "version": "1.0.0",
     "description": "A PHP language server written in Rust.",
     "homepage": "https://github.com/AJenbo/phpantom_lsp",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/AJenbo/phpantom_lsp/releases/download/0.11.1/phpantom_lsp-x86_64-pc-windows-msvc.zip",
-            "hash": "2f717c05e44573ae7ad3ab394fc322a5fa0309edae116b245c299c740b4dae8e"
+            "url": "https://github.com/AJenbo/phpantom_lsp/releases/download/1.0.0/phpantom_lsp-x86_64-pc-windows-msvc.zip",
+            "hash": "372b84576c4cf6de2f27a5b2194fb4323e6202e51c105b5cd55a28327ed58e92"
         }
     },
     "bin": "phpantom_lsp.exe",
