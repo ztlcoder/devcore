@@ -1,12 +1,12 @@
 {
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "The PHP Installer for Extensions.",
     "homepage": "https://github.com/php/pie",
     "license": "BSD-3-Clause",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/php/pie/releases/download/1.6.0/pie-Windows-X64.exe",
-            "hash": "54fca9839122b958f881edb2068557638f601223374155df96e84735c1e8bfbb"
+            "url": "https://github.com/php/pie/releases/download/1.6.1/pie-Windows-X64.exe",
+            "hash": "f1f7e6f501e50b62d33424b1b98ab4dc63646a49f99663ca24599ac863b17e86"
         }
     },
     "bin": [
